@@ -1,0 +1,77 @@
+* {
+    padding: 0;
+    margin: 0;
+
+    user-select: none;
+}
+
+.register-main {
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 32px;
+
+    position: relative;
+}
+
+.starlit-logo {
+    height: 10em;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.input-padrao {
+    width: 32vw;
+
+    color: white;
+    
+    margin: 0;
+    padding: 8px 12px;
+    
+    background-color: #522258;
+    
+    border: 0px;
+    border-radius: 15px;
+    
+    font-size: 1.5em;
+    line-height: 1px;
+    letter-spacing: 0.5px;
+    
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    box-shadow: 0 4px 4px 2px rgba(0, 0, 0, .4);
+}
+
+.input-submit {
+    width: 12vw;
+
+    margin-top: 16px;
+    padding: 12px 16px;
+
+    border: transparent;
+    border-radius: 15px;
+
+    background-color: #8C3061;
+
+    font-size: large;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.7);
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, .4);
+
+    align-self: center;
+}
