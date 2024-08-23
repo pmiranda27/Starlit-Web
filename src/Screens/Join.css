@@ -17,20 +17,19 @@
 }
 
 .join-painel {
-    width: 30%;
-    height: 65%;
+    width: 50vw;
+    height: 70vh;
 
     border-radius: 40px;
 
-    padding: 8px;
-
-    gap: 16px;
+    padding: 16px 8px;
 
     color: white;
 
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-around;
 
     background: url('../Assets/Images/static.png'), #8C3061;
     filter: brightness(0.8);
@@ -39,12 +38,27 @@
     box-shadow: 0 4px 9px 4px rgba(0, 0, 0, .35);
 }
 
+
+
+
 h2 {
-    font-size: 2em;
+    font-size: 2.75em;
+    text-align: center;
 }
+
 
 .star-logo {
     height: 40%;
+}
+
+
+.escolher-entrada {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .button-div {
@@ -59,23 +73,57 @@ h2 {
     margin-top: 8px;
 }
 
-.botao {
-    width: 50%;
-    height: 3em;
 
+.button-div h3 {
+    font-size: 1.5em;
+}
+
+a {
+    display: block;
+    text-decoration: none;
+}
+
+.botao, a {
+    min-width: 45%;
+    height: 7vh;
+    
     color: white;
-
+    
+    margin: 0;
+    padding: 0;
+    
     background-color: #612669;
-
+    
     border: 0px;
     border-radius: 15px;
-
-    font-size: large;
-
+    
+    font-size: xx-large;
     font-weight: bold;
+    line-height: 1px;
     letter-spacing: 0.5px;
-
+    
     cursor: pointer;
-
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
     box-shadow: 0 4px 4px 2px rgba(0, 0, 0, .4);
+    
+    transition: 300ms;
+}
+@media screen and (min-width: 1920px) {
+    .botao, a {
+        width: 35%;
+        border-radius: 20px;
+    }
+}
+@media screen and (max-width: 1280px) {
+    .botao, a {
+        width: 55%;
+    }
+}
+
+.botao:hover, a:hover {
+    background: url('../Assets/Images/static.png'), rgb(198, 60, 81);
 }
