@@ -26,7 +26,8 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+
+    gap: 40px;
 }
 
 .input-padrao {
@@ -54,6 +55,32 @@
     box-shadow: 0 4px 4px 2px rgba(0, 0, 0, .4);
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;    
+}
+
+input:-webkit-autofill {
+    -webkit-text-fill-color: #fff;
+}
+
+input:-webkit-autofill:focus {  
+    -webkit-text-fill-color: #fff;
+} 
+
+.input-padrao-invalido {
+    background-color: #6b0303;
+}
+.input-padrao-invalido::placeholder {
+    color: #d11818;
+}
+
+.input-section {
+    position: relative;
+}
+
 .input-submit {
     width: 12vw;
 
@@ -74,4 +101,8 @@
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, .4);
 
     align-self: center;
+}
+
+.no-visibility {
+    visibility: hidden;
 }
