@@ -1,132 +1,158 @@
 * {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 
-    user-select: none;
+  user-select: none;
 }
 
 .login-main {
-    width: 100%;
-    height: 100vh;
+  width: 100%;
+  height: 100vh;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-    gap: 24px;
+  gap: 24px;
 
-    position: relative;
+  position: relative;
 }
 
 .starlit-logo {
-    height: 10em;
+  height: 10em;
 }
 
-.form {
-    display: flex;
-    flex-direction: column;
+.form-login {
+  display: flex;
+  flex-direction: column;
 
-    background: url('../Assets/Images/static.png'), #8C3061;
-    filter: brightness(0.8);
-    backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: saturate(180%) blur(10px);
 
-    box-shadow: 0 4px 9px 4px rgba(0, 0, 0, .35);
+  box-shadow: 0 4px 9px 4px rgba(0, 0, 0, 0.35);
 
-    padding: 24px;
+  padding: 24px;
 
-    border-radius: 40px;
+  border-radius: 40px;
 
-    gap: 40px;
+  gap: 40px;
 }
 
-.input-padrao {
-    width: 32vw;
+.input-padrao-login {
+  width: 32vw;
 
-    color: white;
-    
-    margin: 0;
-    padding: 8px 12px;
-    
-    background-color: #522258;
-    
-    border: 0px;
-    border-radius: 25px;
-    
-    font-size: 1.5em;
-    line-height: 1px;
-    letter-spacing: 0.5px;
-    
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    box-shadow: 0 4px 4px 2px rgba(0, 0, 0, .4);
+  color: #8c3061;
+
+  margin: 0;
+  padding: 8px 12px;
+
+  background: transparent;
+
+  border: 2px solid rgba(140, 48, 97, 0.5);
+  border-radius: 25px;
+
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1px;
+  letter-spacing: 0.5px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.4);
+}
+
+.input-padrao-login::placeholder {
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: rgba(207, 74, 145, 0.2);
 }
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s;    
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 input:-webkit-autofill {
-    -webkit-text-fill-color: #fff;
+  -webkit-text-fill-color: #fff;
 }
 
-input:-webkit-autofill:focus {  
-    -webkit-text-fill-color: #fff;
-} 
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff;
+}
 
 .input-padrao-invalido {
-    background-color: #6b0303;
+  background-color: #6b0303;
 }
 .input-padrao-invalido::placeholder {
-    color: #d11818;
+  color: #d11818;
 }
 
 .input-section {
-    position: relative;
+  position: relative;
 }
 
-.input-submit {
-    width: 12vw;
-    height: 6vh;
+.input-submit-login {
+  min-width: 50%;
+  height: 7vh;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 
-    margin-top: 16px;
-    padding: 12px 16px;
+  margin-top: 16px;
+  padding: 12px 16px;
 
-    border: transparent;
-    border-radius: 15px;
+  background: transparent;
 
-    background-color: #6d244b;
+  color: rgba(140, 48, 97, 1);
 
-    font-size: large;
-    font-weight: bold;
-    color: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(140, 48, 97, 0.5);
+  border-radius: 15px;
 
-    cursor: pointer;
+  font-size: large;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.9);
 
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, .4);
+  cursor: pointer;
 
-    align-self: center;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.4);
+
+  align-self: center;
+
+  transition: 350ms;
+}
+
+@media (max-width: 800px){
+    .input-submit-login {
+        min-width: 70%;
+    }
+}
+
+@media (max-width: 450px){
+    .input-submit-login {
+        margin-top: 40px;
+    }
+}
+
+.input-submit-login:hover {
+  color: #fff;
+  background-color: rgba(140, 48, 97, 0.8);
 }
 
 .login-title {
-    color: white;
+  color: rgba(140, 48, 97, 1);
 
-    text-align: center;
+  text-align: center;
 
-    font-size: 2rem;
+  font-size: 2rem;
 }
 
 .no-visibility {
-    visibility: hidden;
+  visibility: hidden;
 }

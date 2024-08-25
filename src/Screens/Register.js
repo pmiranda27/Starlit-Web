@@ -1,9 +1,9 @@
 import "./Register.css";
-import starlitLogo from "../Assets/Images/starlit-logo.png";
 import React from "react";
 import InputInvalidError from "../Components/Form_Validators";
 
 import { Loader } from "../Components/Loader";
+import ShootingStars from "../Components/Shooting_Stars";
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -50,7 +50,7 @@ const Register = () => {
   async function validateForm(e) {
     e.preventDefault();
 
-    if (formBody.nome == "" || formBody.nome.replace(/\s/g, "") == "") {
+    if (formBody.nome === "" || formBody.nome.replace(/\s/g, "") === "") {
       setNomeInputError(true);
       setNomeErrorMessage(true);
       formBody.nome = "";
@@ -59,7 +59,7 @@ const Register = () => {
 
       console.log("Nome inválido");
     }
-    if (formBody.email == "" || !validateEmail(formBody.email)) {
+    if (formBody.email === "" || !validateEmail(formBody.email)) {
       setEmailInputError(true);
       setEmailErrorMessage(true);
       formBody.email = "";
@@ -68,7 +68,7 @@ const Register = () => {
 
       console.log("Email inválido");
     }
-    if (formBody.senha == "" || formBody.senha.length < 8) {
+    if (formBody.senha === "" || formBody.senha.length < 8) {
       setSenhaInputError(true);
       setSenhaErrorMessage(true);
       formBody.senha = "";
@@ -78,8 +78,8 @@ const Register = () => {
       console.log("Senha inválida");
     }
     if (
-      formBody.confirmarSenha == "" ||
-      formBody.confirmarSenha != formBody.senha
+      formBody.confirmarSenha === "" ||
+      formBody.confirmarSenha !== formBody.senha
     ) {
       setConfirmarInputError(true);
       setConfirmarErrorMessage(true);
@@ -106,11 +106,11 @@ const Register = () => {
     setTimeout(async () => {
       try {
         const response = await axios.post(`${apiUrl}/register`, newUser);
-        if (response.status == 201) {
+        if (response.status === 201) {
           setIsLoading(false);
           setTimeout(() => {
             navigate("/logar");
-          }, 1000)
+          }, 1000);
         }
         console.log("O status code da resposta é: ", response.status);
       } catch (error) {
@@ -137,14 +137,16 @@ const Register = () => {
         setConfirmarInputError(false);
         setConfirmarErrorMessage(false);
         break;
+      default:
+        break;
     }
   }
 
   return (
     <div className="register-main">
-      <img src={starlitLogo} alt="Starlit Logo" className="starlit-logo" />
+      <ShootingStars />
       <form
-        className="form"
+        className="form-register"
         id="form-register"
         onSubmit={validateForm}
         noValidate
@@ -159,14 +161,14 @@ const Register = () => {
             onChange={formHandler}
             className={
               nomeInputError
-                ? "input-padrao input-padrao-invalido"
-                : "input-padrao"
+                ? "input-padrao-register input-padrao-invalido-register"
+                : "input-padrao-register"
             }
             placeholder="Nome"
             onFocus={() => removeError("nome")}
           />
           <InputInvalidError $isVisible={nomeErrorMessage} id="nome-error">
-            Nome inválido
+            Por favor, insira um nome válido.
           </InputInvalidError>
         </div>
 
@@ -179,14 +181,14 @@ const Register = () => {
             onChange={formHandler}
             className={
               emailInputError
-                ? "input-padrao input-padrao-invalido"
-                : "input-padrao"
+                ? "input-padrao-register input-padrao-invalido-register"
+                : "input-padrao-register"
             }
             onFocus={() => removeError("email")}
             placeholder="Email"
           />
           <InputInvalidError $isVisible={emailErrorMessage} id="email-error">
-            Email inválido
+            Por favor, insira um nome válido.
           </InputInvalidError>
         </div>
 
@@ -199,14 +201,14 @@ const Register = () => {
             onChange={formHandler}
             className={
               senhaInputError
-                ? "input-padrao input-padrao-invalido"
-                : "input-padrao"
+                ? "input-padrao-register input-senha-media-register input-padrao-invalido-register"
+                : "input-padrao-register input-senha-media-register"
             }
             onFocus={() => removeError("senha")}
             placeholder="Senha"
           />
           <InputInvalidError $isVisible={senhaErrorMessage} id="senha-error">
-            Senha inválida, mínimo de 8 caracteres
+            Por favor, insira uma senha com no mínimo 8 caracteres.
           </InputInvalidError>
         </div>
 
@@ -219,8 +221,8 @@ const Register = () => {
             onChange={formHandler}
             className={
               confirmarInputError
-                ? "input-padrao input-padrao-invalido"
-                : "input-padrao"
+                ? "input-padrao-register input-padrao-invalido-register"
+                : "input-padrao-register"
             }
             onFocus={() => removeError("confirmarSenha")}
             placeholder="Confirmar senha"
@@ -229,11 +231,11 @@ const Register = () => {
             $isVisible={confirmarErrorMessage}
             id="confirmar-error"
           >
-            Senhas discrepantes
+            Senhas discrepantes.
           </InputInvalidError>
         </div>
 
-        <button type="submit" className="input-submit">
+        <button type="submit" className="input-submit-register">
           {isLoading ? <Loader /> : "Registrar"}
         </button>
       </form>

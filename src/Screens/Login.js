@@ -1,9 +1,9 @@
 import "./Login.css";
 
-import starlitLogo from "../Assets/Images/starlit-logo.png";
 import InputInvalidError from "../Components/Form_Validators";
 
 import { Loader } from "../Components/Loader";
+import ShootingStars from "../Components/Shooting_Stars";
 
 import axios from "axios";
 
@@ -113,12 +113,12 @@ const Login = () => {
       try {
         const response = await axios.post(`${apiUrl}/login`, loginUser);
         if (response.status == 200) {
-            console.log('sucesso no login')
-            
-            setIsLoading(false);
+          console.log("sucesso no login");
+
+          setIsLoading(false);
         }
-          console.log("O status code da resposta é: ", response.status);
-          console.log("O token da resposta é: ", response.data.token) 
+        console.log("O status code da resposta é: ", response.status);
+        console.log("O token da resposta é: ", response.data.token);
       } catch (error) {
         console.log("error: ", error);
       }
@@ -127,9 +127,9 @@ const Login = () => {
 
   return (
     <div className="login-main">
-      <img src={starlitLogo} alt="Starlit Logo" className="starlit-logo" />
+      <ShootingStars />
       <form
-        className="form"
+        className="form-login"
         id="form-register"
         onSubmit={validateForm}
         noValidate
@@ -145,8 +145,8 @@ const Login = () => {
             onChange={formHandler}
             className={
               emailInputError
-                ? "input-padrao input-padrao-invalido"
-                : "input-padrao"
+                ? "input-padrao-login input-padrao-invalido"
+                : "input-padrao-login"
             }
             onFocus={() => removeError("email")}
             placeholder="Email"
@@ -165,8 +165,8 @@ const Login = () => {
             onChange={formHandler}
             className={
               senhaInputError
-                ? "input-padrao input-padrao-invalido"
-                : "input-padrao"
+                ? "input-padrao-login input-padrao-invalido"
+                : "input-padrao-login"
             }
             onFocus={() => removeError("senha")}
             placeholder="Senha"
@@ -176,30 +176,7 @@ const Login = () => {
           </InputInvalidError>
         </div>
 
-        <div className="input-section">
-          <input
-            type="password"
-            name="confirmarSenha"
-            id="confirmar-form"
-            value={formBody.confirmarSenha}
-            onChange={formHandler}
-            className={
-              confirmarInputError
-                ? "input-padrao input-padrao-invalido"
-                : "input-padrao"
-            }
-            onFocus={() => removeError("confirmarSenha")}
-            placeholder="Confirmar senha"
-          />
-          <InputInvalidError
-            $isVisible={confirmarErrorMessage}
-            id="confirmar-error"
-          >
-            Senhas discrepantes
-          </InputInvalidError>
-        </div>
-
-        <button type="submit" className="input-submit">
+        <button type="submit" className="input-submit-login">
           {isLoading ? <Loader /> : "Logar"}
         </button>
       </form>
