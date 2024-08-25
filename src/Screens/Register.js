@@ -3,6 +3,8 @@ import starlitLogo from "../Assets/Images/starlit-logo.png";
 import React, { useEffect } from "react";
 import InputInvalidError from "../Components/Form_Validators";
 
+import { Loader } from "../Components/Loader";
+
 import axios from "axios";
 
 const Register = () => {
@@ -36,6 +38,8 @@ const Register = () => {
   const validateEmail = (email) => {
     return email.match(/^\S+@\S+\.\S+$/);
   };
+
+  const [isLoading, setIsLoading] = React.useState(false);
 
   let validationFailed = false;
 
@@ -92,7 +96,7 @@ const Register = () => {
       email: formBody.email,
       password: formBody.senha
     }
-    
+
     try {
       const response = await axios.post(`${apiUrl}/register`, newUser);
       console.log("O status code da resposta é: ", response.status);
@@ -215,7 +219,7 @@ const Register = () => {
           </InputInvalidError>
         </div>
 
-        <input type="submit" className="input-submit" value="Registrar" />
+        <button type="submit" className="input-submit">{isLoading ? <Loader /> : "Registrar"}</button>
       </form>
     </div>
   );
