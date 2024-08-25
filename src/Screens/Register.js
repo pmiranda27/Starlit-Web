@@ -6,6 +6,8 @@ import InputInvalidError from "../Components/Form_Validators";
 import axios from "axios";
 
 const Register = () => {
+  const apiUrl = "https://def5f95f-e30e-4f86-b1e0-9f53460f5248-00-1pjmbawk5ifrf.worf.replit.dev";
+
   const [formBody, setFormBody] = React.useState({
     nome: "",
     email: "",
@@ -35,13 +37,17 @@ const Register = () => {
     return email.match(/^\S+@\S+\.\S+$/);
   };
 
-  function validateForm(e) {
+  let validationFailed = false;
+
+  async function validateForm(e) {
     e.preventDefault();
 
     if (formBody.nome == "" || formBody.nome.replace(/\s/g, "") == "") {
       setNomeInputError(true);
       setNomeErrorMessage(true);
       formBody.nome = "";
+
+      validationFailed = true;
 
       console.log("Nome inválido");
     }
@@ -50,12 +56,16 @@ const Register = () => {
       setEmailErrorMessage(true);
       formBody.email = "";
 
+      validationFailed = true;
+
       console.log("Email inválido");
     }
     if (formBody.senha == "" || formBody.senha.length < 8) {
       setSenhaInputError(true);
       setSenhaErrorMessage(true);
       formBody.senha = "";
+
+      validationFailed = true;
 
       console.log("Senha inválida");
     }
@@ -67,7 +77,27 @@ const Register = () => {
       setConfirmarErrorMessage(true);
       formBody.confirmarSenha = "";
 
+      validationFailed = true;
+
       console.log("Confirmação de Senha inválida");
+    }
+
+    if (validationFailed) {
+      validationFailed = false;
+      return;
+    }
+
+    const newUser = {
+      name: formBody.nome,
+      email: formBody.email,
+      password: formBody.senha
+    }
+    
+    try {
+      const response = await axios.post(`${apiUrl}/register`, newUser);
+      console.log("O status code da resposta é: ", response.status);
+    } catch (error) {
+      console.log('error: ', error)
     }
   }
 
