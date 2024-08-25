@@ -3,9 +3,7 @@
 ![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge)
 
 
-<div align="center">
-    ![Logo](https://live.staticflickr.com/65535/53946878312_beb323dcfb_m.jpg)
-</div>
+![Logo](https://live.staticflickr.com/65535/53946878312_beb323dcfb_m.jpg)
 
 
 ## Descrição
