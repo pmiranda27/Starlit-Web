@@ -1,14 +1,18 @@
 import "./Register.css";
 import starlitLogo from "../Assets/Images/starlit-logo.png";
-import React, { useEffect } from "react";
+import React from "react";
 import InputInvalidError from "../Components/Form_Validators";
 
 import { Loader } from "../Components/Loader";
 
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const apiUrl = "https://def5f95f-e30e-4f86-b1e0-9f53460f5248-00-1pjmbawk5ifrf.worf.replit.dev";
+  const apiUrl =
+    "https://def5f95f-e30e-4f86-b1e0-9f53460f5248-00-1pjmbawk5ifrf.worf.replit.dev";
+
+  const navigate = useNavigate();
 
   const [formBody, setFormBody] = React.useState({
     nome: "",
@@ -94,38 +98,47 @@ const Register = () => {
     const newUser = {
       name: formBody.nome,
       email: formBody.email,
-      password: formBody.senha
-    }
+      password: formBody.senha,
+    };
 
-    try {
-      const response = await axios.post(`${apiUrl}/register`, newUser);
-      console.log("O status code da resposta é: ", response.status);
-    } catch (error) {
-      console.log('error: ', error)
-    }
+    setIsLoading(true);
+
+    setTimeout(async () => {
+      try {
+        const response = await axios.post(`${apiUrl}/register`, newUser);
+        if (response.status == 201) {
+          setIsLoading(false);
+          setTimeout(() => {
+            navigate("/logar");
+          }, 1000)
+        }
+        console.log("O status code da resposta é: ", response.status);
+      } catch (error) {
+        console.log("error: ", error);
+      }
+    }, 1500);
   }
 
   function removeError(input) {
-      switch (input) {
-        case "nome":
-          setNomeInputError(false);
-          setNomeErrorMessage(false);
-          break;
-        case "email":
-          setEmailInputError(false);
-          setEmailErrorMessage(false);
-          break;
-        case "senha":
-          setSenhaInputError(false);
-          setSenhaErrorMessage(false);
-          break;
-        case "confirmarSenha":
-          setConfirmarInputError(false);
-          setConfirmarErrorMessage(false);
-          break;
-      }
+    switch (input) {
+      case "nome":
+        setNomeInputError(false);
+        setNomeErrorMessage(false);
+        break;
+      case "email":
+        setEmailInputError(false);
+        setEmailErrorMessage(false);
+        break;
+      case "senha":
+        setSenhaInputError(false);
+        setSenhaErrorMessage(false);
+        break;
+      case "confirmarSenha":
+        setConfirmarInputError(false);
+        setConfirmarErrorMessage(false);
+        break;
     }
-
+  }
 
   return (
     <div className="register-main">
@@ -136,6 +149,7 @@ const Register = () => {
         onSubmit={validateForm}
         noValidate
       >
+        <h3 className="register-title">Registro</h3>
         <div className="input-section">
           <input
             type="text"
@@ -219,7 +233,9 @@ const Register = () => {
           </InputInvalidError>
         </div>
 
-        <button type="submit" className="input-submit">{isLoading ? <Loader /> : "Registrar"}</button>
+        <button type="submit" className="input-submit">
+          {isLoading ? <Loader /> : "Registrar"}
+        </button>
       </form>
     </div>
   );
