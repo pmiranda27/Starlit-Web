@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const apiUrl =
-    "https://def5f95f-e30e-4f86-b1e0-9f53460f5248-00-1pjmbawk5ifrf.worf.replit.dev";
+    "https://e92b906c-86a1-4f94-8494-74e6a3580bf1-00-9vi1m8sxzl3.kirk.replit.dev";
 
   const navigate = useNavigate();
 
