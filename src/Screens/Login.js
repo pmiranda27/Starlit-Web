@@ -172,7 +172,7 @@ const Login = () => {
             placeholder="Senha"
           />
           <InputInvalidError $isVisible={senhaErrorMessage} id="senha-error">
-            Senha inválida, mínimo de 8 caracteres
+            Senha inválida
           </InputInvalidError>
         </div>
 
