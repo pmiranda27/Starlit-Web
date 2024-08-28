@@ -25,8 +25,8 @@ body {
 }
 .shooting-star-span {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 60%;
+  left: 60%;
   z-index: -1;
   width: 2px;
   height: 2px;

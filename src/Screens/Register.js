@@ -16,6 +16,9 @@ const Register = () => {
     "https://def5f95f-e30e-4f86-b1e0-9f53460f5248-00-1pjmbawk5ifrf.worf.replit.dev";
 
   const navigate = useNavigate();
+  const ToLogin = () => {
+    navigate("/login");
+  };
 
   const [formBody, setFormBody] = React.useState({
     nome: "",
@@ -129,10 +132,10 @@ const Register = () => {
           setIsGreen(false);
           setIsShowingMessage(false);
 
-          formBody.nome = '';
-          formBody.email = '';
-          formBody.senha = '';
-          formBody.confirmarSenha = '';
+          formBody.nome = "";
+          formBody.email = "";
+          formBody.senha = "";
+          formBody.confirmarSenha = "";
 
           setIsLoading(false);
         }, 3000);
@@ -165,9 +168,14 @@ const Register = () => {
   }
 
   return (
-    <div className="register-main">
+    <>
       <ShootingStars />
-      <PopUpConfirm $isGreen={isGreen} $isShowingMessage={isShowingMessage}>{isGreen ? `Registro realizado com sucesso. Redirecionando...` : `Falha no registro.`}</PopUpConfirm>
+    <div className="register-main">
+      <PopUpConfirm $isGreen={isGreen} $isShowingMessage={isShowingMessage}>
+        {isGreen
+          ? `Registro realizado com sucesso. Redirecionando...`
+          : `Falha no registro.`}
+      </PopUpConfirm>
       <form
         className="form-register"
         id="form-register"
@@ -261,8 +269,15 @@ const Register = () => {
         <button type="submit" className="input-submit-register">
           {isLoading ? <Loader /> : "Registrar"}
         </button>
+        <p>
+          Já possui uma conta?{" "}
+          <span onClick={ToLogin} className="span-login">
+            Faça Login!
+          </span>
+        </p>
       </form>
-    </div>
+      </div>
+      </>
   );
 };
 

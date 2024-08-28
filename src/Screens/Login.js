@@ -7,7 +7,7 @@ import ShootingStars from "../Components/Shooting_Stars";
 
 import axios from "axios";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PopUpConfirm from "../Components/PopUpConfirm";
 
@@ -16,6 +16,9 @@ const Login = () => {
     "https://def5f95f-e30e-4f86-b1e0-9f53460f5248-00-1pjmbawk5ifrf.worf.replit.dev";
 
   const navigate = useNavigate();
+  const ToRegister = () => {
+    navigate("/register");
+  };
 
   const [formBody, setFormBody] = React.useState({
     email: "",
@@ -35,8 +38,6 @@ const Login = () => {
 
   const [emailErrorMessage, setEmailErrorMessage] = React.useState(false);
   const [senhaErrorMessage, setSenhaErrorMessage] = React.useState(false);
-  const [confirmarErrorMessage, setConfirmarErrorMessage] =
-    React.useState(false);
 
   const validateEmail = (email) => {
     return email.match(/^\S+@\S+\.\S+$/);
@@ -57,10 +58,6 @@ const Login = () => {
       case "senha":
         setSenhaInputError(false);
         setSenhaErrorMessage(false);
-        break;
-      case "confirmarSenha":
-        setConfirmarInputError(false);
-        setConfirmarErrorMessage(false);
         break;
     }
   }
@@ -109,9 +106,9 @@ const Login = () => {
           setIsGreen(true);
           setIsShowingMessage(true);
 
-          setTimeout(()=>{
-            navigate('/home');
-          }, 2000)
+          setTimeout(() => {
+            navigate("/home");
+          }, 2000);
         }
         console.log("O status code da resposta é: ", response.status);
         console.log("O token da resposta é: ", response.data.token);
@@ -119,12 +116,12 @@ const Login = () => {
         setIsGreen(false);
         setIsShowingMessage(true);
 
-        setTimeout(()=> {
+        setTimeout(() => {
           setIsGreen(false);
           setIsShowingMessage(false);
 
-          formBody.email = '';
-          formBody.senha = '';
+          formBody.email = "";
+          formBody.senha = "";
 
           setIsLoading(false);
         }, 3000);
@@ -134,62 +131,72 @@ const Login = () => {
   }
 
   return (
-    <div className="login-main">
+    <>
       <ShootingStars />
-      <PopUpConfirm $isGreen={isGreen} $isShowingMessage={isShowingMessage}>{isGreen ? `Logado com sucesso. Redirecionando...` : `Falha no Login.`}</PopUpConfirm>
-      <form
-        className="form-login"
-        id="form-register"
-        onSubmit={validateForm}
-        noValidate
-      >
-        <h3 className="login-title">Login</h3>
+      <div className="login-main">
+        <PopUpConfirm $isGreen={isGreen} $isShowingMessage={isShowingMessage}>
+          {isGreen
+            ? `Logado com sucesso. Redirecionando...`
+            : `Falha no Login.`}
+        </PopUpConfirm>
+        <form
+          className="form-login"
+          id="form-register"
+          onSubmit={validateForm}
+          noValidate
+        >
+          <h3 className="login-title">Login</h3>
 
-        <div className="input-section">
-          <input
-            type="email"
-            name="email"
-            id="email-form"
-            value={formBody.email}
-            onChange={formHandler}
-            className={
-              emailInputError
-                ? "input-padrao-login input-padrao-invalido"
-                : "input-padrao-login"
-            }
-            onFocus={() => removeError("email")}
-            placeholder="Email"
-          />
-          <InputInvalidError $isVisible={emailErrorMessage} id="email-error">
-            Email inválido
-          </InputInvalidError>
-        </div>
+          <div className="input-section">
+            <input
+              type="email"
+              name="email"
+              id="email-form"
+              value={formBody.email}
+              onChange={formHandler}
+              className={
+                emailInputError
+                  ? "input-padrao-login input-padrao-invalido"
+                  : "input-padrao-login"
+              }
+              onFocus={() => removeError("email")}
+              placeholder="Email"
+            />
+            <InputInvalidError $isVisible={emailErrorMessage} id="email-error">
+              Email inválido
+            </InputInvalidError>
+          </div>
 
-        <div className="input-section">
-          <input
-            type="password"
-            name="senha"
-            id="senha-form"
-            value={formBody.senha}
-            onChange={formHandler}
-            className={
-              senhaInputError
-                ? "input-padrao-login input-padrao-invalido"
-                : "input-padrao-login"
-            }
-            onFocus={() => removeError("senha")}
-            placeholder="Senha"
-          />
-          <InputInvalidError $isVisible={senhaErrorMessage} id="senha-error">
-            Senha inválida
-          </InputInvalidError>
-        </div>
+          <div className="input-section">
+            <input
+              type="password"
+              name="senha"
+              id="senha-form"
+              value={formBody.senha}
+              onChange={formHandler}
+              className={
+                senhaInputError
+                  ? "input-padrao-login input-padrao-invalido"
+                  : "input-padrao-login"
+              }
+              onFocus={() => removeError("senha")}
+              placeholder="Senha"
+            />
+            <InputInvalidError $isVisible={senhaErrorMessage} id="senha-error">
+              Senha inválida
+            </InputInvalidError>
+          </div>
 
-        <button type="submit" className="input-submit-login">
-          {isLoading ? <Loader /> : "Logar"}
-        </button>
-      </form>
-    </div>
+          <button type="submit" className="input-submit-login">
+            {isLoading ? <Loader /> : "Logar"}
+          </button>
+          <p>
+            Ainda não possui uma conta?{" "}
+            <span onClick={ToRegister}>Registre-se!</span>
+          </p>
+        </form>
+      </div>
+    </>
   );
 };
 

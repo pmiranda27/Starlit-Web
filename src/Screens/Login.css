@@ -27,6 +27,8 @@
   display: flex;
   flex-direction: column;
 
+  align-items: center;
+
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: saturate(180%) blur(10px);
 
@@ -154,4 +156,15 @@ input:-webkit-autofill:focus {
 
 .no-visibility {
   visibility: hidden;
+}
+
+.form-login > p {
+  color: white;
+  font-weight: 700;
+}
+
+.form-login > p > span {
+  color: rgba(140, 48, 97, 1);;
+
+  cursor: pointer;
 }

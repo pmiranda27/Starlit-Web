@@ -11,7 +11,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import HomePage from './Screens/Home';
-import Messages from './Screens/message';
+import Messages from './Screens/Message';
 
 
 const router = createBrowserRouter([
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
     element: <HomePage />
   },
   {
-    path: "/messages",
+    path: "/chat",
     element: <Messages />
   },
 ])

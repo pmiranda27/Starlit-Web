@@ -31,7 +31,6 @@
   align-items: center;
   justify-content: center;
 
-
   background: rgba(0, 0, 0, 0.45);
 
   box-shadow: 0 4px 9px 4px rgba(0, 0, 0, 0.35);
@@ -70,7 +69,7 @@
 .input-padrao-register {
   width: 32vw;
 
-  color: #8C3061;
+  color: #8c3061;
 
   margin: 0;
   padding: 8px 12px;
@@ -133,7 +132,6 @@ input:-webkit-autofill:focus {
 
 .input-padrao-invalido-register {
   background-color: #830909;
-
 }
 
 .input-padrao-invalido-register::placeholder {
@@ -210,4 +208,17 @@ input:-webkit-autofill:focus {
 
 .no-visibility {
   visibility: hidden;
+}
+
+.form-register > p {
+  color: white;
+  font-weight: 700;
+
+  z-index: 1;
+}
+
+.span-login {
+  color: rgba(140, 48, 97, 1);
+
+  cursor: pointer;
 }
