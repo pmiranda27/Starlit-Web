@@ -10,6 +10,9 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import HomePage from './Screens/Home';
+import Messages from './Screens/message';
+
 
 const router = createBrowserRouter([
   {
@@ -17,12 +20,20 @@ const router = createBrowserRouter([
     element: <Join />
   },
   {
-    path: "/registrar",
+    path: "/register",
     element: <Register />
   },
   {
-    path: "/logar",
+    path: "/login",
     element: <Login />
+  },
+  {
+    path: "/home",
+    element: <HomePage />
+  },
+  {
+    path: "/messages",
+    element: <Messages />
   },
 ])
 

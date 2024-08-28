@@ -14,6 +14,8 @@
   justify-content: center;
   align-items: center;
 
+  z-index: 1;
+
   gap: 24px;
 
   position: relative;
@@ -29,8 +31,8 @@
   align-items: center;
   justify-content: center;
 
+
   background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: saturate(180%) blur(10px);
 
   box-shadow: 0 4px 9px 4px rgba(0, 0, 0, 0.35);
 
@@ -42,26 +44,27 @@
 }
 
 @media (min-width: 600px) {
-    .form-register {
-        gap: 56px;
-    }
-}
-@media (max-width: 600px){
-    .form-register {
-        width: 65vw;
-    }
+  .form-register {
+    gap: 56px;
+  }
 }
 
-@media (max-width: 400px){
-    .form-register {
-        width: 65%;
-    }
+@media (max-width: 600px) {
+  .form-register {
+    width: 65vw;
+  }
+}
+
+@media (max-width: 400px) {
+  .form-register {
+    width: 65%;
+  }
 }
 
 @media (max-width: 1250px) {
-    .form-register {
-        width: 50vw;
-    }
+  .form-register {
+    width: 40vw;
+  }
 }
 
 .input-padrao-register {
@@ -89,16 +92,16 @@
   box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.4);
 }
 
-@media (max-width: 400px){
-    .input-padrao-register {
-        width: 36vw;
-    }
+@media (max-width: 400px) {
+  .input-padrao-register {
+    width: 36vw;
+  }
 }
 
-@media (max-width: 600px){
-    .input-padrao-register {
-        margin-bottom: 24px;
-    }
+@media (max-width: 600px) {
+  .input-padrao-register {
+    margin-bottom: 24px;
+  }
 }
 
 .input-padrao-register::placeholder {
@@ -107,10 +110,10 @@
   color: rgba(207, 74, 145, 0.2);
 }
 
-@media (max-width: 580px){
-    .input-padrao-register::placeholder {
-        font-size: 1rem;
-    }
+@media (max-width: 580px) {
+  .input-padrao-register::placeholder {
+    font-size: 1rem;
+  }
 }
 
 input:-webkit-autofill,
@@ -130,8 +133,9 @@ input:-webkit-autofill:focus {
 
 .input-padrao-invalido-register {
   background-color: #830909;
-  
+
 }
+
 .input-padrao-invalido-register::placeholder {
   color: #d11818;
 }
@@ -152,6 +156,8 @@ input:-webkit-autofill:focus {
   margin-top: 16px;
   padding: 12px 16px;
 
+  z-index: 1;
+
   background: transparent;
 
   color: rgba(140, 48, 97, 1);
@@ -171,22 +177,22 @@ input:-webkit-autofill:focus {
   transition: 350ms;
 }
 
-@media (max-width: 345px){
-    .input-senha-media-register {
-        margin-bottom: 64px;
-    }
+@media (max-width: 345px) {
+  .input-senha-media-register {
+    margin-bottom: 64px;
+  }
 }
 
-@media (max-width: 565px){
-    .input-senha-media-register {
-        margin-bottom: 48px;
-    }
+@media (max-width: 565px) {
+  .input-senha-media-register {
+    margin-bottom: 48px;
+  }
 }
 
-@media (max-width: 600px){
-    .input-submit-register {
-        margin-top: 4px;
-    }
+@media (max-width: 600px) {
+  .input-submit-register {
+    margin-top: 4px;
+  }
 }
 
 .input-submit-register:hover {

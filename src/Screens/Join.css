@@ -43,19 +43,40 @@
   }
 }
 
+@media (max-width: 900px) {
+  .join-painel {
+    padding: 24px;
+  }
+}
+
 h2 {
   font-size: 2em;
   text-align: center;
 }
+
 @media (min-width: 900px) {
   h2 {
     font-size: 2.5em;
   }
 }
 
+@media (max-width: 545px) {
+  h2 {
+    font-size: 1.75em;
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    width: 100%;
+    font-size: 1.25em;
+  }
+}
+
 .star-logo {
   height: 30%;
 }
+
 @media (min-width: 900px) {
   .star-logo {
     height: 40%;
@@ -76,6 +97,12 @@ h2 {
 @media (min-width: 900px) {
   .escolher-entrada {
     flex-direction: row;
+  }
+}
+
+@media (max-width: 545px) {
+  .escolher-entrada {
+    gap: 16px;
   }
 }
 
@@ -101,17 +128,22 @@ h2 {
   font-size: 1.5em;
 }
 
-a {
+@media (max-width: 545px) {
+  .button-div h3 {
+    font-size: 1rem;
+  }
+}
+
+.button-div > a {
   display: block;
   text-decoration: none;
 }
 
-.botao,
-a {
+.button-div > a {
   min-width: 45%;
   height: 7vh;
 
-  color: rgba(140, 48, 97, 1);
+  color: rgb(140, 48, 97);
 
   border: 2px solid rgba(140, 48, 97, 0.5);
   border-radius: 15px;
@@ -133,14 +165,21 @@ a {
 }
 
 @media (min-width: 600px) {
-  .botao,
-  a {
+  .button-div > a {
     min-width: 75%;
   }
 }
 
-.botao:hover,
-a:hover {
+@media (max-width: 545px) {
+  .button-div > a {
+    min-width: 35%;
+    height: 6vh;
+
+    font-size: x-large;
+  }
+}
+
+.button-div > a:hover {
   color: #fff;
   background-color: rgba(140, 48, 97, 0.8);
 }

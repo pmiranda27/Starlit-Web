@@ -14,13 +14,13 @@ const Join = () => {
         <div className="escolher-entrada">
           <div className="button-div">
             <h3>Primeira vez aqui?</h3>
-            <Link className="botao" to="/registrar">
+            <Link className="botao" to="/register">
               <span>Registrar</span>
             </Link>
           </div>
           <div className="button-div">
             <h3>Já possui uma conta?</h3>
-            <Link className="botao" to="/logar">
+            <Link className="botao" to="/login">
               <span>Logar</span>
             </Link>
           </div>

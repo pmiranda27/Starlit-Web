@@ -9,6 +9,7 @@ import axios from "axios";
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import PopUpConfirm from "../Components/PopUpConfirm";
 
 const Login = () => {
   const apiUrl =
@@ -19,7 +20,6 @@ const Login = () => {
   const [formBody, setFormBody] = React.useState({
     email: "",
     senha: "",
-    confirmarSenha: "",
   });
 
   const formHandler = (e) => {
@@ -43,6 +43,8 @@ const Login = () => {
   };
 
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isGreen, setIsGreen] = React.useState(false);
+  const [isShowingMessage, setIsShowingMessage] = React.useState(false);
 
   let validationFailed = false;
 
@@ -84,18 +86,6 @@ const Login = () => {
 
       console.log("Senha inválida");
     }
-    if (
-      formBody.confirmarSenha == "" ||
-      formBody.confirmarSenha != formBody.senha
-    ) {
-      setConfirmarInputError(true);
-      setConfirmarErrorMessage(true);
-      formBody.confirmarSenha = "";
-
-      validationFailed = true;
-
-      console.log("Confirmação de Senha inválida");
-    }
 
     if (validationFailed) {
       validationFailed = false;
@@ -116,10 +106,28 @@ const Login = () => {
           console.log("sucesso no login");
 
           setIsLoading(false);
+          setIsGreen(true);
+          setIsShowingMessage(true);
+
+          setTimeout(()=>{
+            navigate('/home');
+          }, 2000)
         }
         console.log("O status code da resposta é: ", response.status);
         console.log("O token da resposta é: ", response.data.token);
       } catch (error) {
+        setIsGreen(false);
+        setIsShowingMessage(true);
+
+        setTimeout(()=> {
+          setIsGreen(false);
+          setIsShowingMessage(false);
+
+          formBody.email = '';
+          formBody.senha = '';
+
+          setIsLoading(false);
+        }, 3000);
         console.log("error: ", error);
       }
     }, 1500);
@@ -128,6 +136,7 @@ const Login = () => {
   return (
     <div className="login-main">
       <ShootingStars />
+      <PopUpConfirm $isGreen={isGreen} $isShowingMessage={isShowingMessage}>{isGreen ? `Logado com sucesso. Redirecionando...` : `Falha no Login.`}</PopUpConfirm>
       <form
         className="form-login"
         id="form-register"

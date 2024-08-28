@@ -5,12 +5,15 @@ import InputInvalidError from "../Components/Form_Validators";
 import { Loader } from "../Components/Loader";
 import ShootingStars from "../Components/Shooting_Stars";
 
+import { useState } from "react";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import PopUpConfirm from "../Components/PopUpConfirm";
 
 const Register = () => {
   const apiUrl =
-    "https://e92b906c-86a1-4f94-8494-74e6a3580bf1-00-9vi1m8sxzl3.kirk.replit.dev";
+    "https://def5f95f-e30e-4f86-b1e0-9f53460f5248-00-1pjmbawk5ifrf.worf.replit.dev";
 
   const navigate = useNavigate();
 
@@ -44,6 +47,8 @@ const Register = () => {
   };
 
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isGreen, setIsGreen] = React.useState(false);
+  const [isShowingMessage, setIsShowingMessage] = React.useState(false);
 
   let validationFailed = false;
 
@@ -108,12 +113,29 @@ const Register = () => {
         const response = await axios.post(`${apiUrl}/register`, newUser);
         if (response.status === 201) {
           setIsLoading(false);
+          setIsGreen(true);
+          setIsShowingMessage(true);
+
           setTimeout(() => {
-            navigate("/logar");
-          }, 1000);
+            navigate("/login");
+          }, 3000);
         }
         console.log("O status code da resposta é: ", response.status);
       } catch (error) {
+        setIsGreen(false);
+        setIsShowingMessage(true);
+
+        setTimeout(() => {
+          setIsGreen(false);
+          setIsShowingMessage(false);
+
+          formBody.nome = '';
+          formBody.email = '';
+          formBody.senha = '';
+          formBody.confirmarSenha = '';
+
+          setIsLoading(false);
+        }, 3000);
         console.log("error: ", error);
       }
     }, 1500);
@@ -145,6 +167,7 @@ const Register = () => {
   return (
     <div className="register-main">
       <ShootingStars />
+      <PopUpConfirm $isGreen={isGreen} $isShowingMessage={isShowingMessage}>{isGreen ? `Registro realizado com sucesso. Redirecionando...` : `Falha no registro.`}</PopUpConfirm>
       <form
         className="form-register"
         id="form-register"
