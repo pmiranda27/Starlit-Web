@@ -31,10 +31,6 @@ const router = createBrowserRouter([
     path: "/home",
     element: <HomePage />
   },
-  {
-    path: "/chat",
-    element: <Messages />
-  },
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
