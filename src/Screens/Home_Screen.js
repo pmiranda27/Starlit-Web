@@ -12,11 +12,11 @@ function HomeScreen() {
         <section className="main-friends-section">
           <div className="link-card-main-friends">
             <FaUserFriends style={iconStyle} />
-            Mensagens
+            Amigos
           </div>
 
           <div className="amigo-component">
-            <img src="https://placehold.co/60" />
+            <img src="https://placehold.co/60" alt="User Profile" />
             <div className="info-amigo">
               <h4>Nome do Amigo</h4>
               <h5>Online há 4h</h5>

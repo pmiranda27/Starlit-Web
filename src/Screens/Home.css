@@ -39,7 +39,9 @@
 }
 .search-bar input::placeholder {
   align-self: center;
+
   font-size: 1rem;
+  font-weight: bold;
 }
 
 .search-bar-positions {
