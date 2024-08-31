@@ -26,6 +26,8 @@
 }
 
 .form-register {
+  width: 35%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,36 +46,18 @@
 
 @media (min-width: 600px) {
   .form-register {
-    gap: 40px;
+    gap: 52px;
   }
 }
 
-@media (max-width: 1180px) {
-  .form-register {
-    gap: 48px;
-  }
-}
-
-@media (max-width: 600px) {
-  .form-register {
-    width: 65vw;
-  }
-}
-
-@media (max-width: 400px) {
+@media (max-width: 900px) {
   .form-register {
     width: 65%;
   }
 }
 
-@media (max-width: 1250px) {
-  .form-register {
-    width: 40vw;
-  }
-}
-
 .input-padrao-register {
-  width: 32vw;
+  width: 80%;
 
   color: #8c3061;
 
@@ -97,27 +81,41 @@
   box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.4);
 }
 
-@media (max-width: 400px) {
+@media (max-width: 480px) {
   .input-padrao-register {
-    width: 36vw;
+    width: 90%;
   }
 }
 
 @media (max-width: 600px) {
   .input-padrao-register {
-    margin-bottom: 24px;
+    margin-bottom: 32px;
+  }
+}
+
+@media (max-width: 350px) {
+  .input-padrao-register {
+    font-size: 0.75rem;
   }
 }
 
 .input-padrao-register::placeholder {
   font-weight: bold;
   font-size: 1.25rem;
+
   color: rgba(207, 74, 145, 0.2);
 }
 
-@media (max-width: 580px) {
+@media (max-width: 380px) {
   .input-padrao-register::placeholder {
     font-size: 1rem;
+    padding: 0 4px;
+  }
+}
+
+@media (max-width: 300px) {
+  .input-padrao-register::placeholder {
+    font-size: 0.85rem;
   }
 }
 
@@ -146,6 +144,16 @@ input:-webkit-autofill:focus {
 
 .input-section {
   position: relative;
+
+  display: flex;
+  justify-content: center;
+
+  width: 70%;
+}
+@media (max-width: 355px) {
+  .input-section {
+    width: 80%;
+  }
 }
 
 .input-submit-register {
@@ -197,6 +205,9 @@ input:-webkit-autofill:focus {
   .input-submit-register {
     margin-top: 4px;
   }
+}
+
+#senha-error {
 }
 
 .input-submit-register:hover {

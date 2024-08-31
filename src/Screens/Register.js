@@ -219,7 +219,7 @@ const Register = () => {
               placeholder="Email"
             />
             <InputInvalidError $isVisible={emailErrorMessage} id="email-error">
-              Por favor, insira um nome válido.
+              Por favor, insira um email válido.
             </InputInvalidError>
           </div>
 
@@ -238,7 +238,7 @@ const Register = () => {
               onFocus={() => removeError("senha")}
               placeholder="Senha"
             />
-            <InputInvalidError $isVisible={senhaErrorMessage} id="senha-error">
+            <InputInvalidError $isPassword={true} $isVisible={senhaErrorMessage} id="senha-error">
               Por favor, insira uma senha com no mínimo 8 caracteres.
             </InputInvalidError>
           </div>

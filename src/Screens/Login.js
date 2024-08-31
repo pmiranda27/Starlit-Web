@@ -162,7 +162,7 @@ const Login = () => {
               onFocus={() => removeError("email")}
               placeholder="Email"
             />
-            <InputInvalidError $isVisible={emailErrorMessage} id="email-error">
+            <InputInvalidError $isLoginInput={true} $isVisible={emailErrorMessage} id="email-error">
               Email inválido
             </InputInvalidError>
           </div>
@@ -182,7 +182,7 @@ const Login = () => {
               onFocus={() => removeError("senha")}
               placeholder="Senha"
             />
-            <InputInvalidError $isVisible={senhaErrorMessage} id="senha-error">
+            <InputInvalidError $isLoginInput={true} $isVisible={senhaErrorMessage} id="senha-error">
               Senha inválida
             </InputInvalidError>
           </div>

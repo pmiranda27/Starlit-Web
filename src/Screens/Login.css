@@ -26,6 +26,7 @@
 .form-login {
   display: flex;
   flex-direction: column;
+  width: 30%;
 
   align-items: center;
 
@@ -41,8 +42,19 @@
   gap: 40px;
 }
 
+@media (max-width: 1000px){
+  .form-login {
+    width: 45%;
+  }
+}
+@media (max-width: 600px){
+  .form-login {
+    width: 60%;
+  } 
+}
+
 .input-padrao-login {
-  width: 32vw;
+  width: 95%;
 
   color: #8c3061;
 
@@ -64,6 +76,12 @@
   justify-content: center;
 
   box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 440px){
+  .input-padrao-login {
+
+  }
 }
 
 .input-padrao-login::placeholder {
@@ -96,6 +114,8 @@ input:-webkit-autofill:focus {
 
 .input-section {
   position: relative;
+
+  width: 100%;
 }
 
 .input-submit-login {
@@ -129,16 +149,16 @@ input:-webkit-autofill:focus {
   transition: 350ms;
 }
 
-@media (max-width: 800px){
-    .input-submit-login {
-        min-width: 70%;
-    }
+@media (max-width: 800px) {
+  .input-submit-login {
+    min-width: 70%;
+  }
 }
 
-@media (max-width: 450px){
-    .input-submit-login {
-        margin-top: 40px;
-    }
+@media (max-width: 450px) {
+  .input-submit-login {
+    margin-top: 16px;
+  }
 }
 
 .input-submit-login:hover {
@@ -161,10 +181,12 @@ input:-webkit-autofill:focus {
 .form-login > p {
   color: white;
   font-weight: 700;
+
+  text-align: center;
 }
 
 .form-login > p > span {
-  color: rgba(140, 48, 97, 1);;
+  color: rgba(140, 48, 97, 1);
 
   cursor: pointer;
 }
