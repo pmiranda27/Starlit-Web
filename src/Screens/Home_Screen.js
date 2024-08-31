@@ -22,7 +22,11 @@ function HomeScreen() {
               <h5>Online há 4h</h5>
             </div>
 
-            <HiOutlineDotsHorizontal size={"24px"} strokeWidth={"4px"} color="white" />
+            <HiOutlineDotsHorizontal
+              size={"24px"}
+              strokeWidth={"4px"}
+              color="white"
+            />
           </div>
         </section>
       </div>

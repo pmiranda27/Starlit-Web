@@ -78,12 +78,6 @@
   box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.4);
 }
 
-@media (max-width: 440px){
-  .input-padrao-login {
-
-  }
-}
-
 .input-padrao-login::placeholder {
   font-weight: bold;
   font-size: 1.25rem;

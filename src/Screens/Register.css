@@ -207,9 +207,6 @@ input:-webkit-autofill:focus {
   }
 }
 
-#senha-error {
-}
-
 .input-submit-register:hover {
   color: #fff;
   background-color: rgba(140, 48, 97, 0.8);

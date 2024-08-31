@@ -35,10 +35,10 @@ function Profile() {
       </section>
       <section className="profile-tabs-section">
         <div className="profile-tab-selector">
-            <h4>Posts</h4>
-            <h4>Avaliações</h4>
-            <h4>Comentários</h4>
-            <h4>Curtidas</h4>
+          <h4>Posts</h4>
+          <h4>Avaliações</h4>
+          <h4>Comentários</h4>
+          <h4>Curtidas</h4>
         </div>
       </section>
     </div>

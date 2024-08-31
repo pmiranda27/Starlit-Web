@@ -1,0 +1,30 @@
+.tab-select-arrow {
+  position: absolute;
+  color: white;
+  bottom: auto;
+
+  transition: top 500ms;
+}
+
+.tab-home-selected {
+    top: -1vh;
+    bottom: auto;
+    left: 0;
+}
+
+.tab-mensagens-selected {
+    top: 8vh;
+    bottom: auto;
+    left: 0;
+}
+
+.tab-profile-selected {
+    top: 17.5vh;
+    bottom: auto;
+    left: 0;
+}
+
+.tab-configuracoes-selected {
+    top: 56vh;
+    left: 0;
+}
