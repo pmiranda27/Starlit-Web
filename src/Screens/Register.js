@@ -170,114 +170,114 @@ const Register = () => {
   return (
     <>
       <ShootingStars />
-    <div className="register-main">
-      <PopUpConfirm $isGreen={isGreen} $isShowingMessage={isShowingMessage}>
-        {isGreen
-          ? `Registro realizado com sucesso. Redirecionando...`
-          : `Falha no registro.`}
-      </PopUpConfirm>
-      <form
-        className="form-register"
-        id="form-register"
-        onSubmit={validateForm}
-        noValidate
-      >
-        <h3 className="register-title">Registro</h3>
-        <div className="input-section">
-          <input
-            type="text"
-            name="nome"
-            id="nome-form"
-            value={formBody.nome}
-            onChange={formHandler}
-            className={
-              nomeInputError
-                ? "input-padrao-register input-padrao-invalido-register"
-                : "input-padrao-register"
-            }
-            placeholder="Nome"
-            onFocus={() => removeError("nome")}
-          />
-          <InputInvalidError $isVisible={nomeErrorMessage} id="nome-error">
-            Por favor, insira um nome válido.
-          </InputInvalidError>
-        </div>
+      <div className="register-main">
+        <PopUpConfirm $isGreen={isGreen} $isShowingMessage={isShowingMessage}>
+          {isGreen
+            ? `Registro realizado com sucesso. Redirecionando...`
+            : `Falha no registro.`}
+        </PopUpConfirm>
+        <form
+          className="form-register"
+          id="form-register"
+          onSubmit={validateForm}
+          noValidate
+        >
+          <h3 className="register-title">Registro</h3>
+          <div className="input-section">
+            <input
+              type="text"
+              name="nome"
+              id="nome-form"
+              value={formBody.nome}
+              onChange={formHandler}
+              className={
+                nomeInputError
+                  ? "input-padrao-register input-padrao-invalido-register"
+                  : "input-padrao-register"
+              }
+              placeholder="Nome"
+              onFocus={() => removeError("nome")}
+            />
+            <InputInvalidError $isVisible={nomeErrorMessage} id="nome-error">
+              Por favor, insira um nome válido.
+            </InputInvalidError>
+          </div>
 
-        <div className="input-section">
-          <input
-            type="email"
-            name="email"
-            id="email-form"
-            value={formBody.email}
-            onChange={formHandler}
-            className={
-              emailInputError
-                ? "input-padrao-register input-padrao-invalido-register"
-                : "input-padrao-register"
-            }
-            onFocus={() => removeError("email")}
-            placeholder="Email"
-          />
-          <InputInvalidError $isVisible={emailErrorMessage} id="email-error">
-            Por favor, insira um nome válido.
-          </InputInvalidError>
-        </div>
+          <div className="input-section">
+            <input
+              type="email"
+              name="email"
+              id="email-form"
+              value={formBody.email}
+              onChange={formHandler}
+              className={
+                emailInputError
+                  ? "input-padrao-register input-padrao-invalido-register"
+                  : "input-padrao-register"
+              }
+              onFocus={() => removeError("email")}
+              placeholder="Email"
+            />
+            <InputInvalidError $isVisible={emailErrorMessage} id="email-error">
+              Por favor, insira um nome válido.
+            </InputInvalidError>
+          </div>
 
-        <div className="input-section">
-          <input
-            type="password"
-            name="senha"
-            id="senha-form"
-            value={formBody.senha}
-            onChange={formHandler}
-            className={
-              senhaInputError
-                ? "input-padrao-register input-senha-media-register input-padrao-invalido-register"
-                : "input-padrao-register input-senha-media-register"
-            }
-            onFocus={() => removeError("senha")}
-            placeholder="Senha"
-          />
-          <InputInvalidError $isVisible={senhaErrorMessage} id="senha-error">
-            Por favor, insira uma senha com no mínimo 8 caracteres.
-          </InputInvalidError>
-        </div>
+          <div className="input-section">
+            <input
+              type="password"
+              name="senha"
+              id="senha-form"
+              value={formBody.senha}
+              onChange={formHandler}
+              className={
+                senhaInputError
+                  ? "input-padrao-register input-senha-media-register input-padrao-invalido-register"
+                  : "input-padrao-register input-senha-media-register"
+              }
+              onFocus={() => removeError("senha")}
+              placeholder="Senha"
+            />
+            <InputInvalidError $isVisible={senhaErrorMessage} id="senha-error">
+              Por favor, insira uma senha com no mínimo 8 caracteres.
+            </InputInvalidError>
+          </div>
 
-        <div className="input-section">
-          <input
-            type="password"
-            name="confirmarSenha"
-            id="confirmar-form"
-            value={formBody.confirmarSenha}
-            onChange={formHandler}
-            className={
-              confirmarInputError
-                ? "input-padrao-register input-padrao-invalido-register"
-                : "input-padrao-register"
-            }
-            onFocus={() => removeError("confirmarSenha")}
-            placeholder="Confirmar senha"
-          />
-          <InputInvalidError
-            $isVisible={confirmarErrorMessage}
-            id="confirmar-error"
-          >
-            Senhas discrepantes.
-          </InputInvalidError>
-        </div>
+          <div className="input-section">
+            <input
+              type="password"
+              name="confirmarSenha"
+              id="confirmar-form"
+              value={formBody.confirmarSenha}
+              onChange={formHandler}
+              className={
+                confirmarInputError
+                  ? "input-padrao-register input-padrao-invalido-register"
+                  : "input-padrao-register"
+              }
+              onFocus={() => removeError("confirmarSenha")}
+              placeholder="Confirmar senha"
+            />
+            <InputInvalidError
+              $isVisible={confirmarErrorMessage}
+              id="confirmar-error"
+            >
+              Senhas discrepantes.
+            </InputInvalidError>
+          </div>
 
-        <button type="submit" className="input-submit-register">
-          {isLoading ? <Loader /> : "Registrar"}
-        </button>
-        <p>
-          Já possui uma conta?{" "}
-          <span onClick={ToLogin} className="span-login">
-            Faça Login!
-          </span>
-        </p>
-      </form>
+          <button type="submit" className="input-submit-register">
+            {isLoading ? <Loader /> : "Registrar"}
+          </button>
+          <p>
+            Já possui uma conta?{" "}
+            <span onClick={ToLogin} className="span-login">
+              Faça Login!
+            </span>
+          </p>
+        </form>
       </div>
-      </>
+    </>
   );
 };
 

@@ -35,16 +35,22 @@
 
   box-shadow: 0 4px 9px 4px rgba(0, 0, 0, 0.35);
 
-  padding: 16px;
+  padding: 8px;
 
   border-radius: 40px;
 
-  gap: 40px;
+  gap: 24px;
 }
 
 @media (min-width: 600px) {
   .form-register {
-    gap: 56px;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 1180px) {
+  .form-register {
+    gap: 48px;
   }
 }
 
@@ -213,6 +219,7 @@ input:-webkit-autofill:focus {
 .form-register > p {
   color: white;
   font-weight: 700;
+  text-align: center;
 
   z-index: 1;
 }
