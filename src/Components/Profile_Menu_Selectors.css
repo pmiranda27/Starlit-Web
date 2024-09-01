@@ -1,0 +1,65 @@
+.profile-menu-tab-selectors {
+  width: 50%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 24px;
+
+  position: relative;
+
+  &:before {
+    content: "";
+
+    position: absolute;
+    left: -3.9%;
+    top: -12px;
+
+    border-top: 3px solid rgba(255, 255, 255, 0.7);
+    border-radius: 30px;
+
+    width: 107%;
+    height: 2px;
+  }
+}
+
+.profile-menu-tab-selectors:after {
+    content: "";
+
+    width: 20%;
+    height: 10px;
+
+    background-color: rgb(198, 60, 81);
+
+    border-radius: 30px;
+
+    position: absolute;
+    top: -15px;
+
+    transition: left 750ms;
+  }
+
+.profile-menu-tab-selectors.posts-selected:after {
+    left: -5%;
+}
+.profile-menu-tab-selectors.avaliacoes-selected:after {
+    left: 20.5%;
+}
+.profile-menu-tab-selectors.comentarios-selected:after {
+    left: 53%;
+}
+.profile-menu-tab-selectors.curtidas-selected:after {
+    left: 83%;
+}
+
+.profile-menu-tab-selectors-items {
+  font-size: 1.5rem;
+
+  cursor: pointer;
+
+  text-decoration: none;
+  list-style: none;
+
+  color: rgba(255, 255, 255, 0.6);
+}

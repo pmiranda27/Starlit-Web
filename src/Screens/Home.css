@@ -126,6 +126,8 @@
   font-size: 1.5rem;
   letter-spacing: 2px;
   font-weight: bold;
+
+  transition: 500ms;
 }
 .link-card-home-page::before {
   content: "";
@@ -138,6 +140,10 @@
   width: 90%;
 
   border-bottom: 2px solid white;
+}
+
+.link-card-selected {
+  margin-left: 16px;
 }
 
 .bottom-card {

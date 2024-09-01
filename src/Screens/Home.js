@@ -6,7 +6,6 @@ import { GoHomeFill } from "react-icons/go";
 import { IoChatboxEllipsesSharp } from "react-icons/io5";
 import { IoPerson } from "react-icons/io5";
 import { IoSettings } from "react-icons/io5";
-import { TbArrowBadgeRightFilled } from "react-icons/tb";
 
 import "./Home.css";
 
@@ -53,7 +52,7 @@ const HomePage = () => {
           <div className="navigation-left-bar">
             <TabSelectArrow $tabIndex={tabIndex} />
             <div
-              className="link-card-home-page"
+              className={tabIndex===0 ? `link-card-home-page link-card-selected` : `link-card-home-page`}
               onClick={() => {
                 setSearchBarEnabled(true);
                 setTabIndex(0);
@@ -63,7 +62,7 @@ const HomePage = () => {
               Home
             </div>
             <div
-              className="link-card-home-page"
+              className={tabIndex===1 ? `link-card-home-page link-card-selected` : `link-card-home-page`}
               onClick={() => {
                 setSearchBarEnabled(false);
                 setTabIndex(1);
@@ -73,7 +72,7 @@ const HomePage = () => {
               Mensagens
             </div>
             <div
-              className="link-card-home-page"
+              className={tabIndex===2 ? `link-card-home-page link-card-selected` : `link-card-home-page`}
               onClick={() => {
                 setSearchBarEnabled(false);
                 setTabIndex(2);
@@ -83,7 +82,7 @@ const HomePage = () => {
               Perfil
             </div>
             <div
-              className="link-card-home-page bottom-card"
+              className={tabIndex===3 ? `link-card-home-page bottom-card link-card-selected` : `link-card-home-page bottom-card`}
               onClick={() => setTabIndex(3)}
             >
               <IoSettings size={34} color="white" />

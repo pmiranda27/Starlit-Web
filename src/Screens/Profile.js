@@ -1,6 +1,45 @@
+import { ProfileMenuItems } from "../Components/Profile_Menu_Items";
+import { ProfileTabSelector } from "../Components/Profile_Menu_Selectors";
 import "./Profile.css";
 
+import { useState } from "react";
+
 function Profile() {
+  const [profileTabIndex, setProfileTabIndex] = useState(0);
+
+  const profileTabSelectorContent = (
+    <>
+      <ProfileMenuItems $isItemSelected={profileTabIndex===0 ? true : false}
+        onClick={() => {
+          setProfileTabIndex(0);
+        }}
+      >
+        Posts
+      </ProfileMenuItems>
+      <ProfileMenuItems $isItemSelected={profileTabIndex===1 ? true : false}
+        onClick={() => {
+          setProfileTabIndex(1);
+        }}
+      >
+        Avaliações
+      </ProfileMenuItems>
+      <ProfileMenuItems $isItemSelected={profileTabIndex===2 ? true : false}
+        onClick={() => {
+          setProfileTabIndex(2);
+        }}
+      >
+        Comentários
+      </ProfileMenuItems>
+      <ProfileMenuItems $isItemSelected={profileTabIndex===3 ? true : false}
+        onClick={() => {
+          setProfileTabIndex(3);
+        }}
+      >
+        Curtidas
+      </ProfileMenuItems>
+    </>
+  );
+
   return (
     <div className="profile-main">
       <section className="profile-info-section">
@@ -34,12 +73,10 @@ function Profile() {
         </div>
       </section>
       <section className="profile-tabs-section">
-        <div className="profile-tab-selector">
-          <h4>Posts</h4>
-          <h4>Avaliações</h4>
-          <h4>Comentários</h4>
-          <h4>Curtidas</h4>
-        </div>
+        <ProfileTabSelector
+          $currentProfileTabIndex={profileTabIndex}
+          $profileTabContent={profileTabSelectorContent}
+        />
       </section>
     </div>
   );
