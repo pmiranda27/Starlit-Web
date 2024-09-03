@@ -5,15 +5,16 @@ import InputInvalidError from "../Components/Form_Validators";
 import { Loader } from "../Components/Loader";
 import ShootingStars from "../Components/Shooting_Stars";
 
-import { useState } from "react";
-
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PopUpConfirm from "../Components/PopUpConfirm";
 
+import { ImCross } from "react-icons/im";
+import { SendProfilePicturePanel } from "../Components/Send_Profile_Picture_Panel";
+
 const Register = () => {
   const apiUrl =
-    "https://def5f95f-e30e-4f86-b1e0-9f53460f5248-00-1pjmbawk5ifrf.worf.replit.dev";
+    "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
 
   const navigate = useNavigate();
   const ToLogin = () => {
@@ -25,11 +26,20 @@ const Register = () => {
     email: "",
     senha: "",
     confirmarSenha: "",
+    avatar: "",
   });
+
+  const [CanChangeRegisterInputs, setCanChangeRegisterInputs] = React.useState(true);
+  const [isShowingProfilePicturePanel, setIsShowingProfilePicturePanel] =
+    React.useState(false);
 
   const formHandler = (e) => {
     let nome = e.target.name;
     let valor = e.target.value;
+
+    if (!CanChangeRegisterInputs && nome != "avatar") {
+      return;
+    }
 
     setFormBody({ ...formBody, [nome]: valor });
   };
@@ -50,6 +60,7 @@ const Register = () => {
   };
 
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isSendingProfilePicture, setIsSendingProfilePicture] = React.useState(false);
   const [isGreen, setIsGreen] = React.useState(false);
   const [isShowingMessage, setIsShowingMessage] = React.useState(false);
 
@@ -103,21 +114,30 @@ const Register = () => {
       return;
     }
 
+    setIsLoading(true);
+
+    setCanChangeRegisterInputs(false);
+    setIsShowingProfilePicturePanel(true);
+  }
+
+  async function sendRegisterRequest(e) {
+    setIsSendingProfilePicture(true);
     const newUser = {
       name: formBody.nome,
       email: formBody.email,
       password: formBody.senha,
+      avatar: formBody.avatar,
     };
-
-    setIsLoading(true);
-
     setTimeout(async () => {
       try {
-        const response = await axios.post(`${apiUrl}/register`, newUser);
+        const response = await axios.post(`${apiUrl}/user/register`, newUser);
         if (response.status === 201) {
-          setIsLoading(false);
           setIsGreen(true);
           setIsShowingMessage(true);
+          setTimeout(() => {
+            setIsShowingProfilePicturePanel(false);
+          }, 1500);
+          setIsSendingProfilePicture(false);
 
           setTimeout(() => {
             navigate("/login");
@@ -127,6 +147,10 @@ const Register = () => {
       } catch (error) {
         setIsGreen(false);
         setIsShowingMessage(true);
+        setTimeout(() => {
+          setIsShowingProfilePicturePanel(false);
+        }, 1500);
+        setIsSendingProfilePicture(false);
 
         setTimeout(() => {
           setIsGreen(false);
@@ -136,8 +160,10 @@ const Register = () => {
           formBody.email = "";
           formBody.senha = "";
           formBody.confirmarSenha = "";
+          formBody.avatar = "";
 
           setIsLoading(false);
+          setCanChangeRegisterInputs(true);
         }, 3000);
         console.log("error: ", error);
       }
@@ -167,9 +193,58 @@ const Register = () => {
     }
   }
 
+  function errorDefaultImage(img) {
+    img.target.src = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+  }
+
+  function clearAvatar() {
+    setFormBody({ ...formBody, avatar: "" });
+  }
+
   return (
     <>
       <ShootingStars />
+      <SendProfilePicturePanel $isShowingProfilePicturePanel={isShowingProfilePicturePanel}>
+        <div className="send-profile-picture-position-relative">
+          <ImCross
+            color="white"
+            className="quit-select-profile-picture"
+            onClick={() => {
+              setIsShowingProfilePicturePanel(false);
+              setIsLoading(false);
+              setCanChangeRegisterInputs(true);
+            }}
+          />
+          <img
+            className="profile-picture-preview"
+            onError={errorDefaultImage}
+            src={
+              formBody.avatar === ""
+                ? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                : formBody.avatar
+            }
+            alt=""
+          />
+          <input
+            type="text"
+            name="avatar"
+            className="input-padrao-register-profile-picture"
+            placeholder="Insira o link da sua imagem de perfil (opcional)"
+            value={formBody.avatar}
+            onChange={formHandler}
+          />
+          <div className="profile-picture-buttons">
+            <button
+              className="limpar-button-profile-picture"
+              onClick={clearAvatar}
+            >
+              Limpar
+            </button>
+            <button className="enviar-button-profile-picture" onClick={sendRegisterRequest}>{isSendingProfilePicture ? <Loader /> : "Enviar"}</button>
+          </div>
+        </div>
+      </SendProfilePicturePanel>
+
       <div className="register-main">
         <PopUpConfirm $isGreen={isGreen} $isShowingMessage={isShowingMessage}>
           {isGreen
@@ -238,7 +313,11 @@ const Register = () => {
               onFocus={() => removeError("senha")}
               placeholder="Senha"
             />
-            <InputInvalidError $isPassword={true} $isVisible={senhaErrorMessage} id="senha-error">
+            <InputInvalidError
+              $isPassword={true}
+              $isVisible={senhaErrorMessage}
+              id="senha-error"
+            >
               Por favor, insira uma senha com no mínimo 8 caracteres.
             </InputInvalidError>
           </div>

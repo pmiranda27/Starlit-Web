@@ -5,7 +5,7 @@ const PopUpConfirm = styled.div`
 
     padding: 12px;
 
-    z-index: 3;
+    z-index: 4;
 
     bottom: ${(props) => (props.$isShowingMessage ? `9vh` : `-25vh`)};
 

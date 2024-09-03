@@ -9,7 +9,7 @@ const InputInvalidError = styled.p`
     font-weight: bolder;
   }
 
-  width: 90%;
+  width: 75%;
   height: fit-content;
 
   z-index: -1;
