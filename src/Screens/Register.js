@@ -1,9 +1,7 @@
 import "./Register.css";
 import React from "react";
-import InputInvalidError from "../Components/Form_Validators";
 
 import { Loader } from "../Components/Loader";
-import ShootingStars from "../Components/Shooting_Stars";
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +27,8 @@ const Register = () => {
     avatar: "",
   });
 
-  const [CanChangeRegisterInputs, setCanChangeRegisterInputs] = React.useState(true);
+  const [CanChangeRegisterInputs, setCanChangeRegisterInputs] =
+    React.useState(true);
   const [isShowingProfilePicturePanel, setIsShowingProfilePicturePanel] =
     React.useState(false);
 
@@ -49,18 +48,13 @@ const Register = () => {
   const [senhaInputError, setSenhaInputError] = React.useState(false);
   const [confirmarInputError, setConfirmarInputError] = React.useState(false);
 
-  const [nomeErrorMessage, setNomeErrorMessage] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState(false);
-  const [senhaErrorMessage, setSenhaErrorMessage] = React.useState(false);
-  const [confirmarErrorMessage, setConfirmarErrorMessage] =
-    React.useState(false);
-
   const validateEmail = (email) => {
     return email.match(/^\S+@\S+\.\S+$/);
   };
 
   const [isLoading, setIsLoading] = React.useState(false);
-  const [isSendingProfilePicture, setIsSendingProfilePicture] = React.useState(false);
+  const [isSendingProfilePicture, setIsSendingProfilePicture] =
+    React.useState(false);
   const [isGreen, setIsGreen] = React.useState(false);
   const [isShowingMessage, setIsShowingMessage] = React.useState(false);
 
@@ -71,7 +65,6 @@ const Register = () => {
 
     if (formBody.nome === "" || formBody.nome.replace(/\s/g, "") === "") {
       setNomeInputError(true);
-      setNomeErrorMessage(true);
       formBody.nome = "";
 
       validationFailed = true;
@@ -80,7 +73,6 @@ const Register = () => {
     }
     if (formBody.email === "" || !validateEmail(formBody.email)) {
       setEmailInputError(true);
-      setEmailErrorMessage(true);
       formBody.email = "";
 
       validationFailed = true;
@@ -89,7 +81,6 @@ const Register = () => {
     }
     if (formBody.senha === "" || formBody.senha.length < 8) {
       setSenhaInputError(true);
-      setSenhaErrorMessage(true);
       formBody.senha = "";
 
       validationFailed = true;
@@ -101,7 +92,6 @@ const Register = () => {
       formBody.confirmarSenha !== formBody.senha
     ) {
       setConfirmarInputError(true);
-      setConfirmarErrorMessage(true);
       formBody.confirmarSenha = "";
 
       validationFailed = true;
@@ -140,7 +130,7 @@ const Register = () => {
           setIsSendingProfilePicture(false);
 
           setTimeout(() => {
-            navigate("/login");
+            navigate("/home");
           }, 3000);
         }
         console.log("O status code da resposta é: ", response.status);
@@ -174,19 +164,15 @@ const Register = () => {
     switch (input) {
       case "nome":
         setNomeInputError(false);
-        setNomeErrorMessage(false);
         break;
       case "email":
         setEmailInputError(false);
-        setEmailErrorMessage(false);
         break;
       case "senha":
         setSenhaInputError(false);
-        setSenhaErrorMessage(false);
         break;
       case "confirmarSenha":
         setConfirmarInputError(false);
-        setConfirmarErrorMessage(false);
         break;
       default:
         break;
@@ -194,7 +180,8 @@ const Register = () => {
   }
 
   function errorDefaultImage(img) {
-    img.target.src = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+    img.target.src =
+      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
   }
 
   function clearAvatar() {
@@ -203,8 +190,9 @@ const Register = () => {
 
   return (
     <>
-      <ShootingStars />
-      <SendProfilePicturePanel $isShowingProfilePicturePanel={isShowingProfilePicturePanel}>
+      <SendProfilePicturePanel
+        $isShowingProfilePicturePanel={isShowingProfilePicturePanel}
+      >
         <div className="send-profile-picture-position-relative">
           <ImCross
             color="white"
@@ -240,7 +228,12 @@ const Register = () => {
             >
               Limpar
             </button>
-            <button className="enviar-button-profile-picture" onClick={sendRegisterRequest}>{isSendingProfilePicture ? <Loader /> : "Enviar"}</button>
+            <button
+              className="enviar-button-profile-picture"
+              onClick={sendRegisterRequest}
+            >
+              {isSendingProfilePicture ? <Loader /> : "Enviar"}
+            </button>
           </div>
         </div>
       </SendProfilePicturePanel>
@@ -251,6 +244,9 @@ const Register = () => {
             ? `Registro realizado com sucesso. Redirecionando...`
             : `Falha no registro.`}
         </PopUpConfirm>
+        <p className="frase-inicial-register">
+          Junte-se a nós e comece a compartilhar as suas experiências!
+        </p>
         <form
           className="form-register"
           id="form-register"
@@ -258,7 +254,7 @@ const Register = () => {
           noValidate
         >
           <h3 className="register-title">Registro</h3>
-          <div className="input-section">
+          <div className="input-section-register">
             <input
               type="text"
               name="nome"
@@ -270,15 +266,12 @@ const Register = () => {
                   ? "input-padrao-register input-padrao-invalido-register"
                   : "input-padrao-register"
               }
-              placeholder="Nome"
+              placeholder={nomeInputError ? "Nome inválido" : "Nome"}
               onFocus={() => removeError("nome")}
             />
-            <InputInvalidError $isVisible={nomeErrorMessage} id="nome-error">
-              Por favor, insira um nome válido.
-            </InputInvalidError>
           </div>
 
-          <div className="input-section">
+          <div className="input-section-register">
             <input
               type="email"
               name="email"
@@ -291,58 +284,42 @@ const Register = () => {
                   : "input-padrao-register"
               }
               onFocus={() => removeError("email")}
-              placeholder="Email"
+              placeholder={emailInputError ? "Email inválido" : "Email"}
             />
-            <InputInvalidError $isVisible={emailErrorMessage} id="email-error">
-              Por favor, insira um email válido.
-            </InputInvalidError>
           </div>
-
-          <div className="input-section">
-            <input
-              type="password"
-              name="senha"
-              id="senha-form"
-              value={formBody.senha}
-              onChange={formHandler}
-              className={
-                senhaInputError
-                  ? "input-padrao-register input-senha-media-register input-padrao-invalido-register"
-                  : "input-padrao-register input-senha-media-register"
-              }
-              onFocus={() => removeError("senha")}
-              placeholder="Senha"
-            />
-            <InputInvalidError
-              $isPassword={true}
-              $isVisible={senhaErrorMessage}
-              id="senha-error"
-            >
-              Por favor, insira uma senha com no mínimo 8 caracteres.
-            </InputInvalidError>
-          </div>
-
-          <div className="input-section">
-            <input
-              type="password"
-              name="confirmarSenha"
-              id="confirmar-form"
-              value={formBody.confirmarSenha}
-              onChange={formHandler}
-              className={
-                confirmarInputError
-                  ? "input-padrao-register input-padrao-invalido-register"
-                  : "input-padrao-register"
-              }
-              onFocus={() => removeError("confirmarSenha")}
-              placeholder="Confirmar senha"
-            />
-            <InputInvalidError
-              $isVisible={confirmarErrorMessage}
-              id="confirmar-error"
-            >
-              Senhas discrepantes.
-            </InputInvalidError>
+          <div className="input-section-senhas">
+            <div className="input-section-register">
+              <input
+                type="password"
+                name="senha"
+                id="senha-form"
+                value={formBody.senha}
+                onChange={formHandler}
+                className={
+                  senhaInputError
+                    ? "input-padrao-register-senha input-senha-media-register input-padrao-invalido-register"
+                    : "input-padrao-register-senha input-senha-media-register"
+                }
+                onFocus={() => removeError("senha")}
+                placeholder={senhaInputError ? "Senha inválida" : "Senha"}
+              />
+            </div>
+            <div className="input-section-register">
+              <input
+                type="password"
+                name="confirmarSenha"
+                id="confirmar-form"
+                value={formBody.confirmarSenha}
+                onChange={formHandler}
+                className={
+                  confirmarInputError
+                    ? "input-padrao-register-senha input-padrao-invalido-register"
+                    : "input-padrao-register-senha"
+                }
+                onFocus={() => removeError("confirmarSenha")}
+                placeholder={confirmarInputError ? "Senhas discrepantes" : "Confirmar senha"}
+              />
+            </div>
           </div>
 
           <button type="submit" className="input-submit-register">

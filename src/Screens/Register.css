@@ -10,8 +10,8 @@
   height: 100vh;
 
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
 
   z-index: 1;
@@ -21,8 +21,17 @@
   position: relative;
 }
 
-.starlit-logo {
-  height: 10em;
+.frase-inicial-register {
+  width: 35%;
+
+  font-family: "PT Sans", sans-serif;
+  font-weight: bold;
+  font-style: italic;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  font-size: 3rem;
+  color: white;
 }
 
 .form-register {
@@ -46,7 +55,7 @@
 
 @media (min-width: 600px) {
   .form-register {
-    gap: 52px;
+    gap: 32px;
   }
 }
 
@@ -57,7 +66,7 @@
 }
 
 .input-padrao-register {
-  width: 80%;
+  width: 100%;
 
   color: #8c3061;
 
@@ -101,7 +110,7 @@
 
 .input-padrao-register::placeholder {
   font-weight: bold;
-  font-size: 1.25rem;
+  font-size: 1rem;
 
   color: rgba(207, 74, 145, 0.2);
 }
@@ -117,6 +126,37 @@
   .input-padrao-register::placeholder {
     font-size: 0.85rem;
   }
+}
+
+.input-padrao-register-senha {
+  width: 95%;
+
+  color: #8c3061;
+
+  margin: 0;
+  padding: 8px 12px;
+
+  background: transparent;
+
+  border: 2px solid rgba(140, 48, 97, 0.5);
+  border-radius: 25px;
+
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1px;
+  letter-spacing: 0.5px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.4);
+}
+.input-padrao-register-senha::placeholder {
+  font-weight: bold;
+  font-size: 1rem;
+
+  color: rgba(207, 74, 145, 0.2);
 }
 
 input:-webkit-autofill,
@@ -142,18 +182,22 @@ input:-webkit-autofill:focus {
   color: #d11818;
 }
 
-.input-section {
+.input-section-register {
   position: relative;
 
   display: flex;
   justify-content: center;
 
-  width: 70%;
+  width: 80%;
 }
-@media (max-width: 355px) {
-  .input-section {
-    width: 80%;
-  }
+
+.input-section-senhas {
+  width: 80%;
+
+  display: flex;
+  justify-content: space-between;
+
+  gap: 5%;
 }
 
 .input-submit-register {
@@ -189,24 +233,6 @@ input:-webkit-autofill:focus {
   transition: 350ms;
 }
 
-@media (max-width: 345px) {
-  .input-senha-media-register {
-    margin-bottom: 64px;
-  }
-}
-
-@media (max-width: 565px) {
-  .input-senha-media-register {
-    margin-bottom: 48px;
-  }
-}
-
-@media (max-width: 600px) {
-  .input-submit-register {
-    margin-top: 4px;
-  }
-}
-
 .input-submit-register:hover {
   color: #fff;
   background-color: rgba(140, 48, 97, 0.8);
@@ -228,6 +254,8 @@ input:-webkit-autofill:focus {
   color: white;
   font-weight: 700;
   text-align: center;
+
+  font-size: 1.15rem;
 
   z-index: 0;
 }
@@ -251,7 +279,7 @@ input:-webkit-autofill:focus {
   align-items: center;
 }
 
-.quit-select-profile-picture{
+.quit-select-profile-picture {
   position: absolute;
 
   top: 5%;
@@ -296,7 +324,7 @@ input:-webkit-autofill:focus {
 
 .input-padrao-register-profile-picture::placeholder {
   font-weight: bold;
-  font-size: .85rem;
+  font-size: 0.85rem;
 
   color: rgba(207, 74, 145, 0.6);
 }

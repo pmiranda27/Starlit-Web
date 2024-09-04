@@ -1,4 +1,3 @@
-import ShootingStars from "../Components/Shooting_Stars";
 import startlitLogo from "../Assets/Images/starlit-logo.png";
 import lupa from "../Assets/Images/lupa.png";
 
@@ -29,7 +28,6 @@ const HomePage = () => {
 
   return (
     <>
-      <ShootingStars />
       <div className="home-main">
         <div
           className={`search-bar ${

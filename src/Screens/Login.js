@@ -1,13 +1,10 @@
 import "./Login.css";
 
-import InputInvalidError from "../Components/Form_Validators";
-
 import { Loader } from "../Components/Loader";
-import ShootingStars from "../Components/Shooting_Stars";
 
 import axios from "axios";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import PopUpConfirm from "../Components/PopUpConfirm";
 
@@ -132,7 +129,6 @@ const Login = () => {
 
   return (
     <>
-      <ShootingStars />
       <div className="login-main">
         <PopUpConfirm $isGreen={isGreen} $isShowingMessage={isShowingMessage}>
           {isGreen
@@ -162,9 +158,6 @@ const Login = () => {
               onFocus={() => removeError("email")}
               placeholder="Email"
             />
-            <InputInvalidError $isLoginInput={true} $isVisible={emailErrorMessage} id="email-error">
-              Email inválido
-            </InputInvalidError>
           </div>
 
           <div className="input-section">
@@ -182,9 +175,6 @@ const Login = () => {
               onFocus={() => removeError("senha")}
               placeholder="Senha"
             />
-            <InputInvalidError $isLoginInput={true} $isVisible={senhaErrorMessage} id="senha-error">
-              Senha inválida
-            </InputInvalidError>
           </div>
 
           <button type="submit" className="input-submit-login">

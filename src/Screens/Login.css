@@ -42,15 +42,15 @@
   gap: 40px;
 }
 
-@media (max-width: 1000px){
+@media (max-width: 1000px) {
   .form-login {
     width: 45%;
   }
 }
-@media (max-width: 600px){
+@media (max-width: 600px) {
   .form-login {
     width: 60%;
-  } 
+  }
 }
 
 .input-padrao-login {
@@ -106,7 +106,7 @@ input:-webkit-autofill:focus {
   color: #d11818;
 }
 
-.input-section {
+.input-section-login {
   position: relative;
 
   width: 100%;
