@@ -21,10 +21,5 @@ export const TabSelectArrow = (props) => {
       currentClass = "tab-select-arrow";
       break;
   }
-  return (
-    <TbArrowBadgeRightFilled
-      className={currentClass}
-      size={54}
-    />
-  );
+  return <TbArrowBadgeRightFilled className={currentClass} size={54} />;
 };

@@ -20,7 +20,7 @@
   position: absolute;
 
   width: 45vw;
-  height: 6vh;
+  height: 5vh;
 
   top: 16px;
   left: 50%;
@@ -53,12 +53,12 @@
 .search-bar-positions img {
   position: absolute;
 
-  height: 70%;
+  height: 60%;
 
   top: 50%;
   transform: translateY(-50%);
 
-  left: 8px;
+  left: 12px;
 }
 
 .search-bar-invisible {

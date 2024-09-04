@@ -1,10 +1,34 @@
+import axios from "axios";
 import "./Home_Screen.css";
 
 import { FaUserFriends } from "react-icons/fa";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 
 function HomeScreen() {
+  const apiUrl =
+    "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
+
   const iconStyle = { color: "white" };
+
+  var listaAmigosFinal;
+
+  async function getFriends() {
+    const email = "pedroh@gmail.com";
+
+    try {
+      const response = await axios.post(`${apiUrl}/user/amigos`, {
+        email: email,
+      });
+
+      return response.data;
+    } catch (error) {
+      console.log("Fail no GET");
+      return [];
+    }
+  }
+
+  listaAmigosFinal = getFriends();
+
   return (
     <>
       <div className="home-screen-main">
@@ -15,19 +39,7 @@ function HomeScreen() {
             Amigos
           </div>
 
-          <div className="amigo-component">
-            <img src="https://placehold.co/60" alt="User Profile" />
-            <div className="info-amigo">
-              <h4>Nome do Amigo</h4>
-              <h5>Online há 4h</h5>
-            </div>
-
-            <HiOutlineDotsHorizontal
-              size={"24px"}
-              strokeWidth={"4px"}
-              color="white"
-            />
-          </div>
+          <div></div>
         </section>
       </div>
     </>

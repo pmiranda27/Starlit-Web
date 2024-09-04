@@ -24,7 +24,7 @@
 .frase-inicial-register {
   width: 35%;
 
-  font-family: "PT Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: bold;
   font-style: italic;
   -webkit-font-smoothing: antialiased;
@@ -36,6 +36,7 @@
 
 .form-register {
   width: 35%;
+  height: 65vh;
 
   display: flex;
   flex-direction: column;
@@ -46,7 +47,7 @@
 
   box-shadow: 0 4px 9px 4px rgba(0, 0, 0, 0.35);
 
-  padding: 8px;
+  padding: 16px;
 
   border-radius: 40px;
 
@@ -188,11 +189,11 @@ input:-webkit-autofill:focus {
   display: flex;
   justify-content: center;
 
-  width: 80%;
+  width: 90%;
 }
 
 .input-section-senhas {
-  width: 80%;
+  width: 90%;
 
   display: flex;
   justify-content: space-between;
@@ -239,11 +240,12 @@ input:-webkit-autofill:focus {
 }
 
 .register-title {
-  color: rgba(140, 48, 97, 1);
+  /* color: rgba(140, 48, 97, 1); */
+  color: white;
 
   text-align: center;
 
-  font-size: 2rem;
+  font-size: 2.25rem;
 }
 
 .no-visibility {

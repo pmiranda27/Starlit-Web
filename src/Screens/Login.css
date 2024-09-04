@@ -161,8 +161,8 @@ input:-webkit-autofill:focus {
 }
 
 .login-title {
-  color: rgba(140, 48, 97, 1);
-
+  /* color: rgba(140, 48, 97, 1); */
+  color: white;
   text-align: center;
 
   font-size: 2rem;
