@@ -1,19 +1,22 @@
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import "./Amigo_Component.css";
 
-function AmigoComponent() {
-    return (
-        <div>
-            <img src="https://placehold.co/60" alt="User Profile" />
-            <div className="info-amigo">
-              <h4>Nome do Amigo</h4>
-              <h5>Online há 4h</h5>
-            </div>
+function AmigoComponent({ name, imgUrl, isAddingFriends }) {
+  return (
+    <div className="amigo-component">
+      <img src={imgUrl} alt="" />
+      <div className="info-amigo">
+        <h4>{name}</h4>
+      </div>
 
-            <HiOutlineDotsHorizontal
-              size={"24px"}
-              strokeWidth={"4px"}
-              color="white"
-            />
-        </div>
-    );
+
+      {isAddingFriends ? <MdOut> : <HiOutlineDotsHorizontal
+        size={"24px"}
+        strokeWidth={"4px"}
+        color="white"
+      />}
+    </div>
+  );
 }
+
+export default AmigoComponent;

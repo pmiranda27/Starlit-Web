@@ -1,17 +1,28 @@
 .amigo-component {
   width: 90%;
+  height: 10vh;
 
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+
+  background-color: rgba(0, 0, 0, .3);
+
+  padding: 10px;
+
+  cursor: pointer;
+
+  border-radius: 20px;
 
   margin-top: 12px;
   margin-bottom: 12px;
-
-  gap: 16px;
+}
+.amigo-component:hover {
+  background-color: rgba(0, 0, 0, .4);
 }
 
 .amigo-component img {
+  height: 100%;
   border-radius: 50%;
 }
 
@@ -21,7 +32,7 @@
   justify-content: center;
 }
 .info-amigo h4 {
-  font-size: 1.25rem;
+  font-size: 1.40rem;
   letter-spacing: normal;
 
   color: white;
