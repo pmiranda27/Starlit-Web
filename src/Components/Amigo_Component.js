@@ -1,4 +1,6 @@
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import { IoMdAddCircleOutline } from "react-icons/io";
+
 import "./Amigo_Component.css";
 
 function AmigoComponent({ name, imgUrl, isAddingFriends }) {
@@ -9,13 +11,15 @@ function AmigoComponent({ name, imgUrl, isAddingFriends }) {
         <h4>{name}</h4>
       </div>
 
-
-      {isAddingFriends ? <MdOut> : <HiOutlineDotsHorizontal
+      {
+        isAddingFriends ? <IoMdAddCircleOutline  /> : <HiOutlineDotsHorizontal
         size={"24px"}
         strokeWidth={"4px"}
         color="white"
-      />}
-    </div>
+      />
+      }
+
+      </div>
   );
 }
 

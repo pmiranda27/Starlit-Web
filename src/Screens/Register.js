@@ -13,6 +13,13 @@ import { SendProfilePicturePanel } from "../Components/Send_Profile_Picture_Pane
 const Register = () => {
   const apiUrl =
     "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
+  
+  const axiosConnection = axios.create({
+    baseURL: apiUrl,
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
 
   const navigate = useNavigate();
   const ToLogin = () => {
@@ -120,7 +127,7 @@ const Register = () => {
     };
     setTimeout(async () => {
       try {
-        const response = await axios.post(`${apiUrl}/user/register`, newUser);
+        const response = await axiosConnection.post(`${apiUrl}/user/register`, newUser, {withCredentials: true});
         if (response.status === 201) {
           setIsGreen(true);
           setIsShowingMessage(true);
@@ -129,9 +136,12 @@ const Register = () => {
           }, 1500);
           setIsSendingProfilePicture(false);
 
-          setTimeout(() => {
-            navigate("/home");
-          }, 3000);
+          localStorage.setItem('token', response.data.token);
+          console.log(response.data);
+
+          // setTimeout(() => {
+          //   navigate("/home");
+          // }, 3000);
         }
         console.log("O status code da resposta é: ", response.status);
       } catch (error) {

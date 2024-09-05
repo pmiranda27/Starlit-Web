@@ -23,7 +23,7 @@ async function getFriendsList(setAmigos) {
 
 async function getAllUsersToAdd(setUsuarios){
   const response = await axios.get(`${apiUrl}/user/lista-usuarios`);
-  const newUsuariosElements = response.data.map((friend, ind) => )
+  const newUsuariosElements = response.data.map((friend, ind) => {})
 
   setUsuarios(newUsuariosElements);
 }
