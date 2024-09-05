@@ -10,7 +10,7 @@ import PopUpConfirm from "../Components/PopUpConfirm";
 
 const Login = () => {
   const apiUrl =
-    "https://def5f95f-e30e-4f86-b1e0-9f53460f5248-00-1pjmbawk5ifrf.worf.replit.dev";
+    "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
 
   const navigate = useNavigate();
   const ToRegister = () => {
@@ -95,20 +95,20 @@ const Login = () => {
 
     setTimeout(async () => {
       try {
-        const response = await axios.post(`${apiUrl}/login`, loginUser);
-        if (response.status == 200) {
+        const response = await axios.post(`${apiUrl}/user/login`, loginUser);
+        if (response.status === 200) {
           console.log("sucesso no login");
 
           setIsLoading(false);
           setIsGreen(true);
           setIsShowingMessage(true);
 
+          localStorage.setItem('token', response.data.token);
+
           setTimeout(() => {
             navigate("/home");
           }, 2000);
         }
-        console.log("O status code da resposta é: ", response.status);
-        console.log("O token da resposta é: ", response.data.token);
       } catch (error) {
         setIsGreen(false);
         setIsShowingMessage(true);

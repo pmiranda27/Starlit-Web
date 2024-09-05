@@ -127,7 +127,7 @@ const Register = () => {
     };
     setTimeout(async () => {
       try {
-        const response = await axiosConnection.post(`${apiUrl}/user/register`, newUser, {withCredentials: true});
+        const response = await axiosConnection.post(`${apiUrl}/user/register`, newUser);
         if (response.status === 201) {
           setIsGreen(true);
           setIsShowingMessage(true);
@@ -137,11 +137,10 @@ const Register = () => {
           setIsSendingProfilePicture(false);
 
           localStorage.setItem('token', response.data.token);
-          console.log(response.data);
 
-          // setTimeout(() => {
-          //   navigate("/home");
-          // }, 3000);
+          setTimeout(() => {
+            navigate("/home");
+          }, 3000);
         }
         console.log("O status code da resposta é: ", response.status);
       } catch (error) {

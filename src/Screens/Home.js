@@ -12,11 +12,16 @@ import HomeScreen from "./Home_Screen";
 import Chat from "./Message";
 import Profile from "./Profile";
 
+import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TabSelectArrow } from "../Components/Tab_Select_Arrow";
 
 const HomePage = () => {
+  const apiUrl =
+    "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
+
   const iconStyle = { color: "white" };
 
   const navigate = useNavigate();
@@ -25,6 +30,31 @@ const HomePage = () => {
   const [searchBarEnabled, setSearchBarEnabled] = useState(true);
 
   const pages = [<HomeScreen />, <Chat />, <Profile />];
+
+  const loggedToken = localStorage.getItem("token");
+
+  // CHECANDO SE ESTÁ LOGADO!
+
+  async function verifyAuthentication() {
+    if (!loggedToken) {
+      navigate("/");
+    }
+
+    try {
+      const isLoggedRequest = await axios.post(`${apiUrl}/user/verify-auth`, {
+        loggedToken,
+      });
+      console.log("está logado. StatusCode: ", isLoggedRequest.status);
+
+    } catch (error) {
+      localStorage.removeItem("token");
+      navigate("/");
+    }
+  }
+
+  useEffect(() => {
+    verifyAuthentication();
+  });
 
   return (
     <>
