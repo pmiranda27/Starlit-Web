@@ -43,7 +43,7 @@ const Register = () => {
     let nome = e.target.name;
     let valor = e.target.value;
 
-    if (!CanChangeRegisterInputs && nome != "avatar") {
+    if (!CanChangeRegisterInputs && nome !== "avatar") {
       return;
     }
 

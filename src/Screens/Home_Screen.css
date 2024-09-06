@@ -1,8 +1,6 @@
-* {
-  padding: 0;
-  margin: 0;
-
-  user-select: none;
+:root {
+  --distance-notification-from-right: 3%;
+  --distance-notification-from-top: -6%;
 }
 
 .home-screen-main {
@@ -44,6 +42,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  z-index: 0;
 
   gap: 12px;
 
@@ -89,4 +89,43 @@
 
   overflow-x: hidden;
   overflow-y: scroll;
+}
+
+.notifications-button-home-screen {
+  position: absolute;
+
+  cursor: pointer;
+
+  top: var(--distance-notification-from-top);
+  right: var(--distance-notification-from-right);
+  color: white;
+
+  z-index: 2;
+}
+.notifications-button-home-screen:active {
+  cursor: default;
+}
+
+.notifications-tab-section {
+  width: 250px;
+  height: 350px;
+
+  background-color: rgba(0, 0, 0, 0.8);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+
+  padding: 12px;
+
+  backdrop-filter: blur(30px);
+
+  position: absolute;
+  top: calc(var(--distance-notification-from-top) + 1%);
+  right: calc(var(--distance-notification-from-right) + 12px);
+  z-index: 1;
+}
+.notifications-disabled {
+  display: none;
 }

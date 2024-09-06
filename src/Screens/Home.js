@@ -36,10 +36,6 @@ const HomePage = () => {
   // CHECANDO SE ESTÁ LOGADO!
 
   async function verifyAuthentication() {
-    if (!loggedToken) {
-      navigate("/");
-    }
-
     try {
       const isLoggedRequest = await axios.post(`${apiUrl}/user/verify-auth`, {
         loggedToken,
@@ -60,9 +56,8 @@ const HomePage = () => {
     <>
       <div className="home-main">
         <div
-          className={`search-bar ${
-            searchBarEnabled ? "" : "search-bar-invisible"
-          }`}
+          className={`search-bar ${searchBarEnabled ? "" : "search-bar-invisible"
+            }`}
         >
           <div className="search-bar-positions">
             <input
@@ -70,12 +65,12 @@ const HomePage = () => {
               name="search-bar"
               placeholder="Pesquise um post aqui..."
             />
-            <img src={lupa} />
+            <img src={lupa} alt="" />
           </div>
         </div>
         <section className="section-abas">
           <div className="logo">
-            <img height="60%" src={startlitLogo} />
+            <img height="60%" src={startlitLogo} alt="" />
           </div>
           <div className="navigation-left-bar">
             <TabSelectArrow $tabIndex={tabIndex} />

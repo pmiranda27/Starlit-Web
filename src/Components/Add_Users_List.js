@@ -6,8 +6,9 @@ const AddUsersList = styled.div`
 
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     align-items: center;
+
+    gap: 12px;
 `;
 
 export default AddUsersList;

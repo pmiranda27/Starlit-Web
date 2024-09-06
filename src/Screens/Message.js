@@ -18,7 +18,7 @@ function Chat() {
         <section className="chat-section">
           <div className="center-contato-nome">
             <div className="contato-name">
-              <img src="https://placehold.co/80" />
+              <img src="https://placehold.co/80" alt="" />
               Nome do Contato
             </div>
           </div>

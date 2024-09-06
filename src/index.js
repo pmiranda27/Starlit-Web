@@ -5,16 +5,16 @@ import './index.css';
 import Join from "./Screens/Join";
 import Register from "./Screens/Register";
 import Login from "./Screens/Login";
+import HomePage from './Screens/Home';
 
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import HomePage from './Screens/Home';
-import Messages from './Screens/Message';
 
 
-const router = createBrowserRouter([
+
+const route = createBrowserRouter([
   {
     path: "/",
     element: <Join />
@@ -31,11 +31,11 @@ const router = createBrowserRouter([
     path: "/home",
     element: <HomePage />
   },
-])
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <RouterProvider router={route} />
   </React.StrictMode>
 );

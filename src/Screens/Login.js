@@ -31,10 +31,6 @@ const Login = () => {
 
   const [emailInputError, setEmailInputError] = React.useState(false);
   const [senhaInputError, setSenhaInputError] = React.useState(false);
-  const [confirmarInputError, setConfirmarInputError] = React.useState(false);
-
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState(false);
-  const [senhaErrorMessage, setSenhaErrorMessage] = React.useState(false);
 
   const validateEmail = (email) => {
     return email.match(/^\S+@\S+\.\S+$/);
@@ -50,11 +46,11 @@ const Login = () => {
     switch (input) {
       case "email":
         setEmailInputError(false);
-        setEmailErrorMessage(false);
         break;
       case "senha":
         setSenhaInputError(false);
-        setSenhaErrorMessage(false);
+        break;
+      default:
         break;
     }
   }
@@ -62,18 +58,16 @@ const Login = () => {
   function validateForm(e) {
     e.preventDefault();
 
-    if (formBody.email == "" || !validateEmail(formBody.email)) {
+    if (formBody.email === "" || !validateEmail(formBody.email)) {
       setEmailInputError(true);
-      setEmailErrorMessage(true);
       formBody.email = "";
 
       validationFailed = true;
 
       console.log("Email inválido");
     }
-    if (formBody.senha == "" || formBody.senha.length < 8) {
+    if (formBody.senha === "" || formBody.senha.length < 8) {
       setSenhaInputError(true);
-      setSenhaErrorMessage(true);
       formBody.senha = "";
 
       validationFailed = true;
