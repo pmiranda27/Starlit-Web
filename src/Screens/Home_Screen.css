@@ -22,18 +22,20 @@
 }
 
 .main-friends-section {
-  width: 22vw;
+  width: 19vw;
   height: 100%;
-
-  padding-right: 16px;
 
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+
+  gap: 12px;
 }
 
 .link-card-main-friends {
-  width: 85%;
+  width: 100%;
+  height: 5%;
 
   color: white;
 
@@ -42,9 +44,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
-  margin-top: 12px;
-  margin-bottom: 20px;
 
   gap: 12px;
 
@@ -75,4 +74,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.amigos-display {
+  background-color: red;
+
+  width: 100%;
+  height: 80%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
