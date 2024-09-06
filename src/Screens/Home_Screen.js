@@ -70,7 +70,7 @@ async function getUserNotifications(setLista) {
     <NotificacaoComponent key={ind} notificationid={notification._id} name={notification.name} avatar={notification.avatar} />
   ));
 
-  console.log(newNotificationsElements);
+  console.log(newNotificationsElements)
 
   setLista(newNotificationsElements);
 }
