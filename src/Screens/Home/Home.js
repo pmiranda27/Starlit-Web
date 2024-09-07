@@ -34,7 +34,6 @@ const HomePage = () => {
   const loggedToken = localStorage.getItem("token");
 
   // CHECANDO SE ESTÁ LOGADO!
-
   async function verifyAuthentication() {
     try {
       const isLoggedRequest = await axios.post(`${apiUrl}/user/verify-auth`, {

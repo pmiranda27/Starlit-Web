@@ -65,16 +65,18 @@ function HomeScreen() {
       email: credentials.email,
     });
 
+    
     const newNotificationsElements = response.data.map((notification, ind) => (
       <NotificacaoComponent
-        key={ind}
-        notificationid={notification._id}
-        name={notification.name}
-        avatar={notification.avatar}
+      key={ind}
+      notificationId={notification._id}
+      name={notification.name}
+      avatar={notification.avatar}
+      userEmail={credentials.email}
       />
     ));
 
-    console.log(newNotificationsElements);
+    console.log('notifications: ', newNotificationsElements);
 
     setLista(newNotificationsElements);
   }
