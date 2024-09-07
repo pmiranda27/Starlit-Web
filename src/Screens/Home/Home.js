@@ -1,5 +1,5 @@
-import startlitLogo from "../Assets/Images/starlit-logo.png";
-import lupa from "../Assets/Images/lupa.png";
+import startlitLogo from "../../Assets/Images/starlit-logo.png";
+import lupa from "../../Assets/Images/lupa.png";
 
 import { GoHomeFill } from "react-icons/go";
 import { IoChatboxEllipsesSharp } from "react-icons/io5";
@@ -9,14 +9,14 @@ import { IoSettings } from "react-icons/io5";
 import "./Home.css";
 
 import HomeScreen from "./Home_Screen";
-import Chat from "./Message";
-import Profile from "./Profile";
+import Chat from "../Chats/Message";
+import Profile from "../Profile/Profile";
 
 import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { TabSelectArrow } from "../Components/Tab_Select_Arrow";
+import { TabSelectArrow } from "../../Components/Tab_Select_Arrow";
 
 const HomePage = () => {
   const apiUrl =

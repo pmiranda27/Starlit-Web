@@ -1,12 +1,12 @@
 import "./Login.css";
 
-import { Loader } from "../Components/Loaders/Loader";
+import { Loader } from "../../Components/Loaders/Loader";
 
 import axios from "axios";
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import PopUpConfirm from "../Components/PopUpConfirm";
+import PopUpConfirm from "../../Components/PopUpConfirm";
 
 const Login = () => {
   const apiUrl =

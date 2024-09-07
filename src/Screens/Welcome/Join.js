@@ -1,5 +1,5 @@
 import "./Join.css";
-import starlitLogo from "../Assets/Images/starlit-logo.png";
+import starlitLogo from "../../Assets/Images/starlit-logo.png";
 import { Link } from "react-router-dom";
 
 const Join = () => {

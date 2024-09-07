@@ -1,5 +1,5 @@
-import { ProfileMenuItems } from "../Components/Profile_Menu_Items";
-import { ProfileTabSelector } from "../Components/Profile_Menu_Selectors";
+import { ProfileMenuItems } from "../../Components/Profile_Menu_Items";
+import { ProfileTabSelector } from "../../Components/Profile_Menu_Selectors";
 import "./Profile.css";
 
 import { useState } from "react";

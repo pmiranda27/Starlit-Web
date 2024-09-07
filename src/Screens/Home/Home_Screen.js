@@ -3,22 +3,22 @@ import "./Home_Screen.css";
 
 import { useState } from "react";
 
-import AmigoComponent from "../Components/Amigo_Component";
-import UserComponent from "../Components/User_Component";
+import AmigoComponent from "../../Components/Friends/Amigo_Component";
+import UserComponent from "../../Components/Friends/User_Component";
 
 import { useEffect } from "react";
 import { IoPersonAdd } from "react-icons/io5";
-import AddUsersList from "../Components/Add_Users_List";
+import AddUsersList from "../../Components/Friends/Add_Users_List";
 
 import { MdCircleNotifications } from "react-icons/md";
 import { IoIosNotifications } from "react-icons/io";
-import NotificacaoComponent from "../Components/Notificacao";
-import { FriendSectionLoader } from "../Components/Loaders/Friends_Section";
+import NotificacaoComponent from "../../Components/Notifications/Notificacao";
+import { FriendSectionLoader } from "../../Components/Loaders/Friends_Section";
 
 const apiUrl =
   "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
 
-const loggedToken = localStorage.getItem("token");
+var loggedToken = localStorage.getItem("token");
 
 async function verifyAuthentication() {
   try {
