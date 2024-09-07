@@ -50,7 +50,7 @@ function HomeScreen() {
     const response = await axios.get(`${apiUrl}/user/lista-usuarios`);
 
     const listaUsuariosFiltrada = response.data.filter(
-      (user) => user.email !== credentials.email
+      (user) => (user.email !== credentials.email)
     );
 
     const newUsuariosElements = listaUsuariosFiltrada.map((user, ind) => (

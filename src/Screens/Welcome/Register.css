@@ -295,6 +295,7 @@ input:-webkit-autofill:focus {
 
 .profile-picture-preview {
   height: 50%;
+  aspect-ratio: 1 / 1;
 
   border-radius: 50%;
 }
