@@ -1,7 +1,7 @@
 import "./Register.css";
 import React from "react";
 
-import { Loader } from "../Components/Loader";
+import { Loader } from "../Components/Loaders/Loader";
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";

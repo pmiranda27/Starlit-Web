@@ -41,7 +41,6 @@ const HomePage = () => {
         loggedToken,
       });
       console.log("está logado. StatusCode: ", isLoggedRequest.status);
-
     } catch (error) {
       localStorage.removeItem("token");
       navigate("/");
@@ -56,8 +55,9 @@ const HomePage = () => {
     <>
       <div className="home-main">
         <div
-          className={`search-bar ${searchBarEnabled ? "" : "search-bar-invisible"
-            }`}
+          className={`search-bar ${
+            searchBarEnabled ? "" : "search-bar-invisible"
+          }`}
         >
           <div className="search-bar-positions">
             <input
