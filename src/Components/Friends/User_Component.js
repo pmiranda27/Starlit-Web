@@ -1,11 +1,41 @@
 import { IoPersonAdd } from "react-icons/io5";
 import { CiNoWaitingSign } from "react-icons/ci";
 
+import axios from "axios";
+
 import "./User_Component.css";
 import { useState } from "react";
 
-function UserComponent({ name, imgUrl }) {
+
+
+const apiUrl =
+    "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
+
+function UserComponent({ name, loggedUserName, userEmail, loggedUserEmail, imgUrl, setIsShowingFriendRequestPopUp }) {
   const [isRequested, setIsRequested] = useState(false);
+
+  function sendFriendRequest() {
+    setIsShowingFriendRequestPopUp(true);
+    setTimeout(() => {
+      setIsShowingFriendRequestPopUp(false);
+    }, 2500);
+  }
+
+  async function sendFriendNotificationRequest() {
+    const response = await axios.post(`${apiUrl}/user/enviar-notificacao`, {
+      sender: loggedUserEmail,
+      receiver: userEmail,
+      name: `${loggedUserName} deseja adicionar você!`,
+      type: 'friend-request',
+    });
+
+    if (199 < response.status < 300) {
+      sendFriendRequest();
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   return (
     <div className="user-component">
@@ -28,9 +58,6 @@ function UserComponent({ name, imgUrl }) {
             size={"18px"}
             strokeWidth={"4px"}
             color="white"
-            onClick={() => {
-              setIsRequested(false);
-            }}
           />
         ) : (
           <IoPersonAdd
@@ -39,6 +66,7 @@ function UserComponent({ name, imgUrl }) {
             color="white"
             onClick={() => {
               setIsRequested(true);
+              sendFriendNotificationRequest();
             }}
           />
         )}

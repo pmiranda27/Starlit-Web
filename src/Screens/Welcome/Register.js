@@ -5,7 +5,7 @@ import { Loader } from "../../Components/Loaders/Loader";
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import PopUpConfirm from "../../Components/PopUpConfirm";
+import { PopUpConfirm } from "../../Components/PopUpConfirm";
 
 import { ImCross } from "react-icons/im";
 import { SendProfilePicturePanel } from "../../Components/Send_Profile_Picture_Panel";

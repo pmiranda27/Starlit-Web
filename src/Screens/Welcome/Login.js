@@ -6,7 +6,7 @@ import axios from "axios";
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import PopUpConfirm from "../../Components/PopUpConfirm";
+import { PopUpConfirm } from "../../Components/PopUpConfirm";
 
 const Login = () => {
   const apiUrl =
@@ -87,6 +87,7 @@ const Login = () => {
 
     setIsLoading(true);
 
+    var loginTries = 0;
     setTimeout(async () => {
       try {
         const response = await axios.post(`${apiUrl}/user/login`, loginUser);
@@ -97,13 +98,18 @@ const Login = () => {
           setIsGreen(true);
           setIsShowingMessage(true);
 
-          localStorage.setItem('token', response.data.token);
+          localStorage.removeItem("token");
+          localStorage.setItem("token", response.data.token);
 
           setTimeout(() => {
             navigate("/home");
           }, 2000);
         }
       } catch (error) {
+        if (loginTries < 4) {
+          loginTries++;
+          throw error;
+        }
         setIsGreen(false);
         setIsShowingMessage(true);
 
