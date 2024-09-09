@@ -21,6 +21,13 @@ function UserComponent({ name, loggedUserName, userEmail, loggedUserEmail, imgUr
     }, 2500);
   }
 
+  async function cancelFriendNotificationRequest() {
+    const response = await axios.post(`${apiUrl}/user/remover-notificacao`, {
+      sender: loggedUserEmail,
+      receiver: userEmail
+    });
+  }
+
   async function sendFriendNotificationRequest() {
     const response = await axios.post(`${apiUrl}/user/enviar-notificacao`, {
       sender: loggedUserEmail,
@@ -58,6 +65,10 @@ function UserComponent({ name, loggedUserName, userEmail, loggedUserEmail, imgUr
             size={"18px"}
             strokeWidth={"4px"}
             color="white"
+            onClick={() => {
+              setIsRequested(false);
+              cancelFriendNotificationRequest();
+            }}
           />
         ) : (
           <IoPersonAdd

@@ -62,6 +62,7 @@ function NotificacaoComponent({
     } catch (err) {
       // Configura o estado do erro para capturar a mensagem de erro e exibi-la na UI
       setError("Erro ao responder notificação. Tente novamente.");
+      onNotificationAnswered();
       console.error("Error answering notification:", err);
     }
   };
@@ -79,6 +80,7 @@ function NotificacaoComponent({
             size={26}
             onClick={() => {
               handleAnswerNotification(notificationId, true, userEmail);
+              onNotificationAnswered();
             }}
           />
           <IoCloseCircleSharp
@@ -86,6 +88,7 @@ function NotificacaoComponent({
             size={28}
             onClick={() => {
               handleAnswerNotification(notificationId, false, userEmail);
+              onNotificationAnswered();
             }}
           />
         </div>

@@ -66,19 +66,21 @@ function HomeScreen() {
 
   useEffect(() => {
     if (!credentials) return;
+    console.log(credentials);
 
-    async function getFriendsList(setAmigos) {
+    async function getFriendsList() {
       const response = await axios.post(`${apiUrl}/user/amigos`, {
         email: credentials.email,
       });
+
       const newFriendsElements = response.data.map((friend, ind) => (
         <AmigoComponent key={ind} name={friend.name} imgUrl={friend.avatar} />
       ));
   
-      setAmigos(newFriendsElements);
+      setListaAmigos(newFriendsElements);
     }
   
-    async function getAllUsersToAdd(setUsuarios) {
+    async function getAllUsersToAdd() {
       const response = await axios.get(`${apiUrl}/user/lista-usuarios`);
   
       const listaUsuariosFiltrada = response.data.filter(
@@ -89,7 +91,7 @@ function HomeScreen() {
         <UserComponent key={ind} name={user.name} loggedUserName={credentials.name} userEmail={user.email} loggedUserEmail={credentials.email} imgUrl={user.avatar} setIsShowingFriendRequestPopUp={setIsShowingFriendRequestPopUp} />
       ));
   
-      setUsuarios(newUsuariosElements);
+      setListaUsuarios(newUsuariosElements);
     }
   
     const getUserNotifications = async () => {
@@ -104,23 +106,28 @@ function HomeScreen() {
           name={notification.name}
           avatar={notification.avatar}
           userEmail={credentials.email}
-          onNotificationAnswered={getUserNotifications}
+          onNotificationAnswered={refreshEverythingUserHas}
         />
       ));
       
       setListaNotifications(newNotificationsElements)
     }
 
+    function refreshEverythingUserHas() {
+      getUserNotifications();
+      getAllUsersToAdd();
+      getFriendsList();
 
-    getFriendsList(setListaAmigos);
-    getAllUsersToAdd(setListaUsuarios);
-    getUserNotifications(setListaNotifications);
-
-    setTimeout(() => {
       setIsLoadingFriendSection(false);
       setIsLoadingNotificationsSection(false);
       setIsLoadingAllUsersSection(false);
-    }, 1250);
+    }
+
+    const refreshInterval = setInterval(() => {
+      refreshEverythingUserHas();
+    }, 5000)
+
+    return () => clearInterval(refreshInterval);
   }, [credentials]);
 
   const iconStyle = { color: "white" };
