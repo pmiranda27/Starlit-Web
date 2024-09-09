@@ -74,7 +74,7 @@ function HomeScreen() {
       });
 
       const newFriendsElements = response.data.map((friend, ind) => (
-        <AmigoComponent key={ind} name={friend.name} imgUrl={friend.avatar} />
+        <AmigoComponent key={ind} name={friend.name} imgUrl={friend.avatar} userEmail={credentials.email} emailFriend={friend.email} refreshFriend={getFriendsList} />
       ));
   
       setListaAmigos(newFriendsElements);
@@ -125,7 +125,7 @@ function HomeScreen() {
 
     const refreshInterval = setInterval(() => {
       refreshEverythingUserHas();
-    }, 5000)
+    }, 2500)
 
     return () => clearInterval(refreshInterval);
   }, [credentials]);

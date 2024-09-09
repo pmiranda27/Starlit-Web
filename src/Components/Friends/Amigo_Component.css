@@ -6,7 +6,7 @@
   justify-content: space-between;
   align-items: center;
 
-  background-color: rgba(0, 0, 0, .3);
+  background-color: rgba(0, 0, 0, 0.3);
 
   padding: 10px;
 
@@ -16,9 +16,11 @@
 
   margin-top: 12px;
   margin-bottom: 12px;
+
+  position: relative;
 }
 .amigo-component:hover {
-  background-color: rgba(0, 0, 0, .4);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .amigo-component img {
@@ -32,7 +34,7 @@
   justify-content: center;
 }
 .info-amigo h4 {
-  font-size: 1.40rem;
+  font-size: 1.4rem;
   letter-spacing: normal;
 
   color: white;
@@ -47,5 +49,35 @@
   cursor: pointer;
 }
 .amigo-component svg:active {
+  cursor: default;
+}
+
+
+.options-panel {
+  position: absolute;
+  right: 10px;
+  top: 75%;
+
+  transform: translateY(-50%);
+
+  background-color: green;
+  width: 140px;
+  height: fit-content;
+
+  padding: 8px;
+}
+
+.options-panel > ul {
+  list-style: none;
+
+  text-align: center;
+}
+
+.options-panel > ul > li {
+  color: white;
+
+  font-weight: bold;
+}
+.options-panel > ul > li:active{
   cursor: default;
 }
