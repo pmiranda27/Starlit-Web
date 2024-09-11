@@ -7,14 +7,15 @@ import { useState } from "react";
 
 import AmigoComponent from "../../Components/Friends/Amigo_Component";
 import UserComponent from "../../Components/Friends/User_Component";
+import NotificacaoComponent from "../../Components/Notifications/Notificacao";
 
 import { useEffect } from "react";
 import { IoPersonAdd } from "react-icons/io5";
 import AddUsersList from "../../Components/Friends/Add_Users_List";
 
 import { MdCircleNotifications } from "react-icons/md";
+import { MdNotificationImportant } from "react-icons/md";
 import { IoIosNotifications } from "react-icons/io";
-import NotificacaoComponent from "../../Components/Notifications/Notificacao";
 import { FriendSectionLoader } from "../../Components/Loaders/Friends_Section";
 import { FriendRequestPopUp } from "../../Components/PopUpConfirm";
 
@@ -44,22 +45,26 @@ function HomeScreen() {
     setCredentials(creds);
   };
 
-  axiosRetry(axios, { retries: 5 })
+  axiosRetry(axios, { retries: 5 });
 
   async function verifyAuthentication() {
     var verifyAuthenticationTries = 0;
     try {
-      const isLoggedRequest = await axios.post(`${apiUrl}/user/verify-auth`, {
-        loggedToken,
-      }, {
-        timeout: 1250
-      });
-  
+      const isLoggedRequest = await axios.post(
+        `${apiUrl}/user/verify-auth`,
+        {
+          loggedToken,
+        },
+        {
+          timeout: 1250,
+        }
+      );
+
       return isLoggedRequest.data.decode;
     } catch (error) {
       console.log(`error: ${error}`);
       if (verifyAuthenticationTries > 3) {
-        console.log('3 tentativas foram feitas, nenhuma funcionou!');
+        console.log("3 tentativas foram feitas, nenhuma funcionou!");
         verifyAuthenticationTries++;
       }
     }
@@ -86,12 +91,24 @@ function HomeScreen() {
 
   async function getAllUsersToAdd() {
     const response = await axios.get(`${apiUrl}/user/lista-usuarios`);
-
+    
     const listaUsuariosFiltrada = response.data.filter(
       (user) => user.email !== credentials.email
     );
 
-    const newUsuariosElements = listaUsuariosFiltrada.map((user, ind) => (
+    const listaAmigos = await axios.post(`${apiUrl}/user/amigos`, {
+      email: credentials.email,
+    });
+
+    console.log('listaamigos: ', listaAmigos);
+
+    const listaUsuariosFiltradaFinal = listaUsuariosFiltrada.filter(
+      (user) => {
+        return !listaAmigos.data.some((amigo) => amigo.email === user.email)
+      }
+    );
+    
+    const newUsuariosElements = listaUsuariosFiltradaFinal.map((user, ind) => (
       <UserComponent
         key={ind}
         name={user.name}
@@ -140,14 +157,14 @@ function HomeScreen() {
 
   useEffect(() => {
     if (!credentials) {
-      console.log('sem credenciais');
+      console.log("sem credenciais");
       setLoggedToken(localStorage.getItem("token"));
       getCredentials();
       return;
     } else if (checkCred < 1) {
       checkCred++;
-      console.log('com credenciais: ', credentials);
-    };
+      console.log("com credenciais: ", credentials);
+    }
 
     const refreshInterval = setInterval(() => {
       refreshEverythingUserHas();
@@ -171,6 +188,14 @@ function HomeScreen() {
             size={32}
             onClick={() => {
               setAreNotificationsOpen(false);
+            }}
+            className="notifications-button-home-screen"
+          />
+        ) : listaNotifications.length > 0 ? (
+          <MdNotificationImportant
+            size={32}
+            onClick={() => {
+              setAreNotificationsOpen(true);
             }}
             className="notifications-button-home-screen"
           />
