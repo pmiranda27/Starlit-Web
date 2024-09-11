@@ -31,23 +31,26 @@ function AmigoComponent({ name, imgUrl, userEmail, emailFriend, refreshFriend })
   );
 }
 
-export function OptionsPanel({ userEmail, emailFriend, refreshFriendList }) {
-  
-  async function removeFriend(userEmail, emailFriend) {
+async function removeFriend(userEmail, emailFriend, refreshFriendList) {
+  try {
+
     const response = await axios.post(`${apiUrl}/user/remove-friend`, {
       email: userEmail,
       emailFriend: emailFriend
     });
-
-    if (response.status >= 200 && response.status < 300) {
-      return refreshFriendList();
-    }
+    return refreshFriendList();
+  }catch(error){
+    console.log('falha ao remover: ', error)
+    return refreshFriendList();
   }
+    
+}
 
+export function OptionsPanel({ userEmail, emailFriend, refreshFriendList }) {
   return (
     <div className="options-panel">
       <ul>
-        <li onClick={()=>{removeFriend(userEmail, emailFriend)}}>Remover Amigo</li>
+        <li onClick={()=>{removeFriend(userEmail, emailFriend, refreshFriendList)}}>Remover Amigo</li>
       </ul>
     </div>
   );

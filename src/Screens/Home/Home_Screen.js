@@ -76,6 +76,8 @@ function HomeScreen() {
       email: credentials.email,
     });
 
+    console.log('response amigos: ', response)
+
     const newFriendsElements = response.data.map((friend, ind) => (
       <AmigoComponent
         key={ind}
