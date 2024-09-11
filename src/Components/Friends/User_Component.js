@@ -1,13 +1,10 @@
 import { IoPersonAdd } from "react-icons/io5";
 import { CiNoWaitingSign } from "react-icons/ci";
-
 import axios from "axios";
-
 import "./User_Component.css";
 import { useState } from "react";
 
-const apiUrl =
-  "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
+const apiUrl = "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
 
 function UserComponent({
   name,
@@ -16,6 +13,7 @@ function UserComponent({
   loggedUserEmail,
   imgUrl,
   setIsShowingFriendRequestPopUp,
+  refreshFriendsList, // Função para atualizar a lista de amigos
 }) {
   const [isRequested, setIsRequested] = useState(false);
 
@@ -27,25 +25,53 @@ function UserComponent({
   }
 
   async function cancelFriendNotificationRequest() {
-    const response = await axios.post(`${apiUrl}/user/remover-notificacao`, {
-      sender: loggedUserEmail,
-      receiver: userEmail,
-    });
+    try {
+      const response = await axios.post(`${apiUrl}/user/remover-notificacao`, {
+        sender: loggedUserEmail,
+        receiver: userEmail,
+      });
+      console.log("Notificação removida com sucesso", response.data);
+    } catch (error) {
+      console.error("Erro ao remover notificação:", error.response?.data || error.message);
+    }
   }
 
   async function sendFriendNotificationRequest() {
-    const response = await axios.post(`${apiUrl}/user/enviar-notificacao`, {
-      sender: loggedUserEmail,
-      receiver: userEmail,
-      name: `${loggedUserName} deseja adicionar você!`,
-      type: "friend-request",
-    });
+    try {
+      const response = await axios.post(`${apiUrl}/user/enviar-notificacao`, {
+        sender: loggedUserEmail,
+        receiver: userEmail,
+        name: `${loggedUserName} deseja adicionar você!`,
+        type: "friend-request",
+      });
 
-    if (199 < response.status < 300) {
-      sendFriendRequest();
-      return true;
-    } else {
+      if (response.status >= 200 && response.status < 300) {
+        sendFriendRequest();
+        return true;
+      } else {
+        console.error("Falha ao enviar solicitação de amizade", response.data);
+        return false;
+      }
+    } catch (error) {
+      console.error("Erro ao enviar solicitação de amizade:", error.response?.data || error.message);
       return false;
+    }
+  }
+
+  async function acceptFriendRequest() {
+    try {
+      const response = await axios.post(`${apiUrl}/user/aceitar-solicitacao`, {
+        sender: userEmail,
+        receiver: loggedUserEmail,
+      });
+
+      if (response.status >= 200 && response.status < 300) {
+        refreshFriendsList(); // Atualiza a lista de amigos
+      } else {
+        console.error("Falha ao aceitar solicitação de amizade", response.data);
+      }
+    } catch (error) {
+      console.error("Erro ao aceitar solicitação de amizade:", error.response?.data || error.message);
     }
   }
 

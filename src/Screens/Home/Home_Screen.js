@@ -1,27 +1,20 @@
 import "./Home_Screen.css";
-
 import axios from "axios";
 import axiosRetry from "axios-retry";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import AmigoComponent from "../../Components/Friends/Amigo_Component";
 import UserComponent from "../../Components/Friends/User_Component";
 import NotificacaoComponent from "../../Components/Notifications/Notificacao";
-
-import { useEffect } from "react";
-import { IoPersonAdd } from "react-icons/io5";
 import AddUsersList from "../../Components/Friends/Add_Users_List";
-
-import { MdCircleNotifications } from "react-icons/md";
-import { MdNotificationImportant } from "react-icons/md";
+import { IoPersonAdd } from "react-icons/io5";
+import { MdCircleNotifications, MdNotificationImportant } from "react-icons/md";
 import { IoIosNotifications } from "react-icons/io";
 import { FriendSectionLoader } from "../../Components/Loaders/Friends_Section";
 import { FriendRequestPopUp } from "../../Components/PopUpConfirm";
 import { NotificacaoTab } from "../../Components/Notifications/Notificacao_Tab";
 
-const apiUrl =
-  "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
+const apiUrl = "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
 
 function HomeScreen() {
   const [credentials, setCredentials] = useState(null);
@@ -31,34 +24,26 @@ function HomeScreen() {
   const [listaUsuarios, setListaUsuarios] = useState([]);
   const [listaNotifications, setListaNotifications] = useState([]);
 
-  const [isShowingFriendRequestPopUp, setIsShowingFriendRequestPopUp] =
-    useState(false);
-
+  const [isShowingFriendRequestPopUp, setIsShowingFriendRequestPopUp] = useState(false);
   const [areNotificationsOpen, setAreNotificationsOpen] = useState(false);
   const [isLoadingFriendSection, setIsLoadingFriendSection] = useState(true);
-  const [isLoadingAllUsersSection, setIsLoadingAllUsersSection] =
-    useState(true);
-  const [isLoadingNotificationsSection, setIsLoadingNotificationsSection] =
-    useState(true);
+  const [isLoadingAllUsersSection, setIsLoadingAllUsersSection] = useState(true);
+  const [isLoadingNotificationsSection, setIsLoadingNotificationsSection] = useState(true);
+
+  axiosRetry(axios, { retries: 5 });
 
   const getCredentials = async () => {
     const creds = await verifyAuthentication();
     setCredentials(creds);
   };
 
-  axiosRetry(axios, { retries: 5 });
-
   async function verifyAuthentication() {
     var verifyAuthenticationTries = 0;
     try {
       const isLoggedRequest = await axios.post(
         `${apiUrl}/user/verify-auth`,
-        {
-          loggedToken,
-        },
-        {
-          timeout: 1250,
-        }
+        { loggedToken },
+        { timeout: 1250 }
       );
 
       return isLoggedRequest.data.decode;
@@ -72,75 +57,78 @@ function HomeScreen() {
   }
 
   async function getFriendsList() {
-    const response = await axios.post(`${apiUrl}/user/amigos`, {
-      email: credentials.email,
-    });
+    try {
+      const response = await axios.post(`${apiUrl}/user/amigos`, { email: credentials.email });
+      console.log('response amigos: ', response);
 
-    console.log('response amigos: ', response)
+      const newFriendsElements = response.data.map((friend, ind) => (
+        <AmigoComponent
+          key={ind}
+          name={friend.name}
+          imgUrl={friend.avatar}
+          userEmail={credentials.email}
+          emailFriend={friend.email}
+          refreshFriend={getFriendsList}
+        />
+      ));
 
-    const newFriendsElements = response.data.map((friend, ind) => (
-      <AmigoComponent
-        key={ind}
-        name={friend.name}
-        imgUrl={friend.avatar}
-        userEmail={credentials.email}
-        emailFriend={friend.email}
-        refreshFriend={getFriendsList}
-      />
-    ));
-
-    setListaAmigos(newFriendsElements);
+      setListaAmigos(newFriendsElements);
+    } catch (error) {
+      console.error("Erro ao obter lista de amigos:", error.response?.data || error.message);
+    }
   }
 
   async function getAllUsersToAdd() {
-    const response = await axios.get(`${apiUrl}/user/lista-usuarios`);
-    
-    const listaUsuariosFiltrada = response.data.filter(
-      (user) => user.email !== credentials.email
-    );
+    try {
+      const response = await axios.get(`${apiUrl}/user/lista-usuarios`);
+      const listaUsuariosFiltrada = response.data.filter(
+        (user) => user.email !== credentials.email
+      );
 
-    const listaAmigos = await axios.post(`${apiUrl}/user/amigos`, {
-      email: credentials.email,
-    });
+      const listaAmigos = await axios.post(`${apiUrl}/user/amigos`, { email: credentials.email });
 
-    const listaUsuariosFiltradaFinal = listaUsuariosFiltrada.filter(
-      (user) => {
-        return !listaAmigos.data.some((amigo) => amigo.email === user.email)
-      }
-    );
-    
-    const newUsuariosElements = listaUsuariosFiltradaFinal.map((user, ind) => (
-      <UserComponent
-        key={ind}
-        name={user.name}
-        loggedUserName={credentials.name}
-        userEmail={user.email}
-        loggedUserEmail={credentials.email}
-        imgUrl={user.avatar}
-        setIsShowingFriendRequestPopUp={setIsShowingFriendRequestPopUp}
-      />
-    ));
+      const listaUsuariosFiltradaFinal = listaUsuariosFiltrada.filter(
+        (user) => !listaAmigos.data.some((amigo) => amigo.email === user.email)
+      );
 
-    setListaUsuarios(newUsuariosElements);
+      const newUsuariosElements = listaUsuariosFiltradaFinal.map((user, ind) => (
+        <UserComponent
+          key={ind}
+          name={user.name}
+          loggedUserName={credentials.name}
+          userEmail={user.email}
+          loggedUserEmail={credentials.email}
+          imgUrl={user.avatar}
+          setIsShowingFriendRequestPopUp={setIsShowingFriendRequestPopUp}
+          refreshFriendsList={getFriendsList} // Passa a função para o UserComponent
+        />
+      ));
+
+      setListaUsuarios(newUsuariosElements);
+    } catch (error) {
+      console.error("Erro ao obter lista de usuários:", error.response?.data || error.message);
+    }
   }
 
   const getUserNotifications = async () => {
-    const response = await axios.post(`${apiUrl}/user/lista-notificacoes`, {
-      email: credentials.email,
-    });
+    try {
+      const response = await axios.post(`${apiUrl}/user/lista-notificacoes`, { email: credentials.email });
 
-    const newNotificationsElements = response.data.map((notification, ind) => (
-      <NotificacaoComponent
-        key={ind}
-        notificationId={notification._id}
-        name={notification.name}
-        avatar={notification.avatar}
-        userEmail={credentials.email}
-        onNotificationAnswered={refreshEverythingUserHas}
-      />
-    ));
+      const newNotificationsElements = response.data.map((notification, ind) => (
+        <NotificacaoComponent
+          key={ind}
+          notificationId={notification._id}
+          name={notification.name}
+          avatar={notification.avatar}
+          userEmail={credentials.email}
+          onNotificationAnswered={refreshEverythingUserHas}
+        />
+      ));
 
-    setListaNotifications(newNotificationsElements);
+      setListaNotifications(newNotificationsElements);
+    } catch (error) {
+      console.error("Erro ao obter notificações:", error.response?.data || error.message);
+    }
   };
 
   function refreshEverythingUserHas() {
@@ -187,25 +175,19 @@ function HomeScreen() {
         {areNotificationsOpen ? (
           <MdCircleNotifications
             size={32}
-            onClick={() => {
-              setAreNotificationsOpen(false);
-            }}
+            onClick={() => setAreNotificationsOpen(false)}
             className="notifications-button-home-screen"
           />
         ) : listaNotifications.length > 0 ? (
           <MdNotificationImportant
             size={32}
-            onClick={() => {
-              setAreNotificationsOpen(true);
-            }}
+            onClick={() => setAreNotificationsOpen(true)}
             className="notifications-button-home-screen"
           />
         ) : (
           <IoIosNotifications
             size={32}
-            onClick={() => {
-              setAreNotificationsOpen(true);
-            }}
+            onClick={() => setAreNotificationsOpen(true)}
             className="notifications-button-home-screen"
           />
         )}
@@ -222,11 +204,7 @@ function HomeScreen() {
           <div className="link-card-main-friends">
             Amigos
             <IoPersonAdd
-              onClick={() => {
-                isAddingFriends
-                  ? setIsAddingFriends(false)
-                  : setIsAddingFriends(true);
-              }}
+              onClick={() => setIsAddingFriends(!isAddingFriends)}
               style={iconStyle}
               className="adicionar-novo-amigo"
             />
