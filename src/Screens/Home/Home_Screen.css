@@ -126,6 +126,7 @@
   right: calc(var(--distance-notification-from-right) + 12px);
   z-index: 1;
 }
+
 .notifications-disabled {
   display: none;
 }

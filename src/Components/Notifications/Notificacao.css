@@ -8,6 +8,8 @@
     padding: 8px;
     border-radius: 20px;
 
+    overflow: hidden;
+
     gap: 12px;
 
     width: 95%;

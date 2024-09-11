@@ -18,6 +18,7 @@ import { MdNotificationImportant } from "react-icons/md";
 import { IoIosNotifications } from "react-icons/io";
 import { FriendSectionLoader } from "../../Components/Loaders/Friends_Section";
 import { FriendRequestPopUp } from "../../Components/PopUpConfirm";
+import { NotificacaoTab } from "../../Components/Notifications/Notificacao_Tab";
 
 const apiUrl =
   "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
@@ -99,8 +100,6 @@ function HomeScreen() {
     const listaAmigos = await axios.post(`${apiUrl}/user/amigos`, {
       email: credentials.email,
     });
-
-    console.log('listaamigos: ', listaAmigos);
 
     const listaUsuariosFiltradaFinal = listaUsuariosFiltrada.filter(
       (user) => {
@@ -208,17 +207,14 @@ function HomeScreen() {
             className="notifications-button-home-screen"
           />
         )}
-        <div
-          className={`notifications-tab-section ${
-            areNotificationsOpen ? `` : `notifications-disabled`
-          }`}
-        >
+        
+        <NotificacaoTab $isShowingNotificationsTab={areNotificationsOpen}>
           {isLoadingNotificationsSection ? (
             <FriendSectionLoader />
           ) : (
             listaNotifications
           )}
-        </div>
+        </NotificacaoTab>
         <section className="main-post-feed"></section>
         <section className="main-friends-section">
           <div className="link-card-main-friends">
