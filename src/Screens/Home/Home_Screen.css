@@ -28,12 +28,14 @@
   justify-content: center;
   align-items: center;
 
+  position: relative;
+
   gap: 12px;
 }
 
 .link-card-main-friends {
   width: 100%;
-  height: 5%;
+  height: 10%;
 
   color: white;
 
@@ -46,19 +48,34 @@
   z-index: 0;
 
   gap: 12px;
+}
+.link-card-main-friends > h5 {
 
-  margin-right: 20px;
+  font-size: 1.25rem;
+  text-align: center;
+  letter-spacing: 1px;
+  font-weight: 650;
+}
 
-  font-size: 2rem;
-  letter-spacing: 2px;
-  font-weight: bold;
+.list-friends-parent {
+  width: 100%;
+  height: 90%;
+  
+  position: absolute;
+  right: 0;
+
+  transition: 350ms;
+}
+
+.list-friends-parent.hiding{
+  right: -150%;
 }
 
 .link-card-main-friends::before {
   content: "";
   position: absolute;
   left: 50%;
-  top: 120%;
+  top: 80%;
   transform: translate(-50%, -50%);
   height: 10%;
 
@@ -87,11 +104,29 @@
   justify-content: flex-start;
   align-items: center;
 
+  position: relative;
+
   padding: 8px;
   margin-right: 12px;
 
   overflow-x: hidden;
   overflow-y: scroll;
+}
+
+.user-display {
+  width: 100%;
+  height: 80%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  position: relative;
+
+  padding: 8px;
+
+  overflow-x: hidden;
 }
 
 .notifications-button-home-screen {
@@ -103,7 +138,7 @@
   right: var(--distance-notification-from-right);
   color: white;
 
-  z-index: 2;
+  z-index: 3;
 }
 
 .notifications-button-home-screen:active {
@@ -133,4 +168,9 @@
 
 .notifications-disabled {
   display: none;
+}
+
+.add-user-list-parent {
+  width: 100%;
+  height: 100%;
 }

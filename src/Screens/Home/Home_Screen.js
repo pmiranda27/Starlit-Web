@@ -9,7 +9,7 @@ import NotificacaoComponent from "../../Components/Notifications/Notificacao";
 import AddUsersList from "../../Components/Friends/Add_Users_List";
 import { IoPersonAdd } from "react-icons/io5";
 import { MdCircleNotifications, MdNotificationImportant } from "react-icons/md";
-import { IoIosNotifications } from "react-icons/io";
+import { IoIosCloseCircle, IoIosNotifications } from "react-icons/io";
 import { FriendSectionLoader } from "../../Components/Loaders/Friends_Section";
 import { FriendRequestPopUp } from "../../Components/PopUpConfirm";
 import { NotificacaoTab } from "../../Components/Notifications/Notificacao_Tab";
@@ -211,10 +211,10 @@ function HomeScreen() {
         ) : listaNotifications.length > 0 ? (
           <MdNotificationImportant
             size={32}
-              onClick={() => {
-                setAreNotificationsOpen(true);
-                setTimeout(() => {setIsShowingNotificationsComponents(true)}, 350);
-              }}
+            onClick={() => {
+              setAreNotificationsOpen(true);
+              setTimeout(() => { setIsShowingNotificationsComponents(true) }, 350);
+            }}
             className="notifications-button-home-screen"
           />
         ) : (
@@ -222,7 +222,7 @@ function HomeScreen() {
             size={32}
             onClick={() => {
               setAreNotificationsOpen(true);
-              setTimeout(() => {setIsShowingNotificationsComponents(true)}, 350);
+              setTimeout(() => { setIsShowingNotificationsComponents(true) }, 350);
             }}
             className="notifications-button-home-screen"
           />
@@ -246,27 +246,38 @@ function HomeScreen() {
         </NotificacaoTab>
         <section className="main-post-feed"></section>
         <section className="main-friends-section">
-          <div className="link-card-main-friends">
-            Amigos
-            <IoPersonAdd
-              onClick={() => setIsAddingFriends(!isAddingFriends)}
-              style={iconStyle}
-              className="adicionar-novo-amigo"
-            />
-          </div>
-          <div className="amigos-display">
-            {isLoadingFriendSection ? (
-              <FriendSectionLoader />
-            ) : isAddingFriends ? (
-              isLoadingAllUsersSection ? (
+          <div className={`list-friends-parent ${isAddingFriends ? 'hiding' : ''}`}>
+            <div className={`link-card-main-friends`}>
+              <h5>Amigos</h5>
+              <IoPersonAdd
+                onClick={() => setIsAddingFriends(!isAddingFriends)}
+                style={iconStyle}
+                size={24}
+                className="adicionar-novo-amigo"
+              />
+            </div>
+            <div className="amigos-display">
+              {isLoadingFriendSection ? (
                 <FriendSectionLoader />
-              ) : (
-                <AddUsersList>{listaUsuarios}</AddUsersList>
-              )
-            ) : (
-              listaAmigos
-            )}
+              ) :
+                listaAmigos
+              }
+            </div>
           </div>
+          <AddUsersList $addUserListEnabled={isAddingFriends}>
+            <div className="link-card-main-friends">
+              <h5>Adicionar</h5>
+              <IoIosCloseCircle
+                onClick={() => setIsAddingFriends(!isAddingFriends)}
+                style={iconStyle}
+                size={24}
+                className="adicionar-novo-amigo"
+              />
+            </div>
+            <div className="user-display">
+              {listaUsuarios}
+            </div>
+          </AddUsersList>
         </section>
       </div>
     </>

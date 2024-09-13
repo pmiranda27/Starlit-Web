@@ -23,9 +23,9 @@
   margin-bottom: 40px;
 }
 
-.amigo-component:hover {
-  /* background-color: rgba(0, 0, 0, 0.4); */
-}
+/* .amigo-component:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+} */
 
 .amigo-component img {
   height: 100%;

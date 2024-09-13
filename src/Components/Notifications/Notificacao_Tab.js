@@ -24,7 +24,7 @@ export const NotificacaoTab = styled.div`
   position: absolute;
   top: -5%;
   right: 4%;
-  z-index: 1;
+  z-index: 2;
 
   transition: 400ms ease-in-out;
 
