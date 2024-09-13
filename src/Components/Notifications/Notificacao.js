@@ -2,9 +2,6 @@ import "./Notificacao.css";
 
 import { useState } from "react";
 
-import { FaCheckCircle } from "react-icons/fa";
-import { IoCloseCircleSharp } from "react-icons/io5";
-
 import axios from "axios";
 
 const apiUrl =
@@ -17,7 +14,9 @@ function NotificacaoComponent({
   userEmail,
   onNotificationAnswered,
 }) {
+
   const [error, setError] = useState(null);
+  const [canChooseAnswer, setCanChooseAnswer] = useState(true);
 
   async function answerNotification(
     notificationId,
@@ -50,7 +49,11 @@ function NotificacaoComponent({
     }
   }
 
-  const handleAnswerNotification = async (notificationId, notificationResponse, userEmail) => {
+  const handleAnswerNotification = async (
+    notificationId,
+    notificationResponse,
+    userEmail
+  ) => {
     try {
       const result = await answerNotification(
         notificationId,
@@ -68,29 +71,48 @@ function NotificacaoComponent({
   };
 
   return (
-    <div className="notification-background">
-      <img src={avatar} alt="" className="notification-avatar" />
+    <div className={`notification-background ${canChooseAnswer ? '' : 'transfering-notification'}`}>
+      <img
+        src={avatar}
+        onError={(e) => {
+          e.target.src =
+            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+        }}
+        alt=""
+        className="notification-avatar"
+      />
       <div className="conteudo-notificacao">
         <div className="info-notificacao">
           <h4>{name}</h4>
         </div>
         <div className="notification-options">
-          <FaCheckCircle
-            color="#522258"
-            size={26}
+          <button
+            className="button-notificacao accept-button-notificacao"
             onClick={() => {
-              handleAnswerNotification(notificationId, true, userEmail);
-              onNotificationAnswered();
+              if (!canChooseAnswer) return;
+              setCanChooseAnswer(false);
+              setTimeout(() => {
+                handleAnswerNotification(notificationId, true, userEmail);
+                onNotificationAnswered();
+              }, 470)
             }}
-          />
-          <IoCloseCircleSharp
-            color="#C63C51"
-            size={28}
+          >
+            Aceitar
+          </button>
+
+          <button
+            className="button-notificacao deny-button-notificacao"
             onClick={() => {
-              handleAnswerNotification(notificationId, false, userEmail);
-              onNotificationAnswered();
+              if (!canChooseAnswer) return;
+              setCanChooseAnswer(false);
+              setTimeout(() => {
+                handleAnswerNotification(notificationId, false, userEmail);
+                onNotificationAnswered();
+              }, 470)
             }}
-          />
+          >
+            Recusar
+          </button>
         </div>
       </div>
     </div>

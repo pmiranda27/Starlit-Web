@@ -14,7 +14,8 @@ import { FriendSectionLoader } from "../../Components/Loaders/Friends_Section";
 import { FriendRequestPopUp } from "../../Components/PopUpConfirm";
 import { NotificacaoTab } from "../../Components/Notifications/Notificacao_Tab";
 
-const apiUrl = "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
+const apiUrl =
+  "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
 
 function HomeScreen() {
   const [credentials, setCredentials] = useState(null);
@@ -24,11 +25,19 @@ function HomeScreen() {
   const [listaUsuarios, setListaUsuarios] = useState([]);
   const [listaNotifications, setListaNotifications] = useState([]);
 
-  const [isShowingFriendRequestPopUp, setIsShowingFriendRequestPopUp] = useState(false);
+  const [isShowingFriendRequestPopUp, setIsShowingFriendRequestPopUp] =
+    useState(false);
   const [areNotificationsOpen, setAreNotificationsOpen] = useState(false);
   const [isLoadingFriendSection, setIsLoadingFriendSection] = useState(true);
-  const [isLoadingAllUsersSection, setIsLoadingAllUsersSection] = useState(true);
-  const [isLoadingNotificationsSection, setIsLoadingNotificationsSection] = useState(true);
+  const [isLoadingAllUsersSection, setIsLoadingAllUsersSection] =
+    useState(true);
+  const [isLoadingNotificationsSection, setIsLoadingNotificationsSection] =
+    useState(true);
+
+  const [
+    isShowingNotificationsComponents,
+    setIsShowingNotificationsComponents,
+  ] = useState(false);
 
   axiosRetry(axios, { retries: 5 });
 
@@ -58,8 +67,10 @@ function HomeScreen() {
 
   async function getFriendsList() {
     try {
-      const response = await axios.post(`${apiUrl}/user/amigos`, { email: credentials.email });
-      console.log('response amigos: ', response);
+      const response = await axios.post(`${apiUrl}/user/amigos`, {
+        email: credentials.email,
+      });
+      console.log("response amigos: ", response);
 
       const newFriendsElements = response.data.map((friend, ind) => (
         <AmigoComponent
@@ -74,7 +85,10 @@ function HomeScreen() {
 
       setListaAmigos(newFriendsElements);
     } catch (error) {
-      console.error("Erro ao obter lista de amigos:", error.response?.data || error.message);
+      console.error(
+        "Erro ao obter lista de amigos:",
+        error.response?.data || error.message
+      );
     }
   }
 
@@ -85,49 +99,63 @@ function HomeScreen() {
         (user) => user.email !== credentials.email
       );
 
-      const listaAmigos = await axios.post(`${apiUrl}/user/amigos`, { email: credentials.email });
+      const listaAmigos = await axios.post(`${apiUrl}/user/amigos`, {
+        email: credentials.email,
+      });
 
       const listaUsuariosFiltradaFinal = listaUsuariosFiltrada.filter(
         (user) => !listaAmigos.data.some((amigo) => amigo.email === user.email)
       );
 
-      const newUsuariosElements = listaUsuariosFiltradaFinal.map((user, ind) => (
-        <UserComponent
-          key={ind}
-          name={user.name}
-          loggedUserName={credentials.name}
-          userEmail={user.email}
-          loggedUserEmail={credentials.email}
-          imgUrl={user.avatar}
-          setIsShowingFriendRequestPopUp={setIsShowingFriendRequestPopUp}
-          refreshFriendsList={getFriendsList} // Passa a função para o UserComponent
-        />
-      ));
+      const newUsuariosElements = listaUsuariosFiltradaFinal.map(
+        (user, ind) => (
+          <UserComponent
+            key={ind}
+            name={user.name}
+            loggedUserName={credentials.nome}
+            userEmail={user.email}
+            loggedUserEmail={credentials.email}
+            imgUrl={user.avatar}
+            setIsShowingFriendRequestPopUp={setIsShowingFriendRequestPopUp}
+            refreshFriendsList={getFriendsList} // Passa a função para o UserComponent
+          />
+        )
+      );
 
       setListaUsuarios(newUsuariosElements);
     } catch (error) {
-      console.error("Erro ao obter lista de usuários:", error.response?.data || error.message);
+      console.error(
+        "Erro ao obter lista de usuários:",
+        error.response?.data || error.message
+      );
     }
   }
 
   const getUserNotifications = async () => {
     try {
-      const response = await axios.post(`${apiUrl}/user/lista-notificacoes`, { email: credentials.email });
+      const response = await axios.post(`${apiUrl}/user/lista-notificacoes`, {
+        email: credentials.email,
+      });
 
-      const newNotificationsElements = response.data.map((notification, ind) => (
-        <NotificacaoComponent
-          key={ind}
-          notificationId={notification._id}
-          name={notification.name}
-          avatar={notification.avatar}
-          userEmail={credentials.email}
-          onNotificationAnswered={refreshEverythingUserHas}
-        />
-      ));
+      const newNotificationsElements = response.data.map(
+        (notification, ind) => (
+          <NotificacaoComponent
+            key={ind}
+            notificationId={notification._id}
+            name={notification.name}
+            avatar={notification.avatar}
+            userEmail={credentials.email}
+            onNotificationAnswered={refreshEverythingUserHas}
+          />
+        )
+      );
 
       setListaNotifications(newNotificationsElements);
     } catch (error) {
-      console.error("Erro ao obter notificações:", error.response?.data || error.message);
+      console.error(
+        "Erro ao obter notificações:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -175,29 +203,47 @@ function HomeScreen() {
         {areNotificationsOpen ? (
           <MdCircleNotifications
             size={32}
-            onClick={() => setAreNotificationsOpen(false)}
+            onClick={() => {
+              setIsShowingNotificationsComponents(false);
+              setTimeout(setAreNotificationsOpen(false), 300);
+            }}
             className="notifications-button-home-screen"
           />
         ) : listaNotifications.length > 0 ? (
           <MdNotificationImportant
             size={32}
-            onClick={() => setAreNotificationsOpen(true)}
+              onClick={() => {
+                setAreNotificationsOpen(true);
+                setTimeout(() => {setIsShowingNotificationsComponents(true)}, 350);
+              }}
             className="notifications-button-home-screen"
           />
         ) : (
           <IoIosNotifications
             size={32}
-            onClick={() => setAreNotificationsOpen(true)}
+            onClick={() => {
+              setAreNotificationsOpen(true);
+              setTimeout(() => {setIsShowingNotificationsComponents(true)}, 350);
+            }}
             className="notifications-button-home-screen"
           />
         )}
-        
+
         <NotificacaoTab $isShowingNotificationsTab={areNotificationsOpen}>
-          {isLoadingNotificationsSection ? (
-            <FriendSectionLoader />
-          ) : (
-            listaNotifications
-          )}
+          {areNotificationsOpen ? <h3>Notificações</h3> : null}
+          <div className="notificacoes-conteudo">
+            {isLoadingNotificationsSection ? (
+              areNotificationsOpen ? (
+                <FriendSectionLoader />
+              ) : (
+                ""
+              )
+            ) : isShowingNotificationsComponents ? (
+              listaNotifications
+            ) : (
+              ""
+            )}
+          </div>
         </NotificacaoTab>
         <section className="main-post-feed"></section>
         <section className="main-friends-section">

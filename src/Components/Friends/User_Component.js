@@ -41,7 +41,7 @@ function UserComponent({
       const response = await axios.post(`${apiUrl}/user/enviar-notificacao`, {
         sender: loggedUserEmail,
         receiver: userEmail,
-        name: `${loggedUserName} deseja adicionar você!`,
+        name: `${loggedUserName} enviou uma solicitação de amizade!`,
         type: "friend-request",
       });
 
