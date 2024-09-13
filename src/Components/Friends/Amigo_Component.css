@@ -1,6 +1,6 @@
 .amigo-component {
   width: 90%;
-  height: 10vh;
+  height: 7vh;
 
   display: flex;
   justify-content: space-between;
@@ -14,33 +14,44 @@
 
   border-radius: 20px;
 
-  margin-top: 12px;
-  margin-bottom: 12px;
+  margin-top: 4px;
+  margin-bottom: 4px;
 
   position: relative;
 }
+.amigo-component.amigo-component-distance {
+  margin-bottom: 40px;
+}
+
 .amigo-component:hover {
-  background-color: rgba(0, 0, 0, 0.4);
+  /* background-color: rgba(0, 0, 0, 0.4); */
 }
 
 .amigo-component img {
   height: 100%;
   border-radius: 50%;
+
+  aspect-ratio: 1;
 }
 
 .info-amigo {
+  width: 50%;
+
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
 }
+
 .info-amigo h4 {
-  font-size: 1.4rem;
+  font-size: 1rem;
   letter-spacing: normal;
 
   color: white;
 
-  font-weight: bolder;
+  font-weight: 450;
 }
+
 .info-amigo h5 {
   color: white;
 }
@@ -48,6 +59,7 @@
 .amigo-component svg {
   cursor: pointer;
 }
+
 .amigo-component svg:active {
   cursor: default;
 }
@@ -55,29 +67,49 @@
 
 .options-panel {
   position: absolute;
-  right: 10px;
-  top: 75%;
+  left: 50%;
+  top: 100%;
 
-  transform: translateY(-50%);
+  width: 65%;
+  max-height: 0;
 
-  background-color: green;
-  width: 140px;
-  height: fit-content;
+  overflow: hidden;
 
-  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  transform: translateX(-50%);
+
+  background-color: rgba(0, 0, 0, 0.4);
+
+  border-radius: 0 0 15px 15px;
+
+  transition: max-height 100ms ease-in-out;
+}
+.options-panel:hover{
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.options-panel.options-panel-opened {
+  max-height: 100px;
 }
 
-.options-panel > ul {
+.options-panel>ul {
   list-style: none;
 
   text-align: center;
 }
 
-.options-panel > ul > li {
+.options-panel>ul>li {
   color: white;
 
-  font-weight: bold;
+  margin: 4px;
+
+  text-wrap: nowrap;
+
+  font-weight: 400;
 }
-.options-panel > ul > li:active{
+
+.options-panel>ul>li:active {
   cursor: default;
 }

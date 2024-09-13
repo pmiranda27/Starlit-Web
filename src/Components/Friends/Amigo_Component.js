@@ -7,11 +7,22 @@ import axios from "axios";
 const apiUrl =
   "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
 
+
 function AmigoComponent({ name, imgUrl, userEmail, emailFriend, refreshFriend }) {
   const [isOptionsPanelOpen, setIsOptionsPanelOpen] = useState(false);
 
+  function OptionsPanel({ userEmail, emailFriend, refreshFriendList }) {
+    return (
+      <div className={`options-panel ${isOptionsPanelOpen ? 'options-panel-opened' : ''}`}>
+        <ul>
+          <li onClick={() => { removeFriend(userEmail, emailFriend, refreshFriendList) }}>Remover Amigo</li>
+        </ul>
+      </div>
+    );
+  }
+
   return (
-    <div className="amigo-component">
+    <div className={`amigo-component ${isOptionsPanelOpen ? 'amigo-component-distance' : ''}`}>
       <img src={imgUrl} alt="" />
       <div className="info-amigo">
         <h4>{name}</h4>
@@ -24,9 +35,8 @@ function AmigoComponent({ name, imgUrl, userEmail, emailFriend, refreshFriend })
           setIsOptionsPanelOpen(!isOptionsPanelOpen);
         }}
       />
-      {
-        isOptionsPanelOpen ? <OptionsPanel userEmail={userEmail} emailFriend={emailFriend} refreshFriendList={refreshFriend} /> : null
-      }
+
+      <OptionsPanel userEmail={userEmail} emailFriend={emailFriend} refreshFriendList={refreshFriend} />
     </div>
   );
 }
@@ -39,21 +49,12 @@ async function removeFriend(userEmail, emailFriend, refreshFriendList) {
       emailFriend: emailFriend
     });
     return refreshFriendList();
-  }catch(error){
+  } catch (error) {
     console.log('falha ao remover: ', error)
     return refreshFriendList();
   }
-    
+
 }
 
-export function OptionsPanel({ userEmail, emailFriend, refreshFriendList }) {
-  return (
-    <div className="options-panel">
-      <ul>
-        <li onClick={()=>{removeFriend(userEmail, emailFriend, refreshFriendList)}}>Remover Amigo</li>
-      </ul>
-    </div>
-  );
-}
 
 export default AmigoComponent;

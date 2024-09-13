@@ -47,6 +47,8 @@
 
   gap: 12px;
 
+  margin-right: 20px;
+
   font-size: 2rem;
   letter-spacing: 2px;
   font-weight: bold;
@@ -56,7 +58,7 @@
   content: "";
   position: absolute;
   left: 50%;
-  top: 100%;
+  top: 120%;
   transform: translate(-50%, -50%);
   height: 10%;
 
@@ -77,15 +79,16 @@
 }
 
 .amigos-display {
-  background-color: red;
-
   width: 100%;
   height: 80%;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+
+  padding: 8px;
+  margin-right: 12px;
 
   overflow-x: hidden;
   overflow-y: scroll;
@@ -102,6 +105,7 @@
 
   z-index: 2;
 }
+
 .notifications-button-home-screen:active {
   cursor: default;
 }
@@ -115,7 +119,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
 
   padding: 12px;
 
