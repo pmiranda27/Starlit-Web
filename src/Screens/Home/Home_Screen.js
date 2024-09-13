@@ -112,7 +112,7 @@ function HomeScreen() {
           <UserComponent
             key={ind}
             name={user.name}
-            loggedUserName={credentials.nome}
+            loggedUserName={credentials.name}
             userEmail={user.email}
             loggedUserEmail={credentials.email}
             imgUrl={user.avatar}

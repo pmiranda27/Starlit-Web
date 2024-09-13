@@ -36,6 +36,8 @@ function NotificacaoComponent({
         notificationAnswer
       );
 
+      console.log('response answer notification: ', response)
+
       if (200 < response.status < 300) {
         onNotificationAnswered();
         return response.data;
