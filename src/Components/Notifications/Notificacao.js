@@ -30,25 +30,27 @@ function NotificacaoComponent({
       receiver: userEmail,
     };
 
-    try {
+    while (responseTries < 4){
+
       const response = await axios.post(
         `${apiUrl}/user/responder-notificacao`,
         notificationAnswer
       );
-
+      
       console.log('response answer notification: ', response)
-
+      
       if (200 < response.status < 300) {
         onNotificationAnswered();
         return response.data;
       }
       onNotificationAnswered();
-    } catch (err) {
+      
       if (responseTries < 4) {
         responseTries++;
-        throw err;
+        continue;
       }
     }
+      
   }
 
   const handleAnswerNotification = async (
