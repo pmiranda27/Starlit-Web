@@ -2,9 +2,10 @@ import { IoPersonAdd } from "react-icons/io5";
 import { CiNoWaitingSign } from "react-icons/ci";
 import axios from "axios";
 import "./User_Component.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const apiUrl = "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
+const apiUrl =
+  "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
 
 function UserComponent({
   name,
@@ -14,8 +15,11 @@ function UserComponent({
   imgUrl,
   setIsShowingFriendRequestPopUp,
   refreshFriendsList, // Função para atualizar a lista de amigos
+  isFriendRequested,
 }) {
-  const [isRequested, setIsRequested] = useState(false);
+  const [isRequested, setIsRequested] = useState(isFriendRequested);
+  const [canChangeNotificationRequest, setCanChangeNotificationRequest] =
+    useState(true);
 
   function sendFriendRequest() {
     setIsShowingFriendRequestPopUp(true);
@@ -29,19 +33,27 @@ function UserComponent({
       const response = await axios.post(`${apiUrl}/user/remover-notificacao`, {
         sender: loggedUserEmail,
         receiver: userEmail,
+        type: "friend-request",
       });
       console.log("Notificação removida com sucesso", response.data);
     } catch (error) {
-      console.error("Erro ao remover notificação:", error.response?.data || error.message);
+      console.error(
+        "Erro ao remover notificação:",
+        error.response?.data || error.message
+      );
     }
   }
 
   async function sendFriendNotificationRequest() {
     var requestName;
-    if (loggedUserName === '' || loggedUserName === undefined || loggedUserName === null) {
-      requestName = 'Solicitação de amizade!'
+    if (
+      loggedUserName === "" ||
+      loggedUserName === undefined ||
+      loggedUserName === null
+    ) {
+      requestName = "Solicitação de amizade!";
     } else {
-      requestName = `${loggedUserName} enviou uma solicitação de amizade!`
+      requestName = `${loggedUserName} enviou uma solicitação de amizade!`;
     }
     try {
       const response = await axios.post(`${apiUrl}/user/enviar-notificacao`, {
@@ -59,10 +71,17 @@ function UserComponent({
         return false;
       }
     } catch (error) {
-      console.error("Erro ao enviar solicitação de amizade:", error.response?.data || error.message);
+      console.error(
+        "Erro ao enviar solicitação de amizade:",
+        error.response?.data || error.message
+      );
       return false;
     }
   }
+
+  useEffect(() => {
+    setCanChangeNotificationRequest(true)
+  }, [isRequested]);
 
   async function acceptFriendRequest() {
     try {
@@ -77,7 +96,10 @@ function UserComponent({
         console.error("Falha ao aceitar solicitação de amizade", response.data);
       }
     } catch (error) {
-      console.error("Erro ao aceitar solicitação de amizade:", error.response?.data || error.message);
+      console.error(
+        "Erro ao aceitar solicitação de amizade:",
+        error.response?.data || error.message
+      );
     }
   }
 
@@ -102,8 +124,11 @@ function UserComponent({
             strokeWidth={"4px"}
             color="white"
             onClick={() => {
-              setIsRequested(false);
-              cancelFriendNotificationRequest();
+              if (canChangeNotificationRequest) {
+                cancelFriendNotificationRequest();
+                setIsRequested(false);
+                setCanChangeNotificationRequest(false);
+              }
             }}
           />
         ) : (
@@ -112,8 +137,11 @@ function UserComponent({
             strokeWidth={"4px"}
             color="white"
             onClick={() => {
-              setIsRequested(true);
-              sendFriendNotificationRequest();
+              if (canChangeNotificationRequest) {
+                sendFriendNotificationRequest();
+                setIsRequested(true);
+                setCanChangeNotificationRequest(false);
+              }
             }}
           />
         )}
