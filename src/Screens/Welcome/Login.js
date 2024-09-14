@@ -1,6 +1,6 @@
 import "./Login.css";
 
-import { Loader } from "../../Components/Loaders/Loader";
+import { Loader } from "../../Components/Loaders/Loader_Welcome";
 
 import axios from "axios";
 
