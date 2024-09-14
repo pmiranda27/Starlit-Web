@@ -37,11 +37,17 @@ function UserComponent({
   }
 
   async function sendFriendNotificationRequest() {
+    var requestName;
+    if (loggedUserName === '' || loggedUserName === undefined || loggedUserName === null) {
+      requestName = 'Solicitação de amizade!'
+    } else {
+      requestName = `${loggedUserName} enviou uma solicitação de amizade!`
+    }
     try {
       const response = await axios.post(`${apiUrl}/user/enviar-notificacao`, {
         sender: loggedUserEmail,
         receiver: userEmail,
-        name: `${loggedUserName} enviou uma solicitação de amizade!`,
+        name: requestName,
         type: "friend-request",
       });
 
