@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { TabSelectArrow } from "../../Components/Tab_Select_Arrow";
 import { ApiService } from "../../Components/Services/Api_Service";
+import { IoIosSettings } from "react-icons/io";
 
 const HomePage = () => {
   const apiUrl = ApiService.apiUrl;
@@ -98,7 +99,7 @@ const HomePage = () => {
               }}
             >
               <IoChatboxEllipsesSharp style={iconStyle} />
-              Mensagens
+              Mensag.
             </div>
             <div
               className={
@@ -117,13 +118,13 @@ const HomePage = () => {
             <div
               className={
                 tabIndex === 3
-                  ? `link-card-home-page bottom-card link-card-selected`
-                  : `link-card-home-page bottom-card`
+                  ? `link-card-home-page link-card-selected`
+                  : `link-card-home-page`
               }
               onClick={() => setTabIndex(3)}
             >
-              <IoSettings size={34} color="white" />
-              Configurações
+              <IoIosSettings color="white" />
+              Config.
             </div>
           </div>
         </section>

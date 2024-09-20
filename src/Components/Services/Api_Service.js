@@ -1,3 +1,3 @@
 export class ApiService {
-    static apiUrl = 'https://a81d930b-8145-426a-a992-3ae5212953d1-00-141ku1p7be0mi.janeway.replit.dev';
+    static apiUrl = 'https://0e57f7b4-626f-4f61-9128-cc6604255737-00-3i5sje1qg1i89.worf.replit.dev';
 }

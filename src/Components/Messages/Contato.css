@@ -1,0 +1,16 @@
+.contato-component {
+    width: 80%;
+    height: 75px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.contato-avatar-image {
+    height: 80%;
+
+    border-radius: 50%;
+
+    aspect-ratio: 1;
+}
