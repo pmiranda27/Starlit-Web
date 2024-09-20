@@ -4,6 +4,9 @@ import axios from "axios";
 import "./User_Component.css";
 import { useState } from "react";
 
+import { ApiService } from "../Services/Api_Service";
+
+
 const apiUrl = ApiService.apiUrl;
 
 function UserComponent({

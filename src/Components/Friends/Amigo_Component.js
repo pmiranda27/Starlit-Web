@@ -4,6 +4,8 @@ import "./Amigo_Component.css";
 import { useState } from "react";
 import axios from "axios";
 
+import { ApiService } from "../Services/Api_Service";
+
 const apiUrl = ApiService.apiUrl;
 
 

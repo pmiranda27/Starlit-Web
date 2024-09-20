@@ -2,6 +2,8 @@ import "./Notificacao.css";
 
 import { useState } from "react";
 
+import { ApiService } from "../Services/Api_Service";
+
 import axios from "axios";
 
 const apiUrl = ApiService.apiUrl;
