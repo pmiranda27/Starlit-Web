@@ -11,8 +11,7 @@ import { ImCross } from "react-icons/im";
 import { SendProfilePicturePanel } from "../../Components/Send_Profile_Picture_Panel";
 
 const Register = () => {
-  const apiUrl =
-    "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
+  const apiUrl = ApiService.apiUrl;
   
   const axiosConnection = axios.create({
     baseURL: apiUrl,

@@ -9,8 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { PopUpConfirm } from "../../Components/PopUpConfirm";
 
 const Login = () => {
-  const apiUrl =
-    "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
+  const apiUrl = ApiService.apiUrl;
 
   const navigate = useNavigate();
   const ToRegister = () => {

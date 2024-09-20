@@ -4,8 +4,7 @@ import "./Amigo_Component.css";
 import { useState } from "react";
 import axios from "axios";
 
-const apiUrl =
-  "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
+const apiUrl = ApiService.apiUrl;
 
 
 function AmigoComponent({ name, imgUrl, userEmail, emailFriend, refreshFriend }) {

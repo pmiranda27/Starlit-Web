@@ -4,7 +4,7 @@ import axios from "axios";
 import "./User_Component.css";
 import { useState } from "react";
 
-const apiUrl = "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
+const apiUrl = ApiService.apiUrl;
 
 function UserComponent({
   name,

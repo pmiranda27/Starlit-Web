@@ -1,8 +1,11 @@
 import "./Join.css";
 import starlitLogo from "../../Assets/Images/starlit-logo.png";
 import { Link } from "react-router-dom";
+import { ApiService } from "../../Components/Services/Api_Service";
 
 const Join = () => {
+  console.log(ApiService.apiUrl);
+
   return (
     <div className="join-main">
       <div className="join-painel">

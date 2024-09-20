@@ -19,8 +19,7 @@ import { useEffect, useState } from "react";
 import { TabSelectArrow } from "../../Components/Tab_Select_Arrow";
 
 const HomePage = () => {
-  const apiUrl =
-    "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
+  const apiUrl = ApiService.apiUrl;
 
   const iconStyle = { color: "white" };
 
@@ -54,9 +53,8 @@ const HomePage = () => {
     <>
       <div className="home-main">
         <div
-          className={`search-bar ${
-            searchBarEnabled ? "" : "search-bar-invisible"
-          }`}
+          className={`search-bar ${searchBarEnabled ? "" : "search-bar-invisible"
+            }`}
         >
           <div className="search-bar-positions">
             <input

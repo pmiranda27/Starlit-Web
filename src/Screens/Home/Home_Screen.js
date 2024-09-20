@@ -13,9 +13,8 @@ import { IoIosCloseCircle, IoIosNotifications } from "react-icons/io";
 import { FriendSectionLoader } from "../../Components/Loaders/Friends_Section";
 import { FriendRequestPopUp } from "../../Components/PopUpConfirm";
 import { NotificacaoTab } from "../../Components/Notifications/Notificacao_Tab";
+import { ApiService } from "../../Components/Services/Api_Service";
 
-const apiUrl =
-  "https://3d9dba1f-2b5b-433f-a1b0-eb428d2de251-00-32rrmhyucky1c.worf.replit.dev";
 
 function HomeScreen() {
   const [credentials, setCredentials] = useState(null);
@@ -50,7 +49,7 @@ function HomeScreen() {
     var verifyAuthenticationTries = 0;
     try {
       const isLoggedRequest = await axios.post(
-        `${apiUrl}/user/verify-auth`,
+        `${ApiService.apiUrl}/user/verify-auth`,
         { loggedToken },
         { timeout: 1250 }
       );
@@ -67,7 +66,7 @@ function HomeScreen() {
 
   async function getFriendsList() {
     try {
-      const response = await axios.post(`${apiUrl}/user/amigos`, {
+      const response = await axios.post(`${ApiService.apiUrl}/user/amigos`, {
         email: credentials.email,
       });
 
@@ -93,12 +92,12 @@ function HomeScreen() {
 
   async function getAllUsersToAdd() {
     try {
-      const response = await axios.get(`${apiUrl}/user/lista-usuarios`);
+      const response = await axios.get(`${ApiService.apiUrl}/user/lista-usuarios`);
       const listaUsuariosFiltrada = response.data.filter(
         (user) => user.email !== credentials.email
       );
 
-      const listaAmigos = await axios.post(`${apiUrl}/user/amigos`, {
+      const listaAmigos = await axios.post(`${ApiService.apiUrl}/user/amigos`, {
         email: credentials.email,
       });
 
@@ -132,7 +131,7 @@ function HomeScreen() {
 
   const getUserNotifications = async () => {
     try {
-      const response = await axios.post(`${apiUrl}/user/lista-notificacoes`, {
+      const response = await axios.post(`${ApiService.apiUrl}/user/lista-notificacoes`, {
         email: credentials.email,
       });
 
