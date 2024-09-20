@@ -1,5 +1,9 @@
-— Clicar fora da tela fecha a lista de opções do usuário.
-— Aparecer se uma solicitação está pendente ou não, e se estiver, aparecer o ícone condizente na tela de usuários para adicionar.
-— Loading Icon ao logar-se e registrar-se.
-
 — Pedir confirmação pra remover amigo (avisar que vai perder a conversa).
+— Posição da seta na seleção de abas (home) — Talvez grid seja uma solução.
+
+— Ícone da aba de perfil é a foto do usuário
+— Colocar loading inicial na aba de usuários para adicionar
+
+— Clicar no seu amigo leva você ào perfil dele
+
+— Tela de perfil está feia

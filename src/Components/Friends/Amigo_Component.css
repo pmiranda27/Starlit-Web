@@ -64,7 +64,6 @@
   cursor: default;
 }
 
-
 .options-panel {
   position: absolute;
   left: 50%;
@@ -87,20 +86,20 @@
 
   transition: max-height 100ms ease-in-out;
 }
-.options-panel:hover{
+.options-panel:hover {
   background-color: rgba(0, 0, 0, 0.5);
 }
 .options-panel.options-panel-opened {
   max-height: 100px;
 }
 
-.options-panel>ul {
+.options-panel > ul {
   list-style: none;
 
   text-align: center;
 }
 
-.options-panel>ul>li {
+.options-panel > ul > li {
   color: white;
 
   margin: 4px;
@@ -110,6 +109,6 @@
   font-weight: 400;
 }
 
-.options-panel>ul>li:active {
+.options-panel > ul > li:active {
   cursor: default;
 }

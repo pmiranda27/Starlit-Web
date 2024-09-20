@@ -116,6 +116,7 @@ function HomeScreen() {
             imgUrl={user.avatar}
             setIsShowingFriendRequestPopUp={setIsShowingFriendRequestPopUp}
             refreshFriendsList={getFriendsList} // Passa a função para o UserComponent
+            isFriendRequested={user.friendRequests.some((friendRequestUser) => friendRequestUser.sender === credentials.email)}
           />
         )
       );
@@ -212,7 +213,9 @@ function HomeScreen() {
             size={32}
             onClick={() => {
               setAreNotificationsOpen(true);
-              setTimeout(() => { setIsShowingNotificationsComponents(true) }, 350);
+              setTimeout(() => {
+                setIsShowingNotificationsComponents(true);
+              }, 350);
             }}
             className="notifications-button-home-screen"
           />
@@ -221,7 +224,9 @@ function HomeScreen() {
             size={32}
             onClick={() => {
               setAreNotificationsOpen(true);
-              setTimeout(() => { setIsShowingNotificationsComponents(true) }, 350);
+              setTimeout(() => {
+                setIsShowingNotificationsComponents(true);
+              }, 350);
             }}
             className="notifications-button-home-screen"
           />
@@ -245,7 +250,9 @@ function HomeScreen() {
         </NotificacaoTab>
         <section className="main-post-feed"></section>
         <section className="main-friends-section">
-          <div className={`list-friends-parent ${isAddingFriends ? 'hiding' : ''}`}>
+          <div
+            className={`list-friends-parent ${isAddingFriends ? "hiding" : ""}`}
+          >
             <div className={`link-card-main-friends`}>
               <h5>Amigos</h5>
               <IoPersonAdd
@@ -256,11 +263,7 @@ function HomeScreen() {
               />
             </div>
             <div className="amigos-display">
-              {isLoadingFriendSection ? (
-                <FriendSectionLoader />
-              ) :
-                listaAmigos
-              }
+              {isLoadingFriendSection ? <FriendSectionLoader /> : listaAmigos}
             </div>
           </div>
           <AddUsersList $addUserListEnabled={isAddingFriends}>
@@ -273,9 +276,7 @@ function HomeScreen() {
                 className="adicionar-novo-amigo"
               />
             </div>
-            <div className="user-display">
-              {listaUsuarios}
-            </div>
+            <div className="user-display">{listaUsuarios}</div>
           </AddUsersList>
         </section>
       </div>
