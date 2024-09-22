@@ -7,7 +7,6 @@ export const ContatoAmigos = ({
   setContatoIndex,
   isSelected,
 }) => {
-  console.log(`Contato ${nomeAmigo}: isSelected =`, isSelected);
   return (
     <div
       className={`contato-component ${isSelected ? `contato-selected` : ``}`}

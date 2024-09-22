@@ -1,0 +1,20 @@
+.corpo-message-item {
+    width: 40%;
+    height: fit-content;
+
+    background-color: rgb(140, 48, 97);
+
+    padding: 8px;
+    margin-bottom: 8px;
+
+    border-radius: 20px;
+
+    font-weight: 600;
+
+    align-self: flex-start;
+}
+
+.autoria-propria {
+    background-color: rgb(198, 60, 81);
+    align-self: flex-end;
+}

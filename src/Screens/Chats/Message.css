@@ -128,11 +128,15 @@
 }
 
 .contato-name > img {
+  height: 80px;
+
   border-radius: 50%;
+
+  aspect-ratio: 1;
 }
 
 .chat-texts {
-  width: 100%;
+  width: 90%;
   height: 85%;
 
   display: flex;
@@ -141,8 +145,13 @@
 }
 
 .chat-text-zone {
-  width: 100%;
+  width: 90%;
   height: 85%;
+
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .input-text-zone {

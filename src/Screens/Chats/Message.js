@@ -11,6 +11,7 @@ import { ContatoAmigos } from "../../Components/Messages/Contato";
 
 import { useEffect } from "react";
 import { FriendSectionLoader } from "../../Components/Loaders/Friends_Section";
+import { MessageItem } from "../../Components/Messages/Message_Item";
 
 function Chat() {
   const iconStyle = { color: "white" };
@@ -23,7 +24,11 @@ function Chat() {
   const [listaResponseAmigos, setListaResponseAmigos] = useState([]);
   const [listaAmigosContatos, setListaAmigosContatos] = useState([]);
 
-  const [listaMensagensCurrentUser, setListaMensagensCurrentUser] = useState([]);
+  const [mensagemDigitadaAtual, setMensagemDigitadaAtual] = useState();
+
+  const [listaMensagensCurrentUser, setListaMensagensCurrentUser] = useState(
+    []
+  );
 
   const [isLoadingContactsList, setIsLoadingContactsList] = useState(true);
 
@@ -57,10 +62,7 @@ function Chat() {
         email: credentials.email,
       });
 
-      console.log('AQUI: ', response.data)
-
       setListaResponseAmigos(response.data);
-      console.log('listaResponseAmigos: ', listaResponseAmigos)
 
       const newFriendsElements = response.data.map((friend, ind) => (
         <ContatoAmigos
@@ -92,23 +94,57 @@ function Chat() {
 
   async function getMensagensList() {
     try {
-      console.log('amigoIndex: ', listaResponseAmigos)
-      const response = await axios.post(`${ApiService.apiUrl}/mensagem/lista-mensagens`, {
-        email: credentials.email,
-        friendEmail: listaResponseAmigos[selectedFriend].email 
-      });
+      const response = await axios.post(
+        `${ApiService.apiUrl}/mensagem/lista-mensagens`,
+        {
+          email: credentials.email,
+          friendEmail: listaResponseAmigos[selectedFriend].email,
+        }
+      );
 
-      const newMensagensElements = response.data.map((message, ind) => (
-        <h2>{message}</h2>
-      ));
-      
+      const newMensagensElements = response.data.listMessages.map(
+        (message, ind) => (
+          <MessageItem
+            key={ind}
+            conteudoMensagem={message.content}
+            autoriaPropria={message.sender === credentials.email ? true : false}
+          />
+        )
+      );
+
       setListaMensagensCurrentUser(newMensagensElements);
-    }
-    catch (error) {
+    } catch (error) {
       console.error(
         "Erro ao obter mensagens do amigo:",
         error.response?.data || error.message
       );
+    }
+  }
+
+  async function enviarMensagem(receiverEmail) {
+    if (
+      !mensagemDigitadaAtual ||
+      mensagemDigitadaAtual === "" ||
+      mensagemDigitadaAtual.replace(/\s+/g, "").length < 1
+    ) {
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `${ApiService.apiUrl}/mensagem/enviar-mensagem`,
+        {
+          sender: credentials.email,
+          receiver: receiverEmail,
+          content: mensagemDigitadaAtual,
+        }
+      );
+
+      setMensagemDigitadaAtual('');
+
+      console.log("mensagem enviada com sucesso!", response);
+      getMensagensList();
+    } catch (error) {
+      console.log("falha ao enviar mensagem: ", error);
     }
   }
 
@@ -158,19 +194,33 @@ function Chat() {
               ""
             ) : (
               <div className="contato-name">
-                <img src="https://placehold.co/80" alt="" />
+                <img
+                  src={listaResponseAmigos[selectedFriend].avatar}
+                  alt="Foto do perfil"
+                />
                 {listaResponseAmigos[selectedFriend].name}
               </div>
             )}
           </div>
           <div className="chat-texts">
-            <div className="chat-text-zone">
-              {listaMensagensCurrentUser}
-            </div>
+            <div className="chat-text-zone">{listaMensagensCurrentUser}</div>
             <div className="input-text-zone">
               <div className="input-box">
-                <textarea name="input-chat" id="input-chat"></textarea>
-                <div className="send-input-chat">
+                <textarea
+                  name="input-chat"
+                  id="input-chat"
+                  value={mensagemDigitadaAtual}
+                  onChange={(msg) => {
+                    console.log("msg: ", msg.target.value);
+                    setMensagemDigitadaAtual(msg.target.value);
+                  }}
+                ></textarea>
+                <div
+                  className="send-input-chat"
+                  onClick={() => {
+                    enviarMensagem(listaResponseAmigos[selectedFriend].email);
+                  }}
+                >
                   <IoSend
                     size={"30px"}
                     style={{ color: "rgb(163, 58, 114)" }}
