@@ -10,6 +10,7 @@ import { ApiService } from "../../Components/Services/Api_Service";
 import { ContatoAmigos } from "../../Components/Messages/Contato";
 
 import { useEffect } from "react";
+import { FriendSectionLoader } from "../../Components/Loaders/Friends_Section";
 
 function Chat() {
   const iconStyle = { color: "white" };
@@ -17,26 +18,14 @@ function Chat() {
   const [credentials, setCredentials] = useState(null);
   const [loggedToken, setLoggedToken] = useState();
 
-  const [listaAmigosContatos, setListaAmigosContatos] = useState([])
+  const [selectedFriend, setSelectedFriend] = useState(0);
 
-  async function getFriendsList() {
-    try {
-      const response = await axios.post(`${ApiService.apiUrl}/user/amigos`, {
-        email: credentials.email,
-      });
+  const [listaResponseAmigos, setListaResponseAmigos] = useState([]);
+  const [listaAmigosContatos, setListaAmigosContatos] = useState([]);
 
-      const newFriendsElements = response.data.map((friend, ind) => (
-        <ContatoAmigos imageUrl={friend.avatar} nomeAmigo={friend.name} />
-      ));
+  const [listaMensagensCurrentUser, setListaMensagensCurrentUser] = useState([]);
 
-      setListaAmigosContatos(newFriendsElements);
-    } catch (error) {
-      console.error(
-        "Erro ao obter lista de amigos:",
-        error.response?.data || error.message
-      );
-    }
-  }
+  const [isLoadingContactsList, setIsLoadingContactsList] = useState(true);
 
   const getCredentials = async () => {
     const creds = await verifyAuthentication();
@@ -62,8 +51,65 @@ function Chat() {
     }
   }
 
-  function refreshEverythingUserHas(){
-    getFriendsList();
+  async function getFriendsList() {
+    try {
+      const response = await axios.post(`${ApiService.apiUrl}/user/amigos`, {
+        email: credentials.email,
+      });
+
+      console.log('AQUI: ', response.data)
+
+      setListaResponseAmigos(response.data);
+      console.log('listaResponseAmigos: ', listaResponseAmigos)
+
+      const newFriendsElements = response.data.map((friend, ind) => (
+        <ContatoAmigos
+          key={ind}
+          contatoIndex={ind}
+          imageUrl={friend.avatar}
+          nomeAmigo={friend.name}
+          emailAmigo={friend.email}
+          setContatoIndex={setSelectedFriend}
+          isSelected={selectedFriend === ind ? true : false}
+        />
+      ));
+
+      setListaAmigosContatos(newFriendsElements);
+      setIsLoadingContactsList(false);
+    } catch (error) {
+      console.error(
+        "Erro ao obter lista de amigos:",
+        error.response?.data || error.message
+      );
+    }
+  }
+
+  useEffect(() => {
+    if (listaResponseAmigos.length > 0) {
+      getMensagensList();
+    }
+  }, [listaResponseAmigos, selectedFriend]);
+
+  async function getMensagensList() {
+    try {
+      console.log('amigoIndex: ', listaResponseAmigos)
+      const response = await axios.post(`${ApiService.apiUrl}/mensagem/lista-mensagens`, {
+        email: credentials.email,
+        friendEmail: listaResponseAmigos[selectedFriend].email 
+      });
+
+      const newMensagensElements = response.data.map((message, ind) => (
+        <h2>{message}</h2>
+      ));
+      
+      setListaMensagensCurrentUser(newMensagensElements);
+    }
+    catch (error) {
+      console.error(
+        "Erro ao obter mensagens do amigo:",
+        error.response?.data || error.message
+      );
+    }
   }
 
   var checkCred = 0;
@@ -79,12 +125,16 @@ function Chat() {
       console.log("com credenciais: ", credentials);
     }
 
+    async function refreshEverythingUserHas() {
+      await getFriendsList();
+    }
+
     const refreshInterval = setInterval(() => {
       refreshEverythingUserHas();
-    }, 2500);
+    }, 100);
 
     return () => clearInterval(refreshInterval);
-  }, [credentials]);
+  }, [credentials, selectedFriend]);
 
   return (
     <>
@@ -95,23 +145,36 @@ function Chat() {
             Contatos
           </div>
           <div className="lista-contatos-messages">
-            {listaAmigosContatos}
+            {isLoadingContactsList ? (
+              <FriendSectionLoader />
+            ) : (
+              listaAmigosContatos
+            )}
           </div>
         </section>
         <section className="chat-section">
           <div className="center-contato-nome">
-            <div className="contato-name">
-              <img src="https://placehold.co/80" alt="" />
-              Nome do Contato
-            </div>
+            {isLoadingContactsList ? (
+              ""
+            ) : (
+              <div className="contato-name">
+                <img src="https://placehold.co/80" alt="" />
+                {listaResponseAmigos[selectedFriend].name}
+              </div>
+            )}
           </div>
           <div className="chat-texts">
-            <div className="chat-text-zone"></div>
+            <div className="chat-text-zone">
+              {listaMensagensCurrentUser}
+            </div>
             <div className="input-text-zone">
               <div className="input-box">
                 <textarea name="input-chat" id="input-chat"></textarea>
                 <div className="send-input-chat">
-                  <IoSend size={'30px'} style={{ color: "rgb(163, 58, 114)" }} />
+                  <IoSend
+                    size={"30px"}
+                    style={{ color: "rgb(163, 58, 114)" }}
+                  />
                 </div>
               </div>
             </div>

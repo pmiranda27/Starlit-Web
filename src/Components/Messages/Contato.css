@@ -1,16 +1,44 @@
 .contato-component {
-    width: 80%;
-    height: 75px;
+  width: 70%;
+  height: 50px;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  user-select: none;
+
+  cursor: pointer;
+
+  gap: 16px;
+
+  padding: 8px 16px;
+  background-color: rgba(255, 255, 255, 0.15);
+
+  border: transparent;
+  border-radius: 32px;
+}
+.contato-component:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.contato-selected {
+  background-color: rgba(255, 255, 255, 0.35);
+
+  cursor: default;
+}
+.contato-selected:hover {
+    background-color: rgba(255,255,255, .35);
 }
 
 .contato-avatar-image {
-    height: 80%;
+  height: 85%;
 
-    border-radius: 50%;
+  border-radius: 50%;
 
-    aspect-ratio: 1;
+  aspect-ratio: 1;
+}
+
+.contato-component > h3 {
+  color: white;
 }
