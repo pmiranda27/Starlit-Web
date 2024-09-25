@@ -4,10 +4,7 @@ import axios from "axios";
 import "./User_Component.css";
 import { useEffect, useState } from "react";
 
-import { ApiService } from "../Services/Api_Service";
-
-
-const apiUrl = ApiService.apiUrl;
+const apiUrl = process.env.API_URL;
 
 function UserComponent({
   name,

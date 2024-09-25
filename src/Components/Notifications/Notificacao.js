@@ -6,7 +6,7 @@ import { ApiService } from "../Services/Api_Service";
 
 import axios from "axios";
 
-const apiUrl = ApiService.apiUrl;
+const apiUrl = process.env.API_URL;
 
 function NotificacaoComponent({
   notificationId,

@@ -2,6 +2,7 @@
 talvez fazer as requests da api num service, e tornar as listas de info globais
 
 — DELAY DEMAIS NA MUDANÇA DE CONTATO SELECIONADO
+— Delay demais no envio e recebimento de mensagens.
 
 — Pedir confirmação pra remover amigo (avisar que vai perder a conversa).
 

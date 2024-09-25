@@ -6,18 +6,19 @@ import { IoSend } from "react-icons/io5";
 
 import axios from "axios";
 
-import { ApiService } from "../../Components/Services/Api_Service";
 import { ContatoAmigos } from "../../Components/Messages/Contato";
 
 import { useEffect } from "react";
 import { FriendSectionLoader } from "../../Components/Loaders/Friends_Section";
 import { MessageItem } from "../../Components/Messages/Message_Item";
+import { useChat } from "../../Components/Services/Chat_Service";
+import { useAuth } from "../../Components/Services/Api_Service";
 
 function Chat() {
   const iconStyle = { color: "white" };
 
-  const [credentials, setCredentials] = useState(null);
-  const [loggedToken, setLoggedToken] = useState();
+  const { getFriendsChatList, sendMessage } = useChat();
+  const { getCredentials } = useAuth();
 
   const [selectedFriend, setSelectedFriend] = useState(0);
 
@@ -32,93 +33,48 @@ function Chat() {
 
   const [isLoadingContactsList, setIsLoadingContactsList] = useState(true);
 
-  const getCredentials = async () => {
-    const creds = await verifyAuthentication();
-    setCredentials(creds);
-  };
-
-  async function verifyAuthentication() {
-    var verifyAuthenticationTries = 0;
-    try {
-      const isLoggedRequest = await axios.post(
-        `${ApiService.apiUrl}/user/verify-auth`,
-        { loggedToken },
-        { timeout: 1250 }
-      );
-
-      return isLoggedRequest.data.decode;
-    } catch (error) {
-      console.log(`error: ${error}`);
-      if (verifyAuthenticationTries > 3) {
-        console.log("3 tentativas foram feitas, nenhuma funcionou!");
-        verifyAuthenticationTries++;
-      }
-    }
-  }
-
-  async function getFriendsList() {
-    try {
-      const response = await axios.post(`${ApiService.apiUrl}/user/amigos`, {
-        email: credentials.email,
-      });
-
-      setListaResponseAmigos(response.data);
-
-      const newFriendsElements = response.data.map((friend, ind) => (
-        <ContatoAmigos
-          key={ind}
-          contatoIndex={ind}
-          imageUrl={friend.avatar}
-          nomeAmigo={friend.name}
-          emailAmigo={friend.email}
-          setContatoIndex={setSelectedFriend}
-          isSelected={selectedFriend === ind ? true : false}
-        />
-      ));
-
-      setListaAmigosContatos(newFriendsElements);
-      setIsLoadingContactsList(false);
-    } catch (error) {
-      console.error(
-        "Erro ao obter lista de amigos:",
-        error.response?.data || error.message
-      );
-    }
-  }
-
   useEffect(() => {
     if (listaResponseAmigos.length > 0) {
-      getMensagensList();
+      getMensagensList(listaResponseAmigos, selectedFriend);
     }
   }, [listaResponseAmigos, selectedFriend]);
 
+  async function getContactsList() {
+    const response = await getFriendsChatList();
+    console.log('repsonse: ', response)
+
+    setListaResponseAmigos(response.data);
+
+    const newFriendsElements = response.data.map((friend, ind) => (
+      <ContatoAmigos
+        key={ind}
+        contatoIndex={ind}
+        imageUrl={friend.avatar}
+        nomeAmigo={friend.name}
+        emailAmigo={friend.email}
+        setContatoIndex={setSelectedFriend}
+        isSelected={selectedFriend === ind ? true : false}
+      />
+    ));
+
+    setListaAmigosContatos(newFriendsElements);
+    setIsLoadingContactsList(false);
+  }
+
   async function getMensagensList() {
-    try {
-      const response = await axios.post(
-        `${ApiService.apiUrl}/mensagem/lista-mensagens`,
-        {
-          email: credentials.email,
-          friendEmail: listaResponseAmigos[selectedFriend].email,
-        }
-      );
+    const response = await getFriendsChatList();
 
-      const newMensagensElements = response.data.listMessages.map(
-        (message, ind) => (
-          <MessageItem
-            key={ind}
-            conteudoMensagem={message.content}
-            autoriaPropria={message.sender === credentials.email ? true : false}
-          />
-        )
-      );
+    const newMensagensElements = response.data.listMessages.map(
+      (message, ind) => (
+        <MessageItem
+          key={ind}
+          conteudoMensagem={message.content}
+          autoriaPropria={message.sender === getCredentials().email ? true : false}
+        />
+      )
+    );
 
-      setListaMensagensCurrentUser(newMensagensElements);
-    } catch (error) {
-      console.error(
-        "Erro ao obter mensagens do amigo:",
-        error.response?.data || error.message
-      );
-    }
+    setListaMensagensCurrentUser(newMensagensElements);
   }
 
   async function enviarMensagem(receiverEmail) {
@@ -129,40 +85,38 @@ function Chat() {
     ) {
       return;
     }
-    try {
-      const response = await axios.post(
-        `${ApiService.apiUrl}/mensagem/enviar-mensagem`,
-        {
-          sender: credentials.email,
-          receiver: receiverEmail,
-          content: mensagemDigitadaAtual,
-        }
-      );
 
-      setMensagemDigitadaAtual('');
-
-      console.log("mensagem enviada com sucesso!", response);
-      getMensagensList();
-    } catch (error) {
-      console.log("falha ao enviar mensagem: ", error);
+    while (true){
+      var response = sendMessage(listaResponseAmigos[selectedFriend].email, mensagemDigitadaAtual);
+  
+      if(response.status === 200){
+        setMensagemDigitadaAtual('');
+        console.log("mensagem enviada com sucesso!", response);
+        getMensagensList();
+        break;
+      }else {
+        console.log('envio falhado', response);
+        continue;
+      }
     }
+
+
   }
 
   var checkCred = 0;
 
   useEffect(() => {
-    if (!credentials) {
-      console.log("sem credenciais");
-      setLoggedToken(localStorage.getItem("token"));
-      getCredentials();
-      return;
-    } else if (checkCred < 1) {
-      checkCred++;
-      console.log("com credenciais: ", credentials);
-    }
+    // if (!(getCredentials())) {
+    //   console.log("sem credenciais");
+    //   getCredentials();
+    //   return;
+    // } else if (checkCred < 1) {
+    //   checkCred++;
+    //   console.log("com credenciais: ", getCredentials());
+    // }
 
     async function refreshEverythingUserHas() {
-      await getFriendsList();
+      await getContactsList();
     }
 
     const refreshInterval = setInterval(() => {
@@ -170,7 +124,7 @@ function Chat() {
     }, 100);
 
     return () => clearInterval(refreshInterval);
-  }, [credentials, selectedFriend]);
+  }, [getCredentials(), selectedFriend]);
 
   return (
     <>

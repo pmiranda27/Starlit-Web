@@ -8,10 +8,10 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { PopUpConfirm } from "../../Components/PopUpConfirm";
 
-import { ApiService } from "../../Components/Services/Api_Service";
+import { useAuth } from "../../Components/Services/Api_Service";
 
 const Login = () => {
-  const apiUrl = ApiService.apiUrl;
+  const { login } = useAuth();
 
   const navigate = useNavigate();
   const ToRegister = () => {
@@ -88,29 +88,18 @@ const Login = () => {
 
     setIsLoading(true);
 
-    var loginTries = 0;
     setTimeout(async () => {
-      try {
-        const response = await axios.post(`${apiUrl}/user/login`, loginUser);
-        if (response.status === 200) {
-          console.log("sucesso no login");
+      var loginTry = await login(loginUser);
+      if (loginTry.status === 200) {
+        setIsLoading(false);
+        setIsGreen(true);
+        setIsShowingMessage(true);
 
-          setIsLoading(false);
-          setIsGreen(true);
-          setIsShowingMessage(true);
-
-          localStorage.removeItem("token");
-          localStorage.setItem("token", response.data.token);
-
-          setTimeout(() => {
-            navigate("/home");
-          }, 2000);
-        }
-      } catch (error) {
-        if (loginTries < 4) {
-          loginTries++;
-          throw error;
-        }
+        setTimeout(() => {
+          navigate("/home");
+        }, 2000);
+      }
+      else {
         setIsGreen(false);
         setIsShowingMessage(true);
 
@@ -122,8 +111,7 @@ const Login = () => {
           formBody.senha = "";
 
           setIsLoading(false);
-        }, 3000);
-        console.log("error: ", error);
+        }, 1750);
       }
     }, 1500);
   }

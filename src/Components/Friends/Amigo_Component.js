@@ -5,10 +5,6 @@ import axios from "axios";
 import { IoIosArrowDropdown } from "react-icons/io";
 import { IoCloseSharp } from "react-icons/io5";
 
-import { ApiService } from "../Services/Api_Service";
-
-const apiUrl = ApiService.apiUrl;
-
 function AmigoComponent({
   name,
   imgUrl,
@@ -79,7 +75,7 @@ function AmigoComponent({
 
 async function removeFriend(userEmail, emailFriend, refreshFriendList) {
   try {
-    const response = await axios.post(`${apiUrl}/user/remove-friend`, {
+    const response = await axios.post(`${process.env.API_URL}/user/remove-friend`, {
       email: userEmail,
       emailFriend: emailFriend,
     });

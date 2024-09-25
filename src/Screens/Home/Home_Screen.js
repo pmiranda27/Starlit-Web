@@ -13,7 +13,6 @@ import { IoIosCloseCircle, IoIosNotifications } from "react-icons/io";
 import { FriendSectionLoader } from "../../Components/Loaders/Friends_Section";
 import { FriendRequestPopUp } from "../../Components/PopUpConfirm";
 import { NotificacaoTab } from "../../Components/Notifications/Notificacao_Tab";
-import { ApiService } from "../../Components/Services/Api_Service";
 
 
 function HomeScreen() {
@@ -49,7 +48,7 @@ function HomeScreen() {
     var verifyAuthenticationTries = 0;
     try {
       const isLoggedRequest = await axios.post(
-        `${ApiService.apiUrl}/user/verify-auth`,
+        `${process.env.REACT_APP_API_URL}/user/verify-auth`,
         { loggedToken },
         { timeout: 1250 }
       );
@@ -66,7 +65,7 @@ function HomeScreen() {
 
   async function getFriendsList() {
     try {
-      const response = await axios.post(`${ApiService.apiUrl}/user/amigos`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/amigos`, {
         email: credentials.email,
       });
 
@@ -92,12 +91,12 @@ function HomeScreen() {
 
   async function getAllUsersToAdd() {
     try {
-      const response = await axios.get(`${ApiService.apiUrl}/user/lista-usuarios`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/lista-usuarios`);
       const listaUsuariosFiltrada = response.data.filter(
         (user) => user.email !== credentials.email
       );
 
-      const listaAmigos = await axios.post(`${ApiService.apiUrl}/user/amigos`, {
+      const listaAmigos = await axios.post(`${process.env.REACT_APP_API_URL}/user/amigos`, {
         email: credentials.email,
       });
 
@@ -132,7 +131,7 @@ function HomeScreen() {
 
   const getUserNotifications = async () => {
     try {
-      const response = await axios.post(`${ApiService.apiUrl}/user/lista-notificacoes`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/lista-notificacoes`, {
         email: credentials.email,
       });
 

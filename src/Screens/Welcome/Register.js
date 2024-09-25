@@ -10,10 +10,9 @@ import { PopUpConfirm } from "../../Components/PopUpConfirm";
 import { ImCross } from "react-icons/im";
 import { SendProfilePicturePanel } from "../../Components/Send_Profile_Picture_Panel";
 
-import { ApiService } from "../../Components/Services/Api_Service";
 
 const Register = () => {
-  const apiUrl = ApiService.apiUrl;
+  const apiUrl = process.env.REACT_APP_API_URL;
   
   const axiosConnection = axios.create({
     baseURL: apiUrl,

@@ -21,7 +21,7 @@ import { ApiService } from "../../Components/Services/Api_Service";
 import { IoIosSettings } from "react-icons/io";
 
 const HomePage = () => {
-  const apiUrl = ApiService.apiUrl;
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const iconStyle = { color: "white" };
 
