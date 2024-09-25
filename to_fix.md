@@ -1,4 +1,5 @@
 !!!!!!! - FAZ UM REQUEST NA API TODA VEZ QUE MUDA DE PÁGINA
+talvez fazer as requests da api num service, e tornar as listas de info globais
 
 — DELAY DEMAIS NA MUDANÇA DE CONTATO SELECIONADO
 
