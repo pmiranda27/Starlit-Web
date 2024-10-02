@@ -4,7 +4,7 @@ import axios from "axios";
 import "./User_Component.css";
 import { useEffect, useState } from "react";
 
-const apiUrl = process.env.API_URL;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 function UserComponent({
   name,

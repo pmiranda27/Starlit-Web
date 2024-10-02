@@ -8,43 +8,68 @@ const ChatContext = createContext();
 export const ChatProvider = ({ children }) => {
     const { getCredentials } = useAuth();
 
-    console.log('Credenciais: ', getCredentials());
+    const [currentUserMessages, setCurrentUserMessages] = useState([]);
 
-    var credencial = getCredentials();
-    console.log('robertao ', credencial)
+    const [currentCredentialsChatService, setCurrentCredentialsChatService] = useState();
+
+    async function setCurrentChatCredentials() {
+        const credent = getCredentials();
+        setCurrentCredentialsChatService(credent);
+        return credent;
+    }
 
     async function getFriendsChatList() {
-        credencial = getCredentials();
-        try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/amigos`, {
-                email: credencial.email,
-            });
+        var tryGetFriendsChatList = 0;
 
-            return response;
-        } catch (error) {
-            console.error(
-                "Erro ao obter lista de amigos:",
-                error.response?.data || error.message
-            );
+        while (tryGetFriendsChatList <= 3) {
+            var credencial = getCredentials();
+            console.log('credencial: ', credencial)
+            try {
+                const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/amigos`, {
+                    email: credencial.email,
+                });
+                console.log('OLHA AQUI: ', credencial)
+                console.log('OLHA AQUI: ', response)
+
+                return response;
+            } catch (error) {
+                console.error(
+                    "Erro ao obter lista de amigos:",
+                    error.response?.data || error.message
+                );
+                tryGetFriendsChatList++;
+            }
         }
     }
 
-    async function getMensagensList(listaResponseAmigos, selectedFriend) {
-        try {
-            const response = await axios.post(
-                `${process.env.REACT_APP_API_URL}/mensagem/lista-mensagens`,
-                {
-                    email: getCredentials().email,
-                    friendEmail: listaResponseAmigos[selectedFriend].email,
-                }
-            );
+    function getMensagensList() {
+        return currentUserMessages;
+    }
 
-            return response
-        } catch (error) {
-            console.error(
-                "Erro ao obter mensagens do amigo:",
-                error.response?.data || error.message
-            );
+    async function setMensagensList(listaResponseAmigos, selectedFriend) {
+        var currentTriesSetMensagensList = 0;
+        while (currentTriesSetMensagensList <= 5) {
+            if (!currentCredentialsChatService) {
+                setCurrentChatCredentials();
+            }
+            try {
+                const response = await axios.post(
+                    `${process.env.REACT_APP_API_URL}/mensagem/lista-mensagens`,
+                    {
+                        email: currentCredentialsChatService.email,
+                        friendEmail: listaResponseAmigos[selectedFriend].email,
+                    }
+                );
+
+                console.log('currentUserMEssages: ', currentUserMessages);
+                setCurrentUserMessages(response.data);
+                break;
+            } catch (error) {
+                console.error(
+                    "Erro ao obter mensagens do amigo:",
+                    error.response?.data || error.message
+                );
+            }
         }
     }
 
@@ -53,7 +78,7 @@ export const ChatProvider = ({ children }) => {
             const response = await axios.post(
                 `${process.env.REACT_APP_API_URL}/mensagem/enviar-mensagem`,
                 {
-                    sender: getCredentials().email,
+                    sender: currentCredentialsChatService.email,
                     receiver: receiverEmail,
                     content: mensagemDigitadaAtual,
                 }
@@ -66,7 +91,7 @@ export const ChatProvider = ({ children }) => {
     }
 
     return (
-        <ChatContext.Provider value={{ getFriendsChatList, getMensagensList, sendMessage }}>
+        <ChatContext.Provider value={{ getFriendsChatList, getMensagensList, setMensagensList, sendMessage }}>
             {children}
         </ChatContext.Provider>
     )

@@ -17,7 +17,7 @@ import { useAuth } from "../../Components/Services/Api_Service";
 function Chat() {
   const iconStyle = { color: "white" };
 
-  const { getFriendsChatList, sendMessage } = useChat();
+  const { getFriendsChatList, setMensagensList, sendMessage } = useChat();
   const { getCredentials } = useAuth();
 
   const [selectedFriend, setSelectedFriend] = useState(0);
@@ -41,8 +41,7 @@ function Chat() {
 
   async function getContactsList() {
     const response = await getFriendsChatList();
-    console.log('repsonse: ', response)
-
+    
     setListaResponseAmigos(response.data);
 
     const newFriendsElements = response.data.map((friend, ind) => (
@@ -64,7 +63,7 @@ function Chat() {
   async function getMensagensList() {
     const response = await getFriendsChatList();
 
-    const newMensagensElements = response.data.listMessages.map(
+    const newMensagensElements = response.data.map(
       (message, ind) => (
         <MessageItem
           key={ind}
@@ -106,16 +105,8 @@ function Chat() {
   var checkCred = 0;
 
   useEffect(() => {
-    // if (!(getCredentials())) {
-    //   console.log("sem credenciais");
-    //   getCredentials();
-    //   return;
-    // } else if (checkCred < 1) {
-    //   checkCred++;
-    //   console.log("com credenciais: ", getCredentials());
-    // }
-
     async function refreshEverythingUserHas() {
+      await setMensagensList();
       await getContactsList();
     }
 
@@ -124,7 +115,7 @@ function Chat() {
     }, 100);
 
     return () => clearInterval(refreshInterval);
-  }, [getCredentials(), selectedFriend]);
+  }, [getCredentials, selectedFriend]);
 
   return (
     <>

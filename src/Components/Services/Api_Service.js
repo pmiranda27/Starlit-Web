@@ -7,57 +7,53 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const apiUrl = process.env.REACT_APP_API_URL;
 
-    const [credentials, setUserCredentials] = useState(null);
-    const [loggedToken, setLoggedToken] = useState(null);
+    const [credentials, setUserCredentialsAuth] = useState();
+    var loggedToken = '';
 
 
     async function setCredentials() {
-        const creds = await verifyAuthentication();
-        setUserCredentials(creds);
+        const cred = await verifyAuthentication();
+        setUserCredentialsAuth(cred);
+        console.log('are tou ready: ', cred)
     }
 
-    async function getCredentials() {
-        await setCredentials();
+    function getCredentials() {
         return credentials;
     }
 
     async function verifyAuthentication() {
         var verifyAuthenticationTries = 0;
-        while (true) {
+        while (verifyAuthenticationTries <= 10) {
             try {
                 const isLoggedRequest = await axios.post(
                     `${apiUrl}/user/verify-auth`,
                     { loggedToken: loggedToken }
                 );
+                console.log('isLoggedRequest: ', isLoggedRequest);
                 return isLoggedRequest.data.decode;
             } catch (error) {
                 console.log(`error: ${error}`);
-                if (verifyAuthenticationTries > 3) {
-                    console.log("3 tentativas foram feitas, nenhuma funcionou!");
-                    verifyAuthenticationTries++;
-                }
-                continue;
             }
         }
     }
 
     async function login(loginUser) {
         var loginTries = 0;
-        try {
-            const response = await axios.post(`${apiUrl}/user/login`, loginUser);
+        while (loginTries <= 3) {
+            try {
+                const response = await axios.post(`${apiUrl}/user/login`, loginUser);
 
-            setLoggedToken(response.data.token);
-            localStorage.removeItem("token");
-            localStorage.setItem("token", response.data.token);
-            return response;
-        } catch (error) {
-            if (loginTries < 4) {
+                localStorage.removeItem("token");
+                localStorage.setItem("token", response.data.token);
+                loggedToken = localStorage.getItem("token");
+                console.log('setLoggedToken: ', loggedToken);
+                setCredentials();
+                return response;
+            } catch (error) {
                 loginTries++;
-                login();
+                console.log("error: ", error);
+                return error;
             }
-
-            console.log("error: ", error);
-            return error;
         }
     }
 

@@ -6,7 +6,7 @@ import { ApiService } from "../Services/Api_Service";
 
 import axios from "axios";
 
-const apiUrl = process.env.API_URL;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 function NotificacaoComponent({
   notificationId,
@@ -32,7 +32,6 @@ function NotificacaoComponent({
     };
 
     while (responseTries < 4){
-
       const response = await axios.post(
         `${apiUrl}/user/responder-notificacao`,
         notificationAnswer

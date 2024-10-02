@@ -13,11 +13,13 @@ import { IoIosCloseCircle, IoIosNotifications } from "react-icons/io";
 import { FriendSectionLoader } from "../../Components/Loaders/Friends_Section";
 import { FriendRequestPopUp } from "../../Components/PopUpConfirm";
 import { NotificacaoTab } from "../../Components/Notifications/Notificacao_Tab";
+import { useAuth } from "../../Components/Services/Api_Service";
 
 
 function HomeScreen() {
-  const [credentials, setCredentials] = useState(null);
   const [loggedToken, setLoggedToken] = useState();
+
+  const { getCredentials } = useAuth();
 
   const [listaAmigos, setListaAmigos] = useState([]);
   const [listaUsuarios, setListaUsuarios] = useState([]);
@@ -37,123 +39,124 @@ function HomeScreen() {
     setIsShowingNotificationsComponents,
   ] = useState(false);
 
-  axiosRetry(axios, { retries: 5 });
+  const [credentialsHomeScreen, setCredentialsHomeScreen] = useState();
 
-  const getCredentials = async () => {
-    const creds = await verifyAuthentication();
-    setCredentials(creds);
-  };
 
-  async function verifyAuthentication() {
-    var verifyAuthenticationTries = 0;
-    try {
-      const isLoggedRequest = await axios.post(
-        `${process.env.REACT_APP_API_URL}/user/verify-auth`,
-        { loggedToken },
-        { timeout: 1250 }
-      );
+  async function getFriendsList() {
+    var getFriendListTries = 0;
 
-      return isLoggedRequest.data.decode;
-    } catch (error) {
-      console.log(`error: ${error}`);
-      if (verifyAuthenticationTries > 3) {
-        console.log("3 tentativas foram feitas, nenhuma funcionou!");
-        verifyAuthenticationTries++;
+    while (getFriendListTries <= 5) {
+      if (!credentialsHomeScreen) {
+        checkCredentials();
+      }
+      try {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/amigos`, {
+          email: credentialsHomeScreen.email,
+        });
+
+        const newFriendsElements = response.data.map((friend, ind) => (
+          <AmigoComponent
+            key={ind}
+            name={friend.name}
+            imgUrl={friend.avatar}
+            userEmail={credentialsHomeScreen.email}
+            emailFriend={friend.email}
+            refreshFriend={getFriendsList}
+          />
+        ));
+
+        setListaAmigos(newFriendsElements);
+      } catch (error) {
+        console.error(
+          "Erro ao obter lista de amigos:",
+          error.response?.data || error.message
+        );
+        getFriendListTries++;
       }
     }
   }
 
-  async function getFriendsList() {
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/amigos`, {
-        email: credentials.email,
-      });
-
-      const newFriendsElements = response.data.map((friend, ind) => (
-        <AmigoComponent
-          key={ind}
-          name={friend.name}
-          imgUrl={friend.avatar}
-          userEmail={credentials.email}
-          emailFriend={friend.email}
-          refreshFriend={getFriendsList}
-        />
-      ));
-
-      setListaAmigos(newFriendsElements);
-    } catch (error) {
-      console.error(
-        "Erro ao obter lista de amigos:",
-        error.response?.data || error.message
-      );
-    }
-  }
-
   async function getAllUsersToAdd() {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/lista-usuarios`);
-      const listaUsuariosFiltrada = response.data.filter(
-        (user) => user.email !== credentials.email
-      );
+    var getAllUsersToAddTries = 0;
 
-      const listaAmigos = await axios.post(`${process.env.REACT_APP_API_URL}/user/amigos`, {
-        email: credentials.email,
-      });
+    while (getAllUsersToAddTries <= 5) {
+      if (!credentialsHomeScreen) {
+        checkCredentials();
+      }
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/lista-usuarios`);
+        const listaUsuariosFiltrada = response.data.filter(
+          (user) => user.email !== credentialsHomeScreen.email
+        );
 
-      const listaUsuariosFiltradaFinal = listaUsuariosFiltrada.filter(
-        (user) => !listaAmigos.data.some((amigo) => amigo.email === user.email)
-      );
+        const listaAmigos = await axios.post(`${process.env.REACT_APP_API_URL}/user/amigos`, {
+          email: credentialsHomeScreen.email,
+        });
 
-      const newUsuariosElements = listaUsuariosFiltradaFinal.map(
-        (user, ind) => (
-          <UserComponent
-            key={ind}
-            name={user.name}
-            loggedUserName={credentials.name}
-            userEmail={user.email}
-            loggedUserEmail={credentials.email}
-            imgUrl={user.avatar}
-            setIsShowingFriendRequestPopUp={setIsShowingFriendRequestPopUp}
-            refreshFriendsList={getFriendsList} // Passa a função para o UserComponent
-            isFriendRequested={user.friendRequests.some((friendRequestUser) => friendRequestUser.sender === credentials.email)}
-          />
-        )
-      );
+        const listaUsuariosFiltradaFinal = listaUsuariosFiltrada.filter(
+          (user) => !listaAmigos.data.some((amigo) => amigo.email === user.email)
+        );
 
-      setListaUsuarios(newUsuariosElements);
-    } catch (error) {
-      console.error(
-        "Erro ao obter lista de usuários:",
-        error.response?.data || error.message
-      );
+        const newUsuariosElements = listaUsuariosFiltradaFinal.map(
+          (user, ind) => (
+            <UserComponent
+              key={ind}
+              name={user.name}
+              loggedUserName={getCredentials().name}
+              userEmail={user.email}
+              loggedUserEmail={getCredentials().email}
+              imgUrl={user.avatar}
+              setIsShowingFriendRequestPopUp={setIsShowingFriendRequestPopUp}
+              refreshFriendsList={getFriendsList} // Passa a função para o UserComponent
+              isFriendRequested={user.friendRequests.some((friendRequestUser) => friendRequestUser.sender === getCredentials().email)}
+            />
+          )
+        );
+
+        setListaUsuarios(newUsuariosElements);
+      } catch (error) {
+        console.error(
+          "Erro ao obter lista de usuários:",
+          error.response?.data || error.message
+        );
+        getAllUsersToAddTries++;
+      }
     }
   }
 
   const getUserNotifications = async () => {
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/lista-notificacoes`, {
-        email: credentials.email,
-      });
+    var getUserNotificationsTries = 0;
 
-      const newNotificationsElements = response.data.map(
-        (notification, ind) => (
-          <NotificacaoComponent
-            key={ind}
-            notificationId={notification._id}
-            name={notification.name}
-            avatar={notification.avatar}
-            userEmail={credentials.email}
-            onNotificationAnswered={refreshEverythingUserHas}
-          />
-        )
-      );
+    while (getUserNotificationsTries <= 5) {
+      if (!credentialsHomeScreen) {
+        checkCredentials();
+      }
+      try {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/lista-notificacoes`, {
+          email: credentialsHomeScreen.email,
+        });
 
-      setListaNotifications(newNotificationsElements);
-    } catch (error) {
-      console.error(
-        "Erro ao obter notificações:",
-        error.response?.data || error.message
-      );
+        const newNotificationsElements = response.data.map(
+          (notification, ind) => (
+            <NotificacaoComponent
+              key={ind}
+              notificationId={notification._id}
+              name={notification.name}
+              avatar={notification.avatar}
+              userEmail={credentialsHomeScreen.email}
+              onNotificationAnswered={refreshEverythingUserHas}
+            />
+          )
+        );
+
+        setListaNotifications(newNotificationsElements);
+      } catch (error) {
+        console.error(
+          "Erro ao obter notificações:",
+          error.response?.data || error.message
+        );
+        getUserNotificationsTries++;
+      }
     }
   };
 
@@ -168,25 +171,21 @@ function HomeScreen() {
     setIsLoadingFriendSection(false);
   }
 
-  var checkCred = 0;
+  const checkCredentials = () => {
+    const credent = getCredentials();
+    setCredentialsHomeScreen(credent);
+    return credent;
+  }
 
   useEffect(() => {
-    if (!credentials) {
-      console.log("sem credenciais");
-      setLoggedToken(localStorage.getItem("token"));
-      getCredentials();
-      return;
-    } else if (checkCred < 1) {
-      checkCred++;
-      console.log("com credenciais: ", credentials);
-    }
+    checkCredentials();
 
     const refreshInterval = setInterval(() => {
       refreshEverythingUserHas();
     }, 2500);
 
     return () => clearInterval(refreshInterval);
-  }, [credentials]);
+  }, [credentialsHomeScreen]);
 
   const iconStyle = { color: "white" };
 
