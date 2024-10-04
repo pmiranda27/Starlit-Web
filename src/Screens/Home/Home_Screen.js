@@ -47,19 +47,23 @@ function HomeScreen() {
 
     while (getFriendListTries <= 5) {
       if (!credentialsHomeScreen) {
-        checkCredentials();
+        const credent = getCredentials();
+        if (credent && credent !== credentialsHomeScreen) {
+          setCredentialsHomeScreen(credent);
+        }
+        continue;
       }
       try {
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/amigos`, {
-          email: credentialsHomeScreen.email,
+          email: credentialsHomeScreen['email'],
         });
 
         const newFriendsElements = response.data.map((friend, ind) => (
           <AmigoComponent
-            key={ind}
+            key={friend.email}
             name={friend.name}
             imgUrl={friend.avatar}
-            userEmail={credentialsHomeScreen.email}
+            userEmail={credentialsHomeScreen['email']}
             emailFriend={friend.email}
             refreshFriend={getFriendsList}
           />
@@ -81,16 +85,19 @@ function HomeScreen() {
 
     while (getAllUsersToAddTries <= 5) {
       if (!credentialsHomeScreen) {
-        checkCredentials();
+        const credent = getCredentials();
+        if (credent && credent !== credentialsHomeScreen) {
+          setCredentialsHomeScreen(credent);
+        }
       }
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/lista-usuarios`);
         const listaUsuariosFiltrada = response.data.filter(
-          (user) => user.email !== credentialsHomeScreen.email
+          (user) => user.email !== credentialsHomeScreen['email']
         );
 
         const listaAmigos = await axios.post(`${process.env.REACT_APP_API_URL}/user/amigos`, {
-          email: credentialsHomeScreen.email,
+          email: credentialsHomeScreen['email'],
         });
 
         const listaUsuariosFiltradaFinal = listaUsuariosFiltrada.filter(
@@ -102,13 +109,13 @@ function HomeScreen() {
             <UserComponent
               key={ind}
               name={user.name}
-              loggedUserName={getCredentials().name}
+              loggedUserName={getCredentials()['email']}
               userEmail={user.email}
-              loggedUserEmail={getCredentials().email}
+              loggedUserEmail={getCredentials()['email']}
               imgUrl={user.avatar}
               setIsShowingFriendRequestPopUp={setIsShowingFriendRequestPopUp}
               refreshFriendsList={getFriendsList} // Passa a função para o UserComponent
-              isFriendRequested={user.friendRequests.some((friendRequestUser) => friendRequestUser.sender === getCredentials().email)}
+              isFriendRequested={user.friendRequests.some((friendRequestUser) => friendRequestUser.sender === getCredentials()['email'])}
             />
           )
         );
@@ -129,11 +136,15 @@ function HomeScreen() {
 
     while (getUserNotificationsTries <= 5) {
       if (!credentialsHomeScreen) {
-        checkCredentials();
+        const credent = getCredentials();
+        if (credent && credent !== credentialsHomeScreen) {
+          setCredentialsHomeScreen(credent);
+        }
+        continue;
       }
       try {
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/lista-notificacoes`, {
-          email: credentialsHomeScreen.email,
+          email: credentialsHomeScreen['email'],
         });
 
         const newNotificationsElements = response.data.map(
@@ -143,7 +154,7 @@ function HomeScreen() {
               notificationId={notification._id}
               name={notification.name}
               avatar={notification.avatar}
-              userEmail={credentialsHomeScreen.email}
+              userEmail={credentialsHomeScreen['email']}
               onNotificationAnswered={refreshEverythingUserHas}
             />
           )
@@ -171,18 +182,15 @@ function HomeScreen() {
     setIsLoadingFriendSection(false);
   }
 
-  const checkCredentials = () => {
-    const credent = getCredentials();
-    setCredentialsHomeScreen(credent);
-    return credent;
-  }
-
   useEffect(() => {
-    checkCredentials();
+    const credent = getCredentials();
+    if (credent && credent !== credentialsHomeScreen) {
+      setCredentialsHomeScreen(credent);
+    }
 
     const refreshInterval = setInterval(() => {
       refreshEverythingUserHas();
-    }, 2500);
+    }, 5000);
 
     return () => clearInterval(refreshInterval);
   }, [credentialsHomeScreen]);
