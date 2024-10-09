@@ -4,8 +4,6 @@ import "./Message.css";
 import { IoChatboxEllipsesSharp } from "react-icons/io5";
 import { IoSend } from "react-icons/io5";
 
-import axios from "axios";
-
 import { ContatoAmigos } from "../../Components/Messages/Contato";
 
 import { useEffect } from "react";
@@ -17,7 +15,7 @@ import { useAuth } from "../../Components/Services/Api_Service";
 function Chat() {
   const iconStyle = { color: "white" };
 
-  const { getFriendsChatList, setMensagensList, sendMessage } = useChat();
+  const { getFriendsChatList, setMensagensList, sendMessage, chatSocket } = useChat();
   const { getCredentials } = useAuth();
 
   const [selectedFriend, setSelectedFriend] = useState(0);
@@ -27,6 +25,8 @@ function Chat() {
 
   const [mensagemDigitadaAtual, setMensagemDigitadaAtual] = useState();
 
+  const [friendsChatList, setFriendsChatList] = useState([]);
+
   const [listaMensagensCurrentUser, setListaMensagensCurrentUser] = useState(
     []
   );
@@ -34,88 +34,79 @@ function Chat() {
   const [isLoadingContactsList, setIsLoadingContactsList] = useState(true);
 
   useEffect(() => {
-    if (listaResponseAmigos.length > 0) {
-      getMensagensList(listaResponseAmigos, selectedFriend);
-    }
-  }, [listaResponseAmigos, selectedFriend]);
+    let isMounted = true;
 
-  async function getContactsList() {
-    const response = await getFriendsChatList();
-    
-    setListaResponseAmigos(response.data);
-
-    const newFriendsElements = response.data.map((friend, ind) => (
-      <ContatoAmigos
-        key={ind}
-        contatoIndex={ind}
-        imageUrl={friend.avatar}
-        nomeAmigo={friend.name}
-        emailAmigo={friend.email}
-        setContatoIndex={setSelectedFriend}
-        isSelected={selectedFriend === ind ? true : false}
-      />
-    ));
-
-    setListaAmigosContatos(newFriendsElements);
-    setIsLoadingContactsList(false);
-  }
-
-  async function getMensagensList() {
-    const response = await getFriendsChatList();
-
-    const newMensagensElements = response.data.map(
-      (message, ind) => (
-        <MessageItem
-          key={ind}
-          conteudoMensagem={message.content}
-          autoriaPropria={message.sender === getCredentials().email ? true : false}
-        />
-      )
-    );
-
-    setListaMensagensCurrentUser(newMensagensElements);
-  }
-
-  async function enviarMensagem(receiverEmail) {
-    if (
-      !mensagemDigitadaAtual ||
-      mensagemDigitadaAtual === "" ||
-      mensagemDigitadaAtual.replace(/\s+/g, "").length < 1
-    ) {
-      return;
-    }
-
-    while (true){
-      var response = sendMessage(listaResponseAmigos[selectedFriend].email, mensagemDigitadaAtual);
+    async function getContactsList() {
+        const response = await getFriendsChatList();
   
-      if(response.status === 200){
-        setMensagemDigitadaAtual('');
-        console.log("mensagem enviada com sucesso!", response);
-        getMensagensList();
-        break;
-      }else {
-        console.log('envio falhado', response);
-        continue;
+        setFriendsChatList(response.data)
+
+      if (isMounted) {
+        setListaResponseAmigos(response.data);
+        // ... handle friends mapping
+        const newFriendsElements = friendsChatList.map((friend, ind) => (
+          <ContatoAmigos
+            key={friend.email}
+            contatoIndex={ind}
+            imageUrl={friend.avatar}
+            nomeAmigo={friend.name}
+            emailAmigo={friend.email}
+            setContatoIndex={setSelectedFriend}
+            isSelected={selectedFriend === ind ? true : false}
+          />
+        ));
+  
+        setListaAmigosContatos(newFriendsElements);
+        setIsLoadingContactsList(false);
       }
     }
 
+    async function getMensagensList() {
+      const response = await getFriendsChatList();
 
-  }
+      const newMensagensElements = response.data.map(
+        (message, ind) => (
+          <MessageItem
+            key={ind}
+            conteudoMensagem={message.content}
+            autoriaPropria={message.sender === getCredentials().email ? true : false}
+          />
+        )
+      );
 
-  var checkCred = 0;
-
-  useEffect(() => {
-    async function refreshEverythingUserHas() {
-      await setMensagensList();
-      await getContactsList();
+      setListaMensagensCurrentUser(newMensagensElements);
     }
 
-    const refreshInterval = setInterval(() => {
-      refreshEverythingUserHas();
-    }, 100);
+    async function enviarMensagem(receiverEmail) {
+      if (
+        !mensagemDigitadaAtual ||
+        mensagemDigitadaAtual === "" ||
+        mensagemDigitadaAtual.replace(/\s+/g, "").length < 1
+      ) {
+        return;
+      }
 
-    return () => clearInterval(refreshInterval);
-  }, [getCredentials, selectedFriend]);
+      
+      const maxRetries = 5;
+      for(let attempt = 0; attempt < maxRetries; attempt++){  
+        var response = sendMessage(listaResponseAmigos[selectedFriend].email, mensagemDigitadaAtual);
+
+        if (response.status === 200) {
+          setMensagemDigitadaAtual('');
+          console.log("mensagem enviada com sucesso!", response);
+          getMensagensList();
+          break;
+        } else {
+          console.log('envio falhado', response);
+          continue;
+        }
+      }
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [getCredentials, selectedFriend, chatSocket, setMensagensList, getFriendsChatList, listaResponseAmigos, mensagemDigitadaAtual, sendMessage]);
 
   return (
     <>
@@ -163,7 +154,7 @@ function Chat() {
                 <div
                   className="send-input-chat"
                   onClick={() => {
-                    enviarMensagem(listaResponseAmigos[selectedFriend].email);
+                    // enviarMensagem(listaResponseAmigos[selectedFriend].email);
                   }}
                 >
                   <IoSend

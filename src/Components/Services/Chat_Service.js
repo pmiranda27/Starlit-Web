@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
+
 
 import axios from "axios";
 import { useAuth } from "./Api_Service";
@@ -12,10 +13,32 @@ export const ChatProvider = ({ children }) => {
 
     const [currentCredentialsChatService, setCurrentCredentialsChatService] = useState();
 
+    async function connectToWebSocket() {
+
+    }
+
+    useEffect(() => {
+        function onConnect() {
+            console.log('websocket do chat conectado com sucesso')
+        }
+
+        function onDisconnect() {
+            console.log('websocket do chat desconectado')
+        }
+
+        const chatSocket = new WebSocket(process.env.REACT_WEB_SOCKET_URL);
+
+        chatSocket.onopen = () => onConnect();
+        chatSocket.onclose = () => onDisconnect();
+
+        return () => {
+            chatSocket.close(); // Ensure socket is closed on unmount
+        };
+    }, [])
+
     async function setCurrentChatCredentials() {
         const credent = getCredentials();
         setCurrentCredentialsChatService(credent);
-        return credent;
     }
 
     async function getFriendsChatList() {
@@ -50,7 +73,7 @@ export const ChatProvider = ({ children }) => {
         var currentTriesSetMensagensList = 0;
         while (currentTriesSetMensagensList <= 5) {
             if (!currentCredentialsChatService) {
-                setCurrentChatCredentials();
+                await setCurrentChatCredentials();
             }
             try {
                 const response = await axios.post(
