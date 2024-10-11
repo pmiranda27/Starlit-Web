@@ -2,7 +2,6 @@ import "./Login.css";
 
 import { Loader } from "../../Components/Loaders/Loader_Welcome";
 
-import axios from "axios";
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +10,7 @@ import { PopUpConfirm } from "../../Components/PopUpConfirm";
 import { useAuth } from "../../Components/Services/Api_Service";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { loginAccount } = useAuth();
 
   const navigate = useNavigate();
   const ToRegister = () => {
@@ -82,14 +81,16 @@ const Login = () => {
     }
 
     const loginUser = {
-      email: formBody.email,
-      password: formBody.senha,
+      "email": formBody.email,
+      "password": formBody.senha
     };
 
     setIsLoading(true);
 
     setTimeout(async () => {
-      var loginTry = await login(loginUser);
+      console.log('tentando logar')
+      const loginTry = await loginAccount(loginUser);
+      console.log('logado');
       if (loginTry.status === 200) {
         setIsLoading(false);
         setIsGreen(true);

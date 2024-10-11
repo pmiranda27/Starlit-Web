@@ -13,24 +13,24 @@ export const ChatProvider = ({ children }) => {
   const [currentCredentialsChatService, setCurrentCredentialsChatService] =
     useState();
 
-  useEffect(() => {
-    function onConnect() {
-      console.log("websocket do chat conectado com sucesso");
-    }
+  // useEffect(() => {
+  //   function onConnect() {
+  //     console.log("websocket do chat conectado com sucesso");
+  //   }
 
-    function onDisconnect() {
-      console.log("websocket do chat desconectado");
-    }
+  //   function onDisconnect() {
+  //     console.log("websocket do chat desconectado");
+  //   }
 
-    const chatSocket = new WebSocket(process.env.REACT_WEB_SOCKET_URL);
+  //   const chatSocket = new WebSocket(process.env.REACT_WEB_SOCKET_URL);
 
-    chatSocket.onopen = () => onConnect();
-    chatSocket.onclose = () => onDisconnect();
+  //   chatSocket.onopen = () => onConnect();
+  //   chatSocket.onclose = () => onDisconnect();
 
-    return () => {
-      chatSocket.close(); // Ensure socket is closed on unmount
-    };
-  }, []);
+  //   return () => {
+  //     chatSocket.close(); // Ensure socket is closed on unmount
+  //   };
+  // }, []);
 
   async function setCurrentChatCredentials() {
     const credent = getCredentials();
