@@ -69,15 +69,7 @@ export const AuthProvider = ({ children }) => {
       console.log(loginUser);
       try{
         const requestLogin = await axios.post(`${apiUrl}/user/login`, loginUser);
-        for(var attemptArr = 0; attemptArr < 5; attemptArr++){
-          console.log(attemptArr);
-          // requestLogin = await axios.post(`${apiUrl}/user/login`, loginUser, { timeout: 10000 });
-          if(!requestLogin) {
-            continue
-          }
-          else {break;}
-        }
-        console.log('leite: ', requestLogin)
+    
         if (requestLogin.status === 200) {
           localStorage.removeItem('token');
           localStorage.setItem('token', requestLogin.data.token);
