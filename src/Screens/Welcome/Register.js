@@ -9,10 +9,13 @@ import { PopUpConfirm } from "../../Components/PopUpConfirm";
 
 import { ImCross } from "react-icons/im";
 import { SendProfilePicturePanel } from "../../Components/Send_Profile_Picture_Panel";
+import { useAuth } from "../../Components/Services/Api_Service";
 
 
 const Register = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
+
+  const { registerAccount } = useAuth();
   
   const axiosConnection = axios.create({
     baseURL: apiUrl,
@@ -127,7 +130,7 @@ const Register = () => {
     };
     setTimeout(async () => {
       try {
-        const response = await axiosConnection.post(`${apiUrl}/user/register`, newUser);
+        const response = await registerAccount(newUser);
         if (response.status === 201) {
           setIsGreen(true);
           setIsShowingMessage(true);
@@ -135,8 +138,6 @@ const Register = () => {
             setIsShowingProfilePicturePanel(false);
           }, 1500);
           setIsSendingProfilePicture(false);
-
-          localStorage.setItem('token', response.data.token);
 
           setTimeout(() => {
             navigate("/home");

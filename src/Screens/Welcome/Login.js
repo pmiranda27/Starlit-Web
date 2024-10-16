@@ -7,10 +7,14 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { PopUpConfirm } from "../../Components/PopUpConfirm";
 
+import axios from "axios";
+
 import { useAuth } from "../../Components/Services/Api_Service";
 
 const Login = () => {
   const { loginAccount } = useAuth();
+
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const navigate = useNavigate();
   const ToRegister = () => {
@@ -80,7 +84,7 @@ const Login = () => {
       return;
     }
 
-    const loginUser = {
+    const loginFormulario = {
       "email": formBody.email,
       "password": formBody.senha
     };
@@ -89,8 +93,8 @@ const Login = () => {
 
     setTimeout(async () => {
       console.log('tentando logar')
-      const loginTry = await loginAccount(loginUser);
-      console.log('logado');
+      const loginTry = await loginAccount(loginFormulario);
+
       if (loginTry.status === 200) {
         setIsLoading(false);
         setIsGreen(true);
@@ -104,12 +108,12 @@ const Login = () => {
         setIsGreen(false);
         setIsShowingMessage(true);
 
+        localStorage.removeItem('token');
+        console.log("CHORAAAR: ", loginTry)
+
         setTimeout(() => {
           setIsGreen(false);
           setIsShowingMessage(false);
-
-          formBody.email = "";
-          formBody.senha = "";
 
           setIsLoading(false);
         }, 1750);

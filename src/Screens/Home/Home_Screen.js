@@ -116,37 +116,37 @@ function HomeScreen() {
   }
 
   useEffect(() => {
-    // async function setCredHome() {
-    //   try {
-    //     const credent = await getCredentials();  // Certifique-se de que isso está correto
-    //     console.log("Credenciais obtidas: ", credent);
-    //     if (credent) {
-    //       setCredentialsHomeScreen(credent);
-    //     } else {
-    //       console.error("Credenciais não foram obtidas!");
-    //     }
-    //   } catch (error) {
-    //     console.error("Erro ao obter credenciais: ", error);
-    //   }
-    // }
+    async function setCredHome() {
+      try {
+        const credent = await getCredentials();  // Certifique-se de que isso está correto
+        console.log("Credenciais obtidas: ", credent);
+        if (credent) {
+          setCredentialsHomeScreen(credent);
+        } else {
+          console.error("Credenciais não foram obtidas!");
+        }
+      } catch (error) {
+        console.error("Erro ao obter credenciais: ", error);
+      }
+    }
 
-    // console.log("Iniciando efeito para verificar credenciais e carregar dados...");
-    // console.log("Credenciais atuais: ", credentialsHomeScreen);
-    // if (!credentialsHomeScreen) {
-    //   console.log('NAO TINHA CRED HOME');
-    //   setCredHome();
-    //   console.log('NOVO CREDEN: ', credentialsHomeScreen)
-    //   return;
-    // }
+    console.log("Iniciando efeito para verificar credenciais e carregar dados...");
+    console.log("Credenciais atuais: ", credentialsHomeScreen);
+    if (!credentialsHomeScreen) {
+      console.log('NAO TINHA CRED HOME');
+      setCredHome();
+      console.log('NOVO CREDEN: ', credentialsHomeScreen)
+      return;
+    }
 
-    // refreshCredenciaisAmigos();
-    // refreshEverythingUserHas();
+    refreshCredenciaisAmigos();
+    refreshEverythingUserHas();
 
-    // const refreshInterval = setInterval(() => {
-    //   refreshEverythingUserHas();
-    // }, 6500);
+    const refreshInterval = setInterval(() => {
+      refreshEverythingUserHas();
+    }, 6500);
 
-    // return () => clearInterval(refreshInterval);
+    return () => clearInterval(refreshInterval);
   }, []);
 
   const iconStyle = { color: "white" };

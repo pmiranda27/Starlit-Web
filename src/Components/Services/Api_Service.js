@@ -10,6 +10,10 @@ export const AuthProvider = ({ children }) => {
   const [authUserCredentials, setUserCredentialsAuth] = useState(null);
   const [loggedToken, setLoggedToken] = useState('');
 
+  function setToken(token) {
+    setLoggedToken(token);
+  }
+
   async function setCredentials() {
     console.log('APLUPLUUUU')
     const cred = await verifyAuthentication();
@@ -39,57 +43,99 @@ export const AuthProvider = ({ children }) => {
   }
 
   async function verifyAuthentication() {
-    var verifyAuthenticationTries = 0;
-    while (verifyAuthenticationTries < 5) {
-      try {
-        const isLoggedRequest = await axios.post(`${apiUrl}/user/verify-auth`, {
-          loggedToken: loggedToken,
-        });
-        if (isLoggedRequest.status === 200) {
-          return isLoggedRequest.data.decode;
-        } else {
-          return null;
-        }
-      } catch (error) {
-        console.log(`error: ${error}`);
-        verifyAuthenticationTries++;
-        if (verifyAuthenticationTries === 5) {
-          return null;
-        }
+    // var verifyAuthenticationTries = 0;
+    // while (verifyAuthenticationTries < 5) {
+    //   try {
+    //     const isLoggedRequest = await axios.post(`${apiUrl}/user/verify-auth`, {
+    //       loggedToken: loggedToken,
+    //     });
+    //     if (isLoggedRequest.status === 200) {
+    //       return isLoggedRequest.data.decode;
+    //     } else {
+    //       return null;
+    //     }
+    //   } catch (error) {
+    //     console.log(`error: ${error}`);
+    //     verifyAuthenticationTries++;
+    //     if (verifyAuthenticationTries === 5) {
+    //       return null;
+    //     }
+    //   }
+    // }
+  }
+
+  function clearSessionAndLocalStorage() {
+    localStorage.removeItem('token');
+
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('email');
+    sessionStorage.removeItem('avatar');
+  }
+
+  async function loginAccount(userForm) {
+    const response = await axios.post(`${apiUrl}/user/login`, userForm);
+    console.log(response);
+    if (response.status >= 200 && response.status < 300) {
+      console.log('papibaquigrafo: ', response.data.token);
+
+      const tok = response.data.token;
+      setLoggedToken(tok);
+
+      clearSessionAndLocalStorage();
+
+      localStorage.setItem('token', tok);
+      sessionStorage.setItem('username', response.data.usuario);
+      sessionStorage.setItem('email', userForm.email);
+      sessionStorage.setItem('avatar', response.data.avatar);
+
+      return {
+        status: response.status,
+        message: 'Sucesso no login'
+      }
+    }
+    else {
+      console.log('ERRO: ', response);
+      clearSessionAndLocalStorage();
+      return {
+        status: response.status,
+        message: 'Falha no login'
       }
     }
   }
 
-  async function loginAccount(loginUser) {
-      if (!loginUser) {
-        return null
+  async function registerAccount(userRegisterForm) {
+    const response = await axios.post(`${apiUrl}/user/register`, userRegisterForm);
+    console.log(response);
+    if (response.status >= 200 && response.status < 300) {
+      console.log('papibaquigrafo: ', response.data.token);
+
+      const tok = response.data.token;
+      setLoggedToken(tok);
+
+      clearSessionAndLocalStorage();
+
+      localStorage.setItem('token', tok);
+      sessionStorage.setItem('username', userRegisterForm.name);
+      sessionStorage.setItem('email', userRegisterForm.email);
+      sessionStorage.setItem('avatar', userRegisterForm.avatar);
+
+      return {
+        status: response.status,
+        message: 'Sucesso no registro'
       }
-      console.log('luz')
-      console.log(apiUrl)
-      console.log(loginUser);
-      try{
-        const requestLogin = await axios.post(`${apiUrl}/user/login`, loginUser);
-    
-        if (requestLogin.status === 200) {
-          localStorage.removeItem('token');
-          localStorage.setItem('token', requestLogin.data.token);
-          var tok = requestLogin.data.token;
-          setLoggedToken(tok);
-  
-          // setCredentials();
-          return requestLogin;
-        }
-        else {
-          localStorage.removeItem('token');
-          return requestLogin;
-        }
-      }catch(err){
-        console.log("CHORAAAR: ", err)
+    }
+    else {
+      console.log('ERRO: ', response);
+      clearSessionAndLocalStorage();
+      return {
+        status: response.status,
+        message: 'Falha no registro'
       }
+    }
   }
 
   return (
-    <AuthContext.Provider value={{ loginAccount, setCredentials, getCredentials }}>
+    <AuthContext.Provider value={{ registerAccount, loginAccount, setCredentials, getCredentials }}>
       {children}
     </AuthContext.Provider>
   );
