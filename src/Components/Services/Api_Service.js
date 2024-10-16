@@ -32,14 +32,12 @@ export const AuthProvider = ({ children }) => {
   }
 
   function getCredentials() {
-    for (var attempt = 0; attempt < 5; attempt++) {
-      if (!authUserCredentials) {
-        setCredentials();
-        continue;
-      } else {
-        return authUserCredentials;
-      }
+    const credenciais = {
+      name: sessionStorage.getItem('name'),
+      email: sessionStorage.getItem('email'),
+      avatar: sessionStorage.getItem('avatar')
     }
+    return credenciais;
   }
 
   async function verifyAuthentication() {

@@ -38,8 +38,11 @@ function HomeScreen() {
     setIsShowingNotificationsComponents,
   ] = useState(false);
 
-  const [credentialsHomeScreen, setCredentialsHomeScreen] = useState(null);
+  var credentialsHomeScreen;
 
+  function setCredentialsHomeScreen(){
+    credentialsHomeScreen = getCredentials();
+  }
 
   async function getFriendsItemsList() {
     const friendList = await getListaAmigos()
@@ -103,7 +106,7 @@ function HomeScreen() {
   }
 
   async function refreshEverythingUserHas() {
-    if (!credentialsHomeScreen.email) return;
+    if (!credentialsHomeScreen) return;
 
     await getUserNotifications();
     setIsLoadingAllUsersSection(false);
@@ -116,30 +119,11 @@ function HomeScreen() {
   }
 
   useEffect(() => {
-    async function setCredHome() {
-      try {
-        const credent = await getCredentials();  // Certifique-se de que isso está correto
-        console.log("Credenciais obtidas: ", credent);
-        if (credent) {
-          setCredentialsHomeScreen(credent);
-        } else {
-          console.error("Credenciais não foram obtidas!");
-        }
-      } catch (error) {
-        console.error("Erro ao obter credenciais: ", error);
-      }
+    if(!credentialsHomeScreen){
+      setCredentialsHomeScreen();
     }
-
-    console.log("Iniciando efeito para verificar credenciais e carregar dados...");
     console.log("Credenciais atuais: ", credentialsHomeScreen);
-    if (!credentialsHomeScreen) {
-      console.log('NAO TINHA CRED HOME');
-      setCredHome();
-      console.log('NOVO CREDEN: ', credentialsHomeScreen)
-      return;
-    }
 
-    refreshCredenciaisAmigos();
     refreshEverythingUserHas();
 
     const refreshInterval = setInterval(() => {
@@ -147,7 +131,7 @@ function HomeScreen() {
     }, 6500);
 
     return () => clearInterval(refreshInterval);
-  }, []);
+  }, [credentialsHomeScreen]);
 
   const iconStyle = { color: "white" };
 
@@ -218,7 +202,9 @@ function HomeScreen() {
             )}
           </div>
         </NotificacaoTab>
-        <section className="main-post-feed"></section>
+        <section className="main-post-feed">
+          
+        </section>
         <section className="main-friends-section">
           <div
             className={`list-friends-parent ${isAddingFriends ? "hiding" : ""}`}

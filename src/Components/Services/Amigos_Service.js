@@ -12,26 +12,16 @@ export const AmigosProvider = ({ children }) => {
     var credenciaisAmigos = null;
     const [userNameAmigos, setUserNameAmigos] = useState(null);
 
-    async function refreshCredenciaisAmigos() {
-        for (var tentativaCred = 0; tentativaCred < tentativasMaximasRequests; tentativaCred++) {
-            if (!credenciaisAmigos) {
-                const cred = await getCredentials();
-                credenciaisAmigos = cred;
-            }
-            break;
-        }
+    function refreshCredenciaisAmigos() {
+        credenciaisAmigos = getCredentials();
     }
 
     async function getListaAmigos() {
-        for (var tentativaCred = 0; tentativaCred < tentativasMaximasRequests; tentativaCred++) {
-            if (!credenciaisAmigos) {
-                await refreshCredenciaisAmigos();
-                continue;
-            }
-            break;
+        if (!credenciaisAmigos) {
+            refreshCredenciaisAmigos();
         }
 
-        const userEmail = sessionStorage.getItem('userEmail');
+        const userEmail = credenciaisAmigos.email;
 
         for (var tentativa = 0; tentativa < tentativasMaximasRequests; tentativa++) {
             const responseListaAmigos = await axios.post(`${apiUrl}/user/amigos`, {
@@ -50,12 +40,8 @@ export const AmigosProvider = ({ children }) => {
     }
 
     async function getAllUsersExceptLoggedUserAndFriends() {
-        for (var tentativaCred = 0; tentativaCred < tentativasMaximasRequests; tentativaCred++) {
-            if (!credenciaisAmigos) {
-                await refreshCredenciaisAmigos();
-                continue;
-            }
-            break;
+        if (!credenciaisAmigos) {
+            refreshCredenciaisAmigos();
         }
 
         for (var tentativa = 0; tentativa < tentativasMaximasRequests; tentativa++) {
@@ -67,7 +53,7 @@ export const AmigosProvider = ({ children }) => {
                 continue;
             }
 
-            const userEmail = sessionStorage.getItem('userEmail');
+            const userEmail = credenciaisAmigos.email;
 
             const listaUsuariosFiltradaLoggedUser = responseListaUsuarios.data.filter(
                 (user) => user.email !== userEmail
@@ -85,15 +71,11 @@ export const AmigosProvider = ({ children }) => {
     }
 
     async function getNotificacoesUsuario() {
-        for (var tentativaCred = 0; tentativaCred < tentativasMaximasRequests; tentativaCred++) {
-            if (!credenciaisAmigos) {
-                await refreshCredenciaisAmigos();
-                continue;
-            }
-            break;
+        if (!credenciaisAmigos) {
+            refreshCredenciaisAmigos();
         }
 
-        const userEmail = sessionStorage.getItem('userEmail');
+        const userEmail = credenciaisAmigos.email;
 
         for (var tentativa = 0; tentativa < tentativasMaximasRequests; tentativa++) {
             const responseListaNotificacoes = await axios.post(`${apiUrl}/user/lista-notificacoes`, {
@@ -113,9 +95,9 @@ export const AmigosProvider = ({ children }) => {
 
     useEffect(() => {
         if (!credenciaisAmigos) {
-          refreshCredenciaisAmigos();
+            refreshCredenciaisAmigos();
         }
-      }, [credenciaisAmigos]);
+    }, []);
 
     return <AmigosContext.Provider value={{ getListaAmigos, getAllUsersExceptLoggedUserAndFriends, getNotificacoesUsuario, refreshCredenciaisAmigos }}>{children}</AmigosContext.Provider>;
 };

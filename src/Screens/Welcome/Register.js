@@ -13,16 +13,7 @@ import { useAuth } from "../../Components/Services/Api_Service";
 
 
 const Register = () => {
-  const apiUrl = process.env.REACT_APP_API_URL;
-
   const { registerAccount } = useAuth();
-  
-  const axiosConnection = axios.create({
-    baseURL: apiUrl,
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  });
 
   const navigate = useNavigate();
   const ToLogin = () => {
