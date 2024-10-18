@@ -136,6 +136,8 @@ function HomeScreen() {
 
   const iconStyle = { color: "white" };
 
+  const [isCreatingNewPost, setIsCreatingNewPost] = useState(false);
+
   const [isAddingFriends, setIsAddingFriends] = useState(false);
 
   const handleNotificationClick = (action) => {
@@ -152,10 +154,17 @@ function HomeScreen() {
     }
   };
 
+  const closeNewPostScreen = () => {
+    setIsCreatingNewPost(false);
+  }
+  const openNewPostScreen = () => {
+    setIsCreatingNewPost(true);
+  }
+
   return (
     <>
       <div className="home-screen-main">
-        <NewPostPanel />
+        { isCreatingNewPost ? <NewPostPanel closeNewPostScreen={closeNewPostScreen} /> : ''}
         <FriendRequestPopUp $isShowingMessage={isShowingFriendRequestPopUp}>
           Solicitação Enviada
         </FriendRequestPopUp>
@@ -205,7 +214,7 @@ function HomeScreen() {
           </div>
         </NotificacaoTab>
         <section className="main-post-feed">
-          <div className="criar-novo-post">
+          <div className="criar-novo-post" onClick={openNewPostScreen}>
             Adicionar novo Post
           </div>
         </section>

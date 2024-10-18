@@ -3,7 +3,7 @@ import "./New_Post.css"
 import { useState } from "react"
 import { CiStar } from "react-icons/ci";
 
-export const NewPostPanel = ({ }) => {
+export const NewPostPanel = ({ closeNewPostScreen }) => {
     const [isPublic, setIsPublic] = useState(true);
     const [starRating, setStarRating] = useState(3);
 
@@ -58,7 +58,7 @@ export const NewPostPanel = ({ }) => {
 
 
     return <div className="background-new-post-panel">
-        <div className="painel-criar-novo-post">
+        <div className="painel-criar-novo-post" onClick={closeNewPostScreen()}>
             <div className="titulo-novo-post">
                 <input type="text" className="input-criar-novo-post" placeholder="Título do filme" />
                 {isPublic ? <FaEye onClick={() => {
