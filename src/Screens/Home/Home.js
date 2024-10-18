@@ -55,7 +55,7 @@ const HomePage = () => {
     <>
       <div className="home-main">
         <div
-          className={`search-bar ${searchBarEnabled ? "" : "search-bar-invisible"
+          className={`search-bar ${searchBarEnabled ? "" : "search-bar-hidden"
             }`}
         >
           <div className="search-bar-positions">
@@ -68,7 +68,7 @@ const HomePage = () => {
           </div>
         </div>
         <section className="section-abas">
-          <div className="logo">
+          <div className={`logo ${searchBarEnabled ? "logo-search-bar" : ""}`}>
             <img height="60%" src={startlitLogo} alt="" />
           </div>
           <div className="navigation-left-bar">
@@ -121,7 +121,10 @@ const HomePage = () => {
                   ? `link-card-home-page link-card-selected`
                   : `link-card-home-page`
               }
-              onClick={() => setTabIndex(3)}
+              onClick={() => {
+                setSearchBarEnabled(false);
+                setTabIndex(3)}
+              }
             >
               <IoIosSettings color="white" />
               Config.

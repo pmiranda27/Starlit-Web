@@ -15,6 +15,7 @@ import { FriendRequestPopUp } from "../../Components/PopUpConfirm";
 import { NotificacaoTab } from "../../Components/Notifications/Notificacao_Tab";
 import { useAuth } from "../../Components/Services/Api_Service";
 import { useAmigos } from "../../Components/Services/Amigos_Service";
+import { NewPostPanel } from "../../Components/Feed/New_Post";
 
 function HomeScreen() {
   const { getCredentials } = useAuth();
@@ -154,6 +155,7 @@ function HomeScreen() {
   return (
     <>
       <div className="home-screen-main">
+        <NewPostPanel />
         <FriendRequestPopUp $isShowingMessage={isShowingFriendRequestPopUp}>
           Solicitação Enviada
         </FriendRequestPopUp>
@@ -203,7 +205,9 @@ function HomeScreen() {
           </div>
         </NotificacaoTab>
         <section className="main-post-feed">
-          
+          <div className="criar-novo-post">
+            Adicionar novo Post
+          </div>
         </section>
         <section className="main-friends-section">
           <div

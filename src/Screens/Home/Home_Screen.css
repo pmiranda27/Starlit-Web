@@ -14,11 +14,6 @@
   position: relative;
 }
 
-.main-post-feed {
-  width: 70%;
-  height: 100%;
-}
-
 .main-friends-section {
   width: 19vw;
   height: 100%;
@@ -49,6 +44,7 @@
 
   gap: 12px;
 }
+
 .link-card-main-friends > h5 {
 
   font-size: 1.25rem;
@@ -173,4 +169,41 @@
 .add-user-list-parent {
   width: 100%;
   height: 100%;
+}
+
+
+.main-post-feed {
+  width: 70%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.criar-novo-post {
+  width: 50%;
+
+  padding: 8px;
+
+  border-bottom: 1px solid white;
+  border-radius: 32px;
+
+  font-size: 1rem;
+  color: white;
+  font-weight: 200;
+  font-style: italic;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  user-select: none;
+
+  background-color: rgba(255, 255, 255, .15);
+
+  transition: 250ms;
+}
+.criar-novo-post:hover{
+  background-color: rgba(255, 255, 255, .35);
 }
