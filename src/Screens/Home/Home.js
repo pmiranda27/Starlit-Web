@@ -123,7 +123,8 @@ const HomePage = () => {
               }
               onClick={() => {
                 setSearchBarEnabled(false);
-                setTabIndex(3)}
+                setTabIndex(3)
+              }
               }
             >
               <IoIosSettings color="white" />

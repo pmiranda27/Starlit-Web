@@ -16,6 +16,10 @@
     background-color: rgba(0, 0, 0, .60);
 }
 
+.is-not-showing-background-new-post {
+    display: none;
+}
+
 .painel-criar-novo-post {
     width: 35vw;
     height: 42vh;

@@ -1,6 +1,8 @@
 .register-main {
   width: 100%;
-  height: 100vh;
+  height: 108dvh;
+
+  background: linear-gradient(0deg, rgba(21, 11, 46, 1) 30%, rgba(42, 18, 102, 1) 100%);
 
   display: flex;
   flex-direction: row;
@@ -12,6 +14,20 @@
   gap: 24px;
 
   position: relative;
+}
+
+.register-main::before {
+  content: '';
+
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  z-index: 1;
+
+  opacity: 35%;
+
+  background: url('../../Assets/Images/static.png');
 }
 
 .frase-inicial-register {

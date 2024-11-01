@@ -113,7 +113,7 @@ export const AuthProvider = ({ children }) => {
       clearSessionAndLocalStorage();
 
       localStorage.setItem('token', tok);
-      sessionStorage.setItem('username', userRegisterForm.name);
+      sessionStorage.setItem('username', userRegisterForm.username);
       sessionStorage.setItem('email', userRegisterForm.email);
       sessionStorage.setItem('avatar', userRegisterForm.avatar);
 

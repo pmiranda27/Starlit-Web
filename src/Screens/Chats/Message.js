@@ -8,7 +8,6 @@ function Chat() {
   useEffect(() => {
     let isMounted = true;
 
-
     return () => {
       isMounted = false;
     };
@@ -17,7 +16,7 @@ function Chat() {
   return (
     <>
       <div className="chat-main">
-        
+        fasf
       </div>
     </>
   );

@@ -3,9 +3,11 @@ import "./New_Post.css"
 import { useState } from "react"
 import { CiStar } from "react-icons/ci";
 
-export const NewPostPanel = ({ closeNewPostScreen }) => {
+export const NewPostPanel = ({ isCreatingNewPost }) => {
     const [isPublic, setIsPublic] = useState(true);
     const [starRating, setStarRating] = useState(3);
+
+    const [creatingNewPost, setCreatingNewPost] = useState(false);
 
     function getStarRating(){
         switch(starRating){
@@ -56,9 +58,8 @@ export const NewPostPanel = ({ closeNewPostScreen }) => {
         setStarRating(rating);
     }
 
-
-    return <div className="background-new-post-panel">
-        <div className="painel-criar-novo-post" onClick={closeNewPostScreen()}>
+    return <div className={`background-new-post-panel ${isCreatingNewPost ? '' : 'is-not-showing-background-new-post'}`}>
+        <div className="painel-criar-novo-post" onClick={()=>{setCreatingNewPost(false)}}>
             <div className="titulo-novo-post">
                 <input type="text" className="input-criar-novo-post" placeholder="Título do filme" />
                 {isPublic ? <FaEye onClick={() => {

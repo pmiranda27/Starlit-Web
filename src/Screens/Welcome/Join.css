@@ -1,38 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 .join-main {
   width: 100%;
   height: 100vh;
 
+  background: rgb(21, 11, 46);
+  background: linear-gradient(0deg, rgba(21, 11, 46, 1) 30%, rgba(42, 18, 102, 1) 100%);
+
   display: flex;
   justify-content: center;
-  align-items: center;
 
   position: relative;
 }
 
+.join-main::before {
+  content: '';
+
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  z-index: 1;
+
+  opacity: 35%;
+
+  background: url('../../Assets/Images/static.png');
+}
+
+.wave-background:nth-child(1) {
+  position: absolute;
+
+  z-index: 2;
+
+  bottom: -12%;
+  width: 100%;
+}
+
+.wave-background:nth-child(2) {
+  position: absolute;
+
+  z-index: 2;
+
+  bottom: -14%;
+
+  width: 100%;
+}
+
 .join-painel {
-  width: 70vw;
+  width: 40vw;
   height: 70vh;
 
   border-radius: 40px;
 
   padding: 16px 8px;
 
+  margin-top: 64px;
+
   color: white;
+
+  position: relative;
+  z-index: 2;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
 
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: saturate(180%) blur(10px);
-
-  box-shadow: 0 4px 9px 4px rgba(0, 0, 0, 0.35);
+  background: transparent;
 }
 
 @media (min-width: 900px) {
   .join-painel {
-    width: 50vw;
+    width: 30vw;
   }
 }
 
@@ -43,13 +82,18 @@
 }
 
 h2 {
-  font-size: 2em;
+  font-size: 1.5em;
   text-align: center;
+
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+
+  user-select: none;
 }
 
 @media (min-width: 900px) {
   h2 {
-    font-size: 2.5em;
+    font-size: 2em;
   }
 }
 
@@ -67,12 +111,12 @@ h2 {
 }
 
 .star-logo {
-  height: 30%;
+  height: 15%;
 }
 
 @media (min-width: 900px) {
   .star-logo {
-    height: 40%;
+    height: 30%;
   }
 }
 
@@ -87,11 +131,7 @@ h2 {
   justify-content: center;
 }
 
-@media (min-width: 900px) {
-  .escolher-entrada {
-    flex-direction: row;
-  }
-}
+@media (min-width: 900px) {}
 
 @media (max-width: 545px) {
   .escolher-entrada {
@@ -118,7 +158,9 @@ h2 {
 
   text-wrap: nowrap;
 
-  font-size: 1.5em;
+  user-select: none;
+
+  font-size: 1em;
 }
 
 @media (max-width: 545px) {
@@ -127,26 +169,36 @@ h2 {
   }
 }
 
-.button-div > a {
+.registrar-botao,
+.logar-botao {
   display: block;
   text-decoration: none;
 }
 
-.button-div > a {
-  min-width: 45%;
+.registrar-botao,
+.logar-botao {
+  min-width: 55%;
   height: 7vh;
 
-  color: rgb(140, 48, 97);
+  color: white;
 
-  border: 2px solid rgba(140, 48, 97, 0.5);
+  border: transparent;
   border-radius: 15px;
 
-  font-size: xx-large;
+  background-color: #432390;
+
+  overflow: hidden;
+
+  font-size: x-large;
   font-weight: bold;
   line-height: 1px;
   letter-spacing: 0.5px;
 
   cursor: pointer;
+
+  text-align: center;
+
+  position: relative;
 
   display: flex;
   align-items: center;
@@ -157,22 +209,36 @@ h2 {
   transition: 350ms;
 }
 
-@media (min-width: 600px) {
-  .button-div > a {
-    min-width: 75%;
-  }
+.registrar-botao>span,
+.logar-botao>span {
+  position: relative;
+
+  z-index: 2;
 }
 
-@media (max-width: 545px) {
-  .button-div > a {
-    min-width: 35%;
-    height: 6vh;
+.registrar-botao::after, .logar-botao::after {
+  content: '';
 
-    font-size: x-large;
-  }
+  position: absolute;
+
+  overflow: hidden;
+
+  border-radius: 15px 0 64px 15px;
+
+  left: 0;
+
+  width: 0%;
+  height: 100%;
+
+  background-color: #2A1266;
+
+  transition: 350ms;
 }
 
-.button-div > a:hover {
-  color: #fff;
-  background-color: rgba(140, 48, 97, 0.8);
+.hovering-over-button-join:after{
+  width: 65%;
 }
+
+@media (min-width: 600px) {}
+
+@media (max-width: 545px) {}

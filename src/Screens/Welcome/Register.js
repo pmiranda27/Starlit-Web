@@ -21,6 +21,7 @@ const Register = () => {
   };
 
   const [formBody, setFormBody] = React.useState({
+    username: "",
     nome: "",
     email: "",
     senha: "",
@@ -44,6 +45,7 @@ const Register = () => {
     setFormBody({ ...formBody, [nome]: valor });
   };
 
+  const [usernameInputError, setUsernameInputError] = React.useState(false);
   const [nomeInputError, setNomeInputError] = React.useState(false);
   const [emailInputError, setEmailInputError] = React.useState(false);
   const [senhaInputError, setSenhaInputError] = React.useState(false);
@@ -64,6 +66,14 @@ const Register = () => {
   async function validateForm(e) {
     e.preventDefault();
 
+    if (formBody.username === "" || formBody.username.replace(/\s/g, "") === "") {
+      setUsernameInputError(true);
+      formBody.username = "";
+
+      validationFailed = true;
+
+      console.log("Apelido inválido");
+    }
     if (formBody.nome === "" || formBody.nome.replace(/\s/g, "") === "") {
       setNomeInputError(true);
       formBody.nome = "";
@@ -114,6 +124,7 @@ const Register = () => {
   async function sendRegisterRequest(e) {
     setIsSendingProfilePicture(true);
     const newUser = {
+      username: formBody.username,
       name: formBody.nome,
       email: formBody.email,
       password: formBody.senha,
@@ -148,6 +159,7 @@ const Register = () => {
           setIsShowingMessage(false);
 
           formBody.nome = "";
+          formBody.username = "";
           formBody.email = "";
           formBody.senha = "";
           formBody.confirmarSenha = "";
@@ -163,6 +175,9 @@ const Register = () => {
 
   function removeError(input) {
     switch (input) {
+      case "username":
+        setUsernameInputError(false);
+        break;
       case "nome":
         setNomeInputError(false);
         break;
@@ -255,6 +270,22 @@ const Register = () => {
           noValidate
         >
           <h3 className="register-title">Registro</h3>
+          <div className="input-section-register">
+            <input
+              type="text"
+              name="username"
+              id="username-form"
+              value={formBody.username}
+              onChange={formHandler}
+              className={
+                usernameInputError
+                  ? "input-padrao-register input-padrao-invalido-register"
+                  : "input-padrao-register"
+              }
+              placeholder={usernameInputError ? "Apelido inválido" : "Apelido"}
+              onFocus={() => removeError("username")}
+            />
+          </div>
           <div className="input-section-register">
             <input
               type="text"

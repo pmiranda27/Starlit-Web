@@ -16,6 +16,7 @@ import { NotificacaoTab } from "../../Components/Notifications/Notificacao_Tab";
 import { useAuth } from "../../Components/Services/Api_Service";
 import { useAmigos } from "../../Components/Services/Amigos_Service";
 import { NewPostPanel } from "../../Components/Feed/New_Post";
+import { Loader } from "../../Components/Loaders/Loader_Welcome";
 
 function HomeScreen() {
   const { getCredentials } = useAuth();
@@ -41,7 +42,7 @@ function HomeScreen() {
 
   var credentialsHomeScreen;
 
-  function setCredentialsHomeScreen(){
+  function setCredentialsHomeScreen() {
     credentialsHomeScreen = getCredentials();
   }
 
@@ -70,7 +71,7 @@ function HomeScreen() {
         <UserComponent
           key={user.email}
           name={user.name}
-          loggedUserName={credentialsHomeScreen.email}
+          loggedUserName={credentialsHomeScreen.username}
           userEmail={user.email}
           loggedUserEmail={credentialsHomeScreen.email}
           imgUrl={user.avatar}
@@ -120,7 +121,7 @@ function HomeScreen() {
   }
 
   useEffect(() => {
-    if(!credentialsHomeScreen){
+    if (!credentialsHomeScreen) {
       setCredentialsHomeScreen();
     }
     console.log("Credenciais atuais: ", credentialsHomeScreen);
@@ -142,11 +143,13 @@ function HomeScreen() {
 
   const handleNotificationClick = (action) => {
     if (action) {
+      console.log('blu')
       setAreNotificationsOpen(true);
       setTimeout(() => {
         setIsShowingNotificationsComponents(true);
       }, 350);
     } else {
+      console.log('ba')
       setAreNotificationsOpen(false);
       setTimeout(() => {
         setIsShowingNotificationsComponents(false);
@@ -154,9 +157,6 @@ function HomeScreen() {
     }
   };
 
-  const closeNewPostScreen = () => {
-    setIsCreatingNewPost(false);
-  }
   const openNewPostScreen = () => {
     setIsCreatingNewPost(true);
   }
@@ -164,7 +164,7 @@ function HomeScreen() {
   return (
     <>
       <div className="home-screen-main">
-        { isCreatingNewPost ? <NewPostPanel closeNewPostScreen={closeNewPostScreen} /> : ''}
+        <NewPostPanel isCreatingNewPost={isCreatingNewPost} />
         <FriendRequestPopUp $isShowingMessage={isShowingFriendRequestPopUp}>
           Solicitação Enviada
         </FriendRequestPopUp>
@@ -172,7 +172,8 @@ function HomeScreen() {
           <MdCircleNotifications
             size={32}
             onClick={() => {
-              handleNotificationClick(true);
+              console.log('ple')
+              handleNotificationClick(false);
             }}
             className="notifications-button-home-screen"
           />
@@ -180,7 +181,8 @@ function HomeScreen() {
           <MdNotificationImportant
             size={32}
             onClick={() => {
-              handleNotificationClick(false);
+              console.log('mig')
+              handleNotificationClick(true);
             }}
             className="notifications-button-home-screen"
           />
@@ -215,7 +217,7 @@ function HomeScreen() {
         </NotificacaoTab>
         <section className="main-post-feed">
           <div className="criar-novo-post" onClick={openNewPostScreen}>
-            Adicionar novo Post
+            {isLoadingFriendSection ? <Loader /> : `Adicionar novo Post` }
           </div>
         </section>
         <section className="main-friends-section">
