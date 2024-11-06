@@ -4,7 +4,7 @@ import { useState } from "react"
 import { CiStar } from "react-icons/ci";
 import { RiCloseCircleLine } from "react-icons/ri";
 
-export const NewPostPanel = ({ isCreatingNewPost, isShowingNewPostPanel, closeNewPostScreen }) => {
+export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
     const [isPublic, setIsPublic] = useState(true);
     const [starRating, setStarRating] = useState(3);
 
@@ -60,7 +60,7 @@ export const NewPostPanel = ({ isCreatingNewPost, isShowingNewPostPanel, closeNe
     }
 
     return <div className={`background-new-post-panel ${isCreatingNewPost ? '' : 'is-not-showing-background-new-post'}`}>
-        <div className="painel-criar-novo-post" onClick={()=>{setCreatingNewPost(false)}}>
+        <div className="painel-criar-novo-post" onClick={() => { setCreatingNewPost(false) }}>
             <div className="titulo-novo-post">
                 <input type="text" className="input-criar-novo-post" placeholder="Título do filme" />
                 {isPublic ? <FaEye onClick={() => {

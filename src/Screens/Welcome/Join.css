@@ -27,23 +27,59 @@
   background: url('../../Assets/Images/static.png');
 }
 
-.wave-background:nth-child(1) {
+.wave-background-one {
   position: absolute;
 
   z-index: 2;
 
-  bottom: -12%;
   width: 100%;
+
+  bottom: -100%;
+
+  transition: 350ms ease-in-out;
 }
 
-.wave-background:nth-child(2) {
+.wave-background-two {
   position: absolute;
 
   z-index: 2;
 
-  bottom: -14%;
+  bottom: -100%;
 
   width: 100%;
+
+  transition: 350ms ease-in-out;
+}
+
+.wave-outside-screen-one {
+  animation: wavesboingone 850ms ease-in-out forwards;
+}
+.wave-outside-screen-two {
+  animation: wavesboingtwo 750ms ease-in-out forwards;
+  animation-delay: 300ms;
+}
+
+@keyframes wavesboingone {
+  0% {
+    bottom: -100%;
+  }
+  80% {
+    bottom: -9%;
+  }
+  100% {
+    bottom: -12%;
+  }
+}
+@keyframes wavesboingtwo {
+  0% {
+    bottom: -100%;
+  }
+  80% {
+    bottom: -11%;
+  }
+  100% {
+    bottom: -14%;
+  }
 }
 
 .join-painel {
@@ -56,6 +92,8 @@
 
   margin-top: 64px;
 
+  scale: .95;
+
   color: white;
 
   position: relative;
@@ -67,6 +105,24 @@
   justify-content: space-around;
 
   background: transparent;
+}
+
+.join-scale-in {
+  animation: joinscalein 650ms ease forwards;
+}
+
+@keyframes joinscalein {
+  0% {
+    scale: .95;
+  }
+
+  70% {
+    scale: 1.1;
+  }
+
+  100% {
+    scale: 1;
+  }
 }
 
 @media (min-width: 900px) {
@@ -216,7 +272,8 @@ h2 {
   z-index: 2;
 }
 
-.registrar-botao::after, .logar-botao::after {
+.registrar-botao::after,
+.logar-botao::after {
   content: '';
 
   position: absolute;
@@ -235,7 +292,7 @@ h2 {
   transition: 350ms;
 }
 
-.hovering-over-button-join:after{
+.hovering-over-button-join:after {
   width: 65%;
 }
 

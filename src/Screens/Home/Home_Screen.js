@@ -3,6 +3,8 @@ import axios from "axios";
 import axiosRetry from "axios-retry";
 import { useState, useEffect } from "react";
 
+import lupa from "../../Assets/Images/lupa.png";
+
 import AmigoComponent from "../../Components/Friends/Amigo_Component";
 import UserComponent from "../../Components/Friends/User_Component";
 import NotificacaoComponent from "../../Components/Notifications/Notificacao";
@@ -17,6 +19,7 @@ import { useAuth } from "../../Components/Services/Api_Service";
 import { useAmigos } from "../../Components/Services/Amigos_Service";
 import { NewPostPanel } from "../../Components/Feed/New_Post";
 import { Loader } from "../../Components/Loaders/Loader_Welcome";
+import { FaSearch } from "react-icons/fa";
 
 function HomeScreen() {
   const { getCredentials } = useAuth();
@@ -170,7 +173,7 @@ function HomeScreen() {
   return (
     <>
       <div className="home-screen-main">
-        <NewPostPanel closeNewPostScreen={closeNewPostScreen} isShowingNewPostPanel={isShowingNewPostPanel} />
+        <NewPostPanel closeNewPostScreen={closeNewPostScreen} isCreatingNewPost={isShowingNewPostPanel} />
         <FriendRequestPopUp $isShowingMessage={isShowingFriendRequestPopUp}>
           Solicitação Enviada
         </FriendRequestPopUp>
@@ -222,11 +225,23 @@ function HomeScreen() {
           </div>
         </NotificacaoTab>
         <section className="main-post-feed">
+          <div
+            className={`search-bar`}
+          >
+            <div className="search-bar-positions">
+              <input
+                type="search"
+                name="search-bar"
+                placeholder="Pesquise um post aqui..."
+              />
+              <FaSearch className="search-lupa-home" color="white" />
+            </div>
+          </div>
           <div className="criar-novo-post" onClick={() => {
             console.log(isShowingNewPostPanel)
             openNewPostScreen()
           }}>
-            Adicionar novo Post
+            Novo Post
           </div>
         </section>
         <section className="main-friends-section">
