@@ -44,6 +44,9 @@ const Login = () => {
   const [isGreen, setIsGreen] = React.useState(false);
   const [isShowingMessage, setIsShowingMessage] = React.useState(false);
 
+
+  const [isHoveringOverLogin, setIsHoveringOverLogin] = React.useState(false);
+
   let validationFailed = false;
 
   function removeError(input) {
@@ -171,7 +174,11 @@ const Login = () => {
             />
           </div>
 
-          <button type="submit" className="input-submit-login">
+          <button type="submit" className={`input-submit-login ${isHoveringOverLogin ? 'input-submit-login-hover' : ''} ${isLoading ? 'input-submit-login-activated' : ''}`} onMouseOver={() => {
+            setIsHoveringOverLogin(true);
+          }} onMouseLeave={() => {
+            setIsHoveringOverLogin(false)
+          }}>
             {isLoading ? <Loader /> : "Logar"}
           </button>
           <p>

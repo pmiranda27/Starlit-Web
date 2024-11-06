@@ -2,11 +2,27 @@
   width: 100%;
   height: 100vh;
 
+  background: linear-gradient(0deg, rgba(21, 11, 46, 1) 30%, rgba(42, 18, 102, 1) 100%);
+
   display: flex;
 
-  z-index: 1;
-
   position: relative;
+
+  z-index: 1;
+}
+
+.home-main::before {
+  content: '';
+
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  z-index: 0;
+
+  opacity: 15%;
+
+  background: url('../../Assets/Images/static.png');
 }
 
 .search-bar {

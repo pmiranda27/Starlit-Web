@@ -28,17 +28,19 @@ function HomeScreen() {
 
   const [isShowingFriendRequestPopUp, setIsShowingFriendRequestPopUp] =
     useState(false);
-  const [areNotificationsOpen, setAreNotificationsOpen] = useState(false);
   const [isLoadingFriendSection, setIsLoadingFriendSection] = useState(true);
   const [isLoadingAllUsersSection, setIsLoadingAllUsersSection] =
     useState(true);
   const [isLoadingNotificationsSection, setIsLoadingNotificationsSection] =
     useState(true);
 
+  const [areNotificationsOpen, setAreNotificationsOpen] = useState(false);
   const [
     isShowingNotificationsComponents,
     setIsShowingNotificationsComponents,
   ] = useState(false);
+
+  const [isShowingNewPostPanel, setIsShowingNewPostPanel] = useState(false);
 
   var credentialsHomeScreen;
 
@@ -137,34 +139,38 @@ function HomeScreen() {
 
   const iconStyle = { color: "white" };
 
-  const [isCreatingNewPost, setIsCreatingNewPost] = useState(false);
-
   const [isAddingFriends, setIsAddingFriends] = useState(false);
 
   const handleNotificationClick = (action) => {
     if (action) {
-      console.log('blu')
+      console.log('foi true')
       setAreNotificationsOpen(true);
       setTimeout(() => {
         setIsShowingNotificationsComponents(true);
+        console.log('abri: ', action)
       }, 350);
     } else {
-      console.log('ba')
+      console.log('foi false')
       setAreNotificationsOpen(false);
       setTimeout(() => {
         setIsShowingNotificationsComponents(false);
+        console.log('fechei: ', action)
       }, 350);
     }
   };
 
+  const closeNewPostScreen = () => {
+    setIsShowingNewPostPanel(false)
+  }
+
   const openNewPostScreen = () => {
-    setIsCreatingNewPost(true);
+    setIsShowingNewPostPanel(true);
   }
 
   return (
     <>
       <div className="home-screen-main">
-        <NewPostPanel isCreatingNewPost={isCreatingNewPost} />
+        <NewPostPanel closeNewPostScreen={closeNewPostScreen} isShowingNewPostPanel={isShowingNewPostPanel} />
         <FriendRequestPopUp $isShowingMessage={isShowingFriendRequestPopUp}>
           Solicitação Enviada
         </FriendRequestPopUp>
@@ -216,8 +222,11 @@ function HomeScreen() {
           </div>
         </NotificacaoTab>
         <section className="main-post-feed">
-          <div className="criar-novo-post" onClick={openNewPostScreen}>
-            {isLoadingFriendSection ? <Loader /> : `Adicionar novo Post` }
+          <div className="criar-novo-post" onClick={() => {
+            console.log(isShowingNewPostPanel)
+            openNewPostScreen()
+          }}>
+            Adicionar novo Post
           </div>
         </section>
         <section className="main-friends-section">

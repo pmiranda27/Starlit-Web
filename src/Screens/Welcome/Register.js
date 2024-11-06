@@ -55,6 +55,8 @@ const Register = () => {
     return email.match(/^\S+@\S+\.\S+$/);
   };
 
+  const [isHoveringOverButtonRegister, setIsHoveringOverButtonRegister] = React.useState(false);
+
   const [isLoading, setIsLoading] = React.useState(false);
   const [isSendingProfilePicture, setIsSendingProfilePicture] =
     React.useState(false);
@@ -354,7 +356,11 @@ const Register = () => {
             </div>
           </div>
 
-          <button type="submit" className="input-submit-register">
+          <button type="submit" className={`input-submit-register ${isHoveringOverButtonRegister ? 'input-submit-register-hover' : ''} ${isLoading ? 'input-submit-register-activated' : ''}`} onMouseOver={() => {
+            setIsHoveringOverButtonRegister(true);
+          }} onMouseLeave={() => {
+            setIsHoveringOverButtonRegister(false)
+          }}>
             {isLoading ? <Loader /> : "Registrar"}
           </button>
           <p>

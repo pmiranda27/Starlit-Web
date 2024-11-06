@@ -21,9 +21,9 @@ const Join = () => {
         <div className="escolher-entrada">
           <div className="button-div">
             <h3>Primeira vez aqui?</h3>
-            <Link className={`botao registrar-botao ${isHoveringOverButtonRegister ? `hovering-over-button-join` : ``}`} onMouseOver={()=>{
+            <Link className={`botao registrar-botao ${isHoveringOverButtonRegister ? `hovering-over-button-join` : ``}`} onMouseOver={() => {
               setIsHoveringOverButtonRegister(true);
-            }} onMouseLeave={()=>{
+            }} onMouseLeave={() => {
               setIsHoveringOverButtonRegister(false);
             }} to="/register">
               <span>Registrar</span>
@@ -31,9 +31,9 @@ const Join = () => {
           </div>
           <div className="button-div">
             <h3>Já possui uma conta?</h3>
-            <Link className={`botao logar-botao ${isHoveringOverButtonLogin ? `hovering-over-button-join` : ''}`} onMouseOver={()=>{
+            <Link className={`botao logar-botao ${isHoveringOverButtonLogin ? `hovering-over-button-join` : ''}`} onMouseOver={() => {
               setIsHoveringOverButtonLogin(true);
-            }} onMouseLeave={()=>{
+            }} onMouseLeave={() => {
               setIsHoveringOverButtonLogin(false);
             }} to="/login">
               <span>Logar</span>

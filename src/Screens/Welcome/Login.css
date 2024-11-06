@@ -7,10 +7,28 @@
   justify-content: center;
   align-items: center;
 
+  background: rgb(21, 11, 46);
+  background: linear-gradient(0deg, rgba(21, 11, 46, 1) 30%, rgba(42, 18, 102, 1) 100%);
+
   gap: 24px;
 
   position: relative;
 }
+
+.login-main::before {
+  content: '';
+
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  z-index: 1;
+
+  opacity: 15%;
+
+  background: url('../../Assets/Images/static.png');
+}
+
 
 .starlit-logo {
   height: 10em;
@@ -23,14 +41,18 @@
 
   align-items: center;
 
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: saturate(180%) blur(10px);
+  position: relative;
+
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: saturate(180%) blur(2px);
 
   box-shadow: 0 4px 9px 4px rgba(0, 0, 0, 0.35);
 
   padding: 24px;
 
   border-radius: 40px;
+
+  z-index: 2;
 
   gap: 40px;
 }
@@ -49,14 +71,14 @@
 .input-padrao-login {
   width: 95%;
 
-  color: #8c3061;
+  color: #5936B2;
 
   margin: 0;
   padding: 8px 12px;
 
   background: transparent;
 
-  border: 2px solid rgba(140, 48, 97, 0.5);
+  border: 2px solid rgb(89, 54, 178, 0.5);
   border-radius: 25px;
 
   font-size: 1.25rem;
@@ -74,7 +96,7 @@
 .input-padrao-login::placeholder {
   font-weight: bold;
   font-size: 1.25rem;
-  color: rgba(207, 74, 145, 0.2);
+  color: rgba(89, 54, 178, 0.35);
 }
 
 input:-webkit-autofill,
@@ -119,9 +141,9 @@ input:-webkit-autofill:focus {
 
   background: transparent;
 
-  color: rgba(140, 48, 97, 1);
+  color: rgb(255, 255, 255, .65);
 
-  border: 2px solid rgba(140, 48, 97, 0.5);
+  border: 2px solid rgb(67, 35, 144, .65);
   border-radius: 15px;
 
   font-size: large;
@@ -133,7 +155,30 @@ input:-webkit-autofill:focus {
 
   align-self: center;
 
+  position: relative;
+
+  overflow: hidden;
+
   transition: 350ms;
+}
+
+.input-submit-login::after {
+  content: '';
+
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+
+  bottom: -100%;
+
+  color: #fff;
+
+  background-color: #432390;
+
+  z-index: -1;
+
+  transition: 100ms ease-in-out;
 }
 
 @media (max-width: 800px) {
@@ -148,9 +193,12 @@ input:-webkit-autofill:focus {
   }
 }
 
-.input-submit-login:hover {
-  color: #fff;
-  background-color: rgba(140, 48, 97, 0.8);
+.input-submit-login-hover::after {
+  bottom: -50%;
+}
+
+.input-submit-login-activated::after {
+  bottom: 0%;
 }
 
 .login-title {
@@ -173,7 +221,7 @@ input:-webkit-autofill:focus {
 }
 
 .form-login > p > span {
-  color: rgba(140, 48, 97, 1);
+  color: #5936B2;
 
   cursor: pointer;
 }
