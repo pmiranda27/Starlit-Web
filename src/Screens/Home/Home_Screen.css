@@ -131,12 +131,14 @@
 
   position: absolute;
 
+  right: 0;
+
   background: rgb(255, 255, 255);
   background: linear-gradient(180deg, rgba(255, 255, 255, .15) 0%, rgba(0, 212, 255, 0) 60%);
 
   border-radius: 28px;
 
-  transition: 350ms;
+  transition: 450ms;
 }
 
 .list-friends-parent.hiding {

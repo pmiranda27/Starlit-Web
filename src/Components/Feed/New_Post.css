@@ -9,7 +9,9 @@
 
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+
+    padding-top: 72px;
 
     position: absolute;
 
@@ -31,40 +33,107 @@
     align-items: center;
     justify-content: space-between;
 
-    border: 1px solid rgba(255, 255, 255, .75);
+    border: transparent;
     border-radius: 24px;
 
     z-index: 2;
 
-    background-color: rgba(0, 0, 0, 1);
+    background-color: #1B0B42;
 }
 
 .titulo-novo-post {
     width: 90%;
     height: 15%;
 
-    padding: 0 8px;
+    padding: 0 4px;
+    position: relative;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    border-bottom: 1px solid white;
+    border-bottom: 1.25px solid rgb(255, 255, 255, .6);
+}
+
+.lista-filmes-disponiveis {
+    position: absolute;
+
+    width: 70%;
+    padding: 8px 8px 8px 32px;
+
+    border-radius: 0 0 15px 15px;
+
+    height: 450px;
+
+    overflow: hidden;
+
+    left: 0;
+    top: 100%;
+
+    z-index: 1;
+
+    background-color: green;
+
+    transition: top 350ms ease, height 350ms ease;
+}
+
+.hiding-is-changing-movie-name {
+    height: 0px;
+    top: 100%;
+
+    background-color: transparent;
+
+    z-index: 1;
+}
+
+.lista-filmes-disponiveis > ul {
+    user-select: none;
+    
+    margin: 0;
+    padding: 0;
+
+    list-style-type: circle;
+
+    overflow: hidden;
+
+    z-index: 2;
+
+    transition: 0;
+}
+.hiding-is-changing-movies-list {
+    padding-top: 64px;
+
+    height: 0;
+}
+.list-names-movies {
+    padding: 4px;
+
+    position: relative;
+    z-index: 3;
+
+    border-radius: 15px;
+}
+.list-names-movies:hover {
+    background-color: rgba(0, 0, 0, .20);
+}
+.lista-filmes-disponiveis > ul > li > h3 {
+    font-weight: 400;
 }
 
 .input-criar-novo-post {
-    padding: 0 8px;
-
     width: 90%;
 
     color: white;
 
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-style: italic;
 
     background-color: transparent;
 
     border: transparent;
+}
+.input-criar-novo-post::placeholder {
+    color: rgb(255, 255, 255, .35);
 }
 
 .input-criar-novo-post:focus {
@@ -92,11 +161,14 @@
 .estrela-novo-post {
     scale: 1.5;
 
+    color: #7E56E4;
+
     transition: 150ms;
 }
 
 .estrela-novo-post:hover {
     scale: 1.65;
+    
 }
 
 .paragrafo-novo-post {
@@ -112,19 +184,23 @@
 
     border-radius: 14px;
 
+    border: 1px solid rgba(255, 255, 255, .45);
+
     width: 100%;
     height: 60%;
 
     background-color: transparent;
 }
 
-.paragrafo-novo-post::placeholder {}
+.paragrafo-novo-post::placeholder {
+    color: rgb(255, 255, 255, .35);
+}
 
 .acoes-novo-post {
     width: 90%;
     flex: .75;
 
-    padding: 0 16px;
+    padding: 0 8px;
 
     display: flex;
     justify-content: space-between;
@@ -137,6 +213,8 @@
     width: 5vw;
 
     cursor: pointer;
+
+    color: rgb(255, 0, 0, .65);
 
     display: flex;
     justify-content: center;
@@ -166,7 +244,7 @@
 }
 
 .publicar-botao-novo-post {
-    border: 3px solid #8C3061;
+    border: 3px solid #7E56E4;
     border-radius: 20px;
 
     width: 5vw;
@@ -174,14 +252,17 @@
     padding: 4px 12px;
 
     font-weight: 800;
-    color: rgb(140, 48, 97, .85);
+    color: rgb(126, 86, 228, .65);
 
     text-align: center;
 
     background-color: transparent;
 
-    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+    user-select: none;
 
     cursor: pointer;
 
@@ -189,7 +270,7 @@
 }
 
 .publicar-botao-novo-post:hover {
-    background-color: #8C3061;
+    background-color: #7E56E4;
 
     color: white;
 }
