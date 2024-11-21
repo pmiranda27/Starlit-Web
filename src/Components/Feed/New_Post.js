@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { CiStar } from "react-icons/ci";
 import { RiCloseCircleLine } from "react-icons/ri";
 import axios from "axios";
+import { FriendSectionLoader } from "../Loaders/Friends_Section";
 
 export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
     const apiUrl = process.env.REACT_APP_API_URL;
@@ -15,7 +16,11 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
 
     const [isChangingMovieName, setIsChangingMovieName] = useState(false);
 
+    const [listaFilmesResponse, setListaFilmesResponse] = useState([]);
+    const [listaFilmesFiltrada, setListaFilmesFiltrada] = useState([]);
+
     const [listaFilmes, setListaFilmes] = useState([]);
+    const [isLoadingListaFilmes, setIsLoadingListaFilmes] = useState(true);
 
     const [tituloNewPost, setTituloNewPost] = useState('');
     const [ratingNewPost, setRatingNewPost] = useState(3);
@@ -70,40 +75,112 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
         setStarRating(rating);
     }
 
-    async function getListaFilmes() {
-        const response = await axios.get(`${apiUrl}/movies/`);
+    function setNomeNovoPost(nome) {
+        setTituloNewPost(nome);
 
-        var newListaFilmes = [];
+        filtrarListaFilmes(nome);
+    }
 
-        const responseBody = response.data;
+    function filtrarListaFilmes(searchTerm) {
+        console.log('entrei?')
+        // if (!filtro) {
+        //     console.log(listaFilmesResponse)
+        //     setListaFilmesFiltrada(lista);
+        // } else {
+        //     console.log('que isso', listaFilmesResponse)
+        //     const listaFiltradaResponseBody = lista.filter((e) =>
+        //         e.nome.toLowerCase().includes(filtro.toLowerCase())
+        //     );
+        //     setListaFilmesFiltrada(listaFiltradaResponseBody);
+        // }
 
-        console.log('responseBody: ', responseBody);
+        // if (isLoadingListaFilmes) {
+        //     setIsLoadingListaFilmes(false);
+        // }
 
-        console.log('I WANT IT THAT WAY 1', responseBody[1].nome)
-        var nomeFilme;
-        for (var i = 0; i < responseBody.length; i++) {
-            nomeFilme = responseBody[i].nome;
-            newListaFilmes.push(
-                <li onClick={() => {
-                    setTituloNewPost(nomeFilme)
-                    console.log('cliquei no: ', nomeFilme)
-                }} className={`list-names-movies`} key={responseBody[i]._id}>
-                    <h3>{nomeFilme}</h3>
-                </li>
-            )
+        if (!searchTerm) {
+            // Se não houver termo de busca, exibe toda a lista de filmes
+            setListaFilmesFiltrada(listaFilmesResponse);
+            console.log('bunny')
+            return;
         }
-        setListaFilmes(newListaFilmes);
+
+        // Filtra a lista de filmes com base no termo digitado pelo usuário (case insensitive)
+        const filteredMovies = listaFilmesResponse.filter((movie) =>
+            movie.nome.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        // Atualiza o estado da lista filtrada
+        setListaFilmesFiltrada(filteredMovies);
+        setListaComponentesFilmes(listaFilmesFiltrada);
+        console.log('senpai')
+    }
+
+    function setListaComponentesFilmes(lista) {
+        var listaComponentesFilmes = lista.map((user) =>
+        (<li onClick={() => {
+            setNomeNovoPost(user.nome)
+        }} className={`list-names-movies`} key={user._id}><h3>{user.nome}</h3></li>)
+        )
+
+        setListaFilmes(listaComponentesFilmes);
+    }
+
+    async function getListaFilmes() {
+        // const response = await axios.get(`${apiUrl}/movies/`);
+
+        // const responseBody = response.data;
+
+        // setListaFilmesResponse(responseBody);
+        // console.log('li: ', listaFilmesResponse)
+
+        // filtrarListaFilmes(tituloNewPost || "", responseBody);
+
+        try {
+            // Faz a requisição para a API e obtém os dados da lista de filmes
+            const response = await axios.get(`${apiUrl}/movies/`);
+            const movies = response.data;
+
+            console.log('get?')
+
+            // Atualiza a lista de filmes completa e exibe ela inicialmente como "lista filtrada"
+            setListaFilmesResponse(movies);
+            setListaFilmesFiltrada(movies);
+
+            // Remove o estado de carregamento
+            setIsLoadingListaFilmes(false);
+        } catch (error) {
+            console.error("Erro ao buscar lista de filmes:", error);
+
+        } finally {
+            setIsLoadingListaFilmes(false); // Remove o estado de carregamento
+        }
+    }
+
+    function handleTitleChange(title) {
+        setTituloNewPost(title); // Atualiza o título do post
+        if (title.length < 1) {
+            setListaComponentesFilmes(listaFilmesResponse);
+        }
+        filtrarListaFilmes(title);  // Filtra a lista de filmes com base no título
     }
 
     useEffect(() => {
         getListaFilmes();
 
-        const refreshInterval = setInterval(() => {
+        const intervalRefresh = setInterval(() => {
             getListaFilmes();
-        }, 10000);
+        }, 5000);
 
-        return () => clearInterval(refreshInterval);
+        return () => clearInterval(intervalRefresh);
     }, []);
+
+    useEffect(() => {
+        // Garante que o componente seja atualizado após a resposta
+        console.log('Lista de filmes atualizada:', listaFilmesResponse);
+        setListaFilmesFiltrada(listaFilmesResponse);
+        setListaComponentesFilmes(listaFilmesResponse);
+    }, [listaFilmesResponse]);
 
     return <div className={`background-new-post-panel ${isCreatingNewPost ? '' : 'is-not-showing-background-new-post'}`}>
         <div className="painel-criar-novo-post" onClick={() => { setCreatingNewPost(false) }}>
@@ -111,10 +188,18 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
                 <input onFocus={() => {
                     setIsChangingMovieName(true);
                 }}
-                 type="text" value={tituloNewPost} className="input-criar-novo-post" placeholder="Título do filme" />
+                    onBlur={() => {
+                        setTimeout(() => {
+                            setIsChangingMovieName(false);
+                        }, 100)
+                    }}
+                    type="text" value={tituloNewPost}
+                    onChange={(e) => {
+                        handleTitleChange(e.target.value)
+                    }} className="input-criar-novo-post" placeholder="Título do filme" />
                 <div className={`lista-filmes-disponiveis ${isChangingMovieName ? '' : 'hiding-is-changing-movie-name'}`}>
                     <ul className={isChangingMovieName ? '' : 'hiding-is-changing-movies-list'}>
-                        {listaFilmes}
+                        {isLoadingListaFilmes ? <div className="new-post-loader-centering"><FriendSectionLoader /></div> : listaFilmes}
                     </ul>
                 </div>
 
