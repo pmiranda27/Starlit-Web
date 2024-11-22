@@ -82,35 +82,17 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
     }
 
     function filtrarListaFilmes(searchTerm) {
-        console.log('entrei?')
-        // if (!filtro) {
-        //     console.log(listaFilmesResponse)
-        //     setListaFilmesFiltrada(lista);
-        // } else {
-        //     console.log('que isso', listaFilmesResponse)
-        //     const listaFiltradaResponseBody = lista.filter((e) =>
-        //         e.nome.toLowerCase().includes(filtro.toLowerCase())
-        //     );
-        //     setListaFilmesFiltrada(listaFiltradaResponseBody);
-        // }
-
-        // if (isLoadingListaFilmes) {
-        //     setIsLoadingListaFilmes(false);
-        // }
 
         if (!searchTerm) {
-            // Se não houver termo de busca, exibe toda a lista de filmes
             setListaFilmesFiltrada(listaFilmesResponse);
             console.log('bunny')
             return;
         }
 
-        // Filtra a lista de filmes com base no termo digitado pelo usuário (case insensitive)
         const filteredMovies = listaFilmesResponse.filter((movie) =>
             movie.nome.toLowerCase().includes(searchTerm.toLowerCase())
         );
 
-        // Atualiza o estado da lista filtrada
         setListaFilmesFiltrada(filteredMovies);
         setListaComponentesFilmes(listaFilmesFiltrada);
         console.log('senpai')
@@ -127,42 +109,30 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
     }
 
     async function getListaFilmes() {
-        // const response = await axios.get(`${apiUrl}/movies/`);
-
-        // const responseBody = response.data;
-
-        // setListaFilmesResponse(responseBody);
-        // console.log('li: ', listaFilmesResponse)
-
-        // filtrarListaFilmes(tituloNewPost || "", responseBody);
 
         try {
-            // Faz a requisição para a API e obtém os dados da lista de filmes
             const response = await axios.get(`${apiUrl}/movies/`);
             const movies = response.data;
 
-            console.log('get?')
 
-            // Atualiza a lista de filmes completa e exibe ela inicialmente como "lista filtrada"
             setListaFilmesResponse(movies);
             setListaFilmesFiltrada(movies);
 
-            // Remove o estado de carregamento
             setIsLoadingListaFilmes(false);
         } catch (error) {
             console.error("Erro ao buscar lista de filmes:", error);
 
         } finally {
-            setIsLoadingListaFilmes(false); // Remove o estado de carregamento
+            setIsLoadingListaFilmes(false);
         }
     }
 
     function handleTitleChange(title) {
-        setTituloNewPost(title); // Atualiza o título do post
+        setTituloNewPost(title);
         if (title.length < 1) {
             setListaComponentesFilmes(listaFilmesResponse);
         }
-        filtrarListaFilmes(title);  // Filtra a lista de filmes com base no título
+        filtrarListaFilmes(title);
     }
 
     useEffect(() => {
@@ -176,11 +146,49 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
     }, []);
 
     useEffect(() => {
-        // Garante que o componente seja atualizado após a resposta
         console.log('Lista de filmes atualizada:', listaFilmesResponse);
         setListaFilmesFiltrada(listaFilmesResponse);
         setListaComponentesFilmes(listaFilmesResponse);
     }, [listaFilmesResponse]);
+
+
+
+    async function handleSubmitNewPost(){
+        if (!tituloNewPost) {
+            console.log("Sem título")
+            return;
+        }
+        if (!descriptionNewPost) {
+            console.log("Sem descrição");
+        }
+        if(!ratingNewPost) {
+            console.log("Sem Rating")
+        }
+
+        const emailUser = sessionStorage.getItem('email');
+        
+        const newPost = {
+            titulo: tituloNewPost,
+            email: emailUser,
+            descricao: descriptionNewPost,
+            nota: ratingNewPost,
+            privado: isPublic
+        }
+
+        const responseNewPost = await axios.post(`${process.env.REACT_APP_API_URL}/reviews/`, newPost);
+
+        if(responseNewPost.status >= 200 && responseNewPost.status < 300) {
+            console.log('post criado com sucesso');
+
+            setTimeout(() => {
+                setTituloNewPost('');
+                setDescriptionNewPost('');
+                setRatingNewPost(3);
+                
+                closeNewPostScreen();
+            }, 1000)
+        }
+    }
 
     return <div className={`background-new-post-panel ${isCreatingNewPost ? '' : 'is-not-showing-background-new-post'}`}>
         <div className="painel-criar-novo-post" onClick={() => { setCreatingNewPost(false) }}>
@@ -213,7 +221,9 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
                 {
                     getStarRating()
                 }
-                <textarea maxLength={400} className="paragrafo-novo-post" placeholder="Dê a sua opinião"></textarea>
+                <textarea value={descriptionNewPost} onChange={(e) => {
+                    setDescriptionNewPost(e.target.value);
+                }} maxLength={400} className="paragrafo-novo-post" placeholder="Dê a sua opinião"></textarea>
             </div>
             <div className="acoes-novo-post">
                 <div className="close-novo-post" onClick={closeNewPostScreen}>
@@ -222,7 +232,7 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
                 {/* <div className="add-banner-novo-post">
                     <FaImages className="add-banner-novo-post-icon" color="#7E56E4" />
                 </div> */}
-                <div className="publicar-botao-novo-post">Publicar</div>
+                <div className="publicar-botao-novo-post" onClick={handleSubmitNewPost}>Publicar</div>
             </div>
         </div>
     </div>
