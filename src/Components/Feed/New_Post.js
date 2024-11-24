@@ -153,7 +153,7 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
 
 
 
-    async function handleSubmitNewPost(){
+    async function handleSubmitNewPost() {
         if (!tituloNewPost) {
             console.log("Sem título")
             return;
@@ -161,12 +161,12 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
         if (!descriptionNewPost) {
             console.log("Sem descrição");
         }
-        if(!ratingNewPost) {
+        if (!ratingNewPost) {
             console.log("Sem Rating")
         }
 
         const emailUser = sessionStorage.getItem('email');
-        
+
         const newPost = {
             titulo: tituloNewPost,
             email: emailUser,
@@ -177,14 +177,14 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
 
         const responseNewPost = await axios.post(`${process.env.REACT_APP_API_URL}/reviews/`, newPost);
 
-        if(responseNewPost.status >= 200 && responseNewPost.status < 300) {
+        if (responseNewPost.status >= 200 && responseNewPost.status < 300) {
             console.log('post criado com sucesso');
 
             setTimeout(() => {
                 setTituloNewPost('');
                 setDescriptionNewPost('');
                 setRatingNewPost(3);
-                
+
                 closeNewPostScreen();
             }, 1000)
         }
@@ -211,9 +211,9 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
                     </ul>
                 </div>
 
-                {isPublic ? <FaEye onClick={() => {
+                {isPublic ? <FaEyeSlash onClick={() => {
                     setIsPublic(!isPublic)
-                }} className="icon-public-criar-novo-post" color="rgb(255, 255, 255)" /> : <FaEyeSlash onClick={() => {
+                }} className="icon-public-criar-novo-post" color="rgb(255, 255, 255)" /> : <FaEye onClick={() => {
                     setIsPublic(!isPublic)
                 }} className="icon-public-criar-novo-post" color="rgb(255, 255, 255)" />}
             </div>

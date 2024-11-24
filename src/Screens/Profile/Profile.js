@@ -1,5 +1,6 @@
 
 import { useAmigos } from "../../Components/Services/Amigos_Service";
+import { useAuth } from "../../Components/Services/Api_Service";
 import "./Profile.css";
 
 import { useEffect, useState } from "react";
@@ -12,8 +13,11 @@ function Profile() {
   const [userName, setUserName] = useState('');
 
   const { getListaAmigos, getQuantidadeAmigos } = useAmigos();
+  const { getReviewsQuantity, getDescricaoText } = useAuth();
 
   const [numeroAmigos, setNumeroAmigos] = useState(0);
+  const [numeroReviews, setNumeroReviews] = useState(0);
+  const [textoDescricao, setTextoDescricao] = useState('');
 
   function changeSelectedStatusSelector(index) {
     setStatusSelectorIndex(index);
@@ -39,6 +43,20 @@ function Profile() {
     setNumeroAmigos(getQuantidadeAmigos());
   }
 
+  async function getQuantidadeReviewsNumber() {
+    const usernameToSearch = sessionStorage.getItem('username');
+
+    setNumeroReviews(await getReviewsQuantity(usernameToSearch))
+  }
+
+  async function getTextoDescricao() {
+    const usernameToSearch = sessionStorage.getItem('username');
+
+    setTextoDescricao(await getDescricaoText(usernameToSearch))
+
+    console.log('recebi: ', textoDescricao)
+  }
+
   function refreshUserInformation() {
     const avatarUrl = sessionStorage.getItem('avatar');
     setUserPicture(avatarUrl);
@@ -47,6 +65,10 @@ function Profile() {
     setUserName(userName);
 
     getQuantidadeAmigosNumber();
+
+    getQuantidadeReviewsNumber();
+
+    getTextoDescricao();
   }
 
   useEffect(() => {
@@ -68,8 +90,13 @@ function Profile() {
             <h3>{userName}</h3>
             <h4></h4>
           </div>
-          <h3><span>{numeroAmigos}</span> {numeroAmigos === 1 ? 'amigo(a)' : 'amigos'}</h3>
-          <h3><span></span> </h3>
+          <div className="profile-text-info-numbers">
+            <h3><span>{numeroAmigos}</span> {numeroAmigos === 1 ? 'amigo(a)' : 'amigos'}</h3>
+            <h3><span>{numeroReviews}</span> {numeroReviews === 1 ? 'review' : 'reviews'} </h3>
+          </div>
+        </div>
+        <div className="profile-text-info-second-line">
+          {textoDescricao}
         </div>
       </div>
     </div>

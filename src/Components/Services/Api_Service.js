@@ -10,6 +10,8 @@ export const AuthProvider = ({ children }) => {
   const [authUserCredentials, setUserCredentialsAuth] = useState(null);
   const [loggedToken, setLoggedToken] = useState('');
 
+  const tentativasMaximasRequests = 5;
+
   function setToken(token) {
     setLoggedToken(token);
   }
@@ -37,6 +39,7 @@ export const AuthProvider = ({ children }) => {
       email: sessionStorage.getItem('email'),
       avatar: sessionStorage.getItem('avatar')
     }
+
     return credenciais;
   }
 
@@ -110,12 +113,42 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  async function getReviewsQuantity() {
-    
+  async function getReviewsQuantity(username) {
+    for (var tentativa = 0; tentativa < tentativasMaximasRequests; tentativa++) {
+      const responseQuantidadeReviews = await axios.post(`${apiUrl}/reviews/quantidadeUsuario`, {
+        username
+      });
+
+      if (!responseQuantidadeReviews) {
+        continue;
+      }
+      if (responseQuantidadeReviews.status < 200 || responseQuantidadeReviews.status > 299) {
+        continue;
+      }
+
+      return responseQuantidadeReviews.data.quantidade;
+    }
+  }
+
+  async function getDescricaoText(username) {
+    for (var tentativa = 0; tentativa < tentativasMaximasRequests; tentativa++) {
+      const responseDescricaoUsuario = await axios.post(`${apiUrl}/user/descricao-usuario`, {
+        username
+      });
+
+      if (!responseDescricaoUsuario) {
+        continue;
+      }
+      if (responseDescricaoUsuario.status < 200 || responseDescricaoUsuario.status > 299) {
+        continue;
+      }
+
+      return responseDescricaoUsuario.data.descricao;
+    }
   }
 
   return (
-    <AuthContext.Provider value={{ registerAccount, loginAccount, getCredentials }}>
+    <AuthContext.Provider value={{ registerAccount, loginAccount, getCredentials, getReviewsQuantity, getDescricaoText }}>
       {children}
     </AuthContext.Provider>
   );

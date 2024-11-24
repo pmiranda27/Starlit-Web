@@ -10,7 +10,7 @@ export const AmigosProvider = ({ children }) => {
     const apiUrl = process.env.REACT_APP_API_URL;
     const tentativasMaximasRequests = 5;
     var credenciaisAmigos = null;
-    
+
     const [quantidadeAmigos, setQuantidadeAmigos] = useState(0);
 
     function getQuantidadeAmigos() {
