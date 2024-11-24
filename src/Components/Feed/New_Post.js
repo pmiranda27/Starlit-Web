@@ -22,6 +22,9 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
     const [listaFilmes, setListaFilmes] = useState([]);
     const [isLoadingListaFilmes, setIsLoadingListaFilmes] = useState(true);
 
+    const [hasSelectedMovie, setHasSelectedMovie] = useState(false)
+    const [movieBannerSource, setMovieBannerSource] = useState('');
+
     const [tituloNewPost, setTituloNewPost] = useState('');
     const [ratingNewPost, setRatingNewPost] = useState(3);
     const [descriptionNewPost, setDescriptionNewPost] = useState('');
@@ -82,7 +85,6 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
     }
 
     function filtrarListaFilmes(searchTerm) {
-
         if (!searchTerm) {
             setListaFilmesFiltrada(listaFilmesResponse);
             console.log('bunny')
@@ -92,6 +94,19 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
         const filteredMovies = listaFilmesResponse.filter((movie) =>
             movie.nome.toLowerCase().includes(searchTerm.toLowerCase())
         );
+
+        const onlyNameOfMovies = filteredMovies.map((mov) => mov.nome);
+
+        if (onlyNameOfMovies.includes(searchTerm)) {
+            setHasSelectedMovie(true);
+
+            const selectedMovieBanner = filteredMovies.find((movie) => movie.nome === searchTerm);
+            setMovieBannerSource(selectedMovieBanner?.imagem || '');
+
+        } else {
+            setHasSelectedMovie(false);
+            setMovieBannerSource('');
+        }
 
         setListaFilmesFiltrada(filteredMovies);
         setListaComponentesFilmes(listaFilmesFiltrada);
@@ -109,7 +124,6 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
     }
 
     async function getListaFilmes() {
-
         try {
             const response = await axios.get(`${apiUrl}/movies/`);
             const movies = response.data;
@@ -131,6 +145,8 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
         setTituloNewPost(title);
         if (title.length < 1) {
             setListaComponentesFilmes(listaFilmesResponse);
+
+            setHasSelectedMovie(false);
         }
         filtrarListaFilmes(title);
     }
@@ -144,6 +160,12 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
 
         return () => clearInterval(intervalRefresh);
     }, []);
+
+    useEffect(() => {
+        if (!hasSelectedMovie) {
+            setMovieBannerSource(''); // Reseta o banner caso o filme não esteja selecionado
+        }
+    }, [hasSelectedMovie])
 
     useEffect(() => {
         console.log('Lista de filmes atualizada:', listaFilmesResponse);
@@ -192,47 +214,50 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
 
     return <div className={`background-new-post-panel ${isCreatingNewPost ? '' : 'is-not-showing-background-new-post'}`}>
         <div className="painel-criar-novo-post" onClick={() => { setCreatingNewPost(false) }}>
-            <div className="titulo-novo-post">
-                <input onFocus={() => {
-                    setIsChangingMovieName(true);
-                }}
-                    onBlur={() => {
-                        setTimeout(() => {
-                            setIsChangingMovieName(false);
-                        }, 100)
+            <img src={`${hasSelectedMovie ? movieBannerSource : ''}`} className={`background-movie-selected-image ${!hasSelectedMovie ? 'background-movie-invisible' : ''}`} alt="Foto do filme selecionado" />
+            <div className="black-background-fields-new-post-panel">
+                <div className="titulo-novo-post">
+                    <input onFocus={() => {
+                        setIsChangingMovieName(true);
                     }}
-                    type="text" value={tituloNewPost}
-                    onChange={(e) => {
-                        handleTitleChange(e.target.value)
-                    }} className="input-criar-novo-post" placeholder="Título do filme" />
-                <div className={`lista-filmes-disponiveis ${isChangingMovieName ? '' : 'hiding-is-changing-movie-name'}`}>
-                    <ul className={isChangingMovieName ? '' : 'hiding-is-changing-movies-list'}>
-                        {isLoadingListaFilmes ? <div className="new-post-loader-centering"><FriendSectionLoader /></div> : listaFilmes}
-                    </ul>
-                </div>
+                        onBlur={() => {
+                            setTimeout(() => {
+                                setIsChangingMovieName(false);
+                            }, 100)
+                        }}
+                        type="text" value={tituloNewPost}
+                        onChange={(e) => {
+                            handleTitleChange(e.target.value)
+                        }} className="input-criar-novo-post" placeholder="Título do filme" />
+                    <div className={`lista-filmes-disponiveis ${isChangingMovieName ? '' : 'hiding-is-changing-movie-name'}`}>
+                        <ul className={isChangingMovieName ? '' : 'hiding-is-changing-movies-list'}>
+                            {isLoadingListaFilmes ? <div className="new-post-loader-centering"><FriendSectionLoader /></div> : listaFilmes}
+                        </ul>
+                    </div>
 
-                {isPublic ? <FaEyeSlash onClick={() => {
-                    setIsPublic(!isPublic)
-                }} className="icon-public-criar-novo-post" color="rgb(255, 255, 255)" /> : <FaEye onClick={() => {
-                    setIsPublic(!isPublic)
-                }} className="icon-public-criar-novo-post" color="rgb(255, 255, 255)" />}
-            </div>
-            <div className="conteudo-novo-post">
-                {
-                    getStarRating()
-                }
-                <textarea value={descriptionNewPost} onChange={(e) => {
-                    setDescriptionNewPost(e.target.value);
-                }} maxLength={400} className="paragrafo-novo-post" placeholder="Dê a sua opinião"></textarea>
-            </div>
-            <div className="acoes-novo-post">
-                <div className="close-novo-post" onClick={closeNewPostScreen}>
-                    <RiCloseCircleLine className="close-novo-post-icon" />
+                    {isPublic ? <FaEyeSlash onClick={() => {
+                        setIsPublic(!isPublic)
+                    }} className="icon-public-criar-novo-post" color="rgb(255, 255, 255)" /> : <FaEye onClick={() => {
+                        setIsPublic(!isPublic)
+                    }} className="icon-public-criar-novo-post" color="rgb(255, 255, 255)" />}
                 </div>
-                {/* <div className="add-banner-novo-post">
+                <div className="conteudo-novo-post">
+                    {
+                        getStarRating()
+                    }
+                    <textarea value={descriptionNewPost} onChange={(e) => {
+                        setDescriptionNewPost(e.target.value);
+                    }} maxLength={400} className="paragrafo-novo-post" placeholder="Dê a sua opinião"></textarea>
+                </div>
+                <div className="acoes-novo-post">
+                    <div className="close-novo-post" onClick={closeNewPostScreen}>
+                        <RiCloseCircleLine className="close-novo-post-icon" />
+                    </div>
+                    {/* <div className="add-banner-novo-post">
                     <FaImages className="add-banner-novo-post-icon" color="#7E56E4" />
                 </div> */}
-                <div className="publicar-botao-novo-post" onClick={handleSubmitNewPost}>Publicar</div>
+                    <div className="publicar-botao-novo-post" onClick={handleSubmitNewPost}>Publicar</div>
+                </div>
             </div>
         </div>
     </div>
