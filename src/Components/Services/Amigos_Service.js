@@ -10,7 +10,12 @@ export const AmigosProvider = ({ children }) => {
     const apiUrl = process.env.REACT_APP_API_URL;
     const tentativasMaximasRequests = 5;
     var credenciaisAmigos = null;
-    const [userNameAmigos, setUserNameAmigos] = useState(null);
+    
+    const [quantidadeAmigos, setQuantidadeAmigos] = useState(0);
+
+    function getQuantidadeAmigos() {
+        return quantidadeAmigos;
+    }
 
     function refreshCredenciaisAmigos() {
         credenciaisAmigos = getCredentials();
@@ -34,6 +39,8 @@ export const AmigosProvider = ({ children }) => {
             if (responseListaAmigos.status < 200 || responseListaAmigos.status > 299) {
                 continue;
             }
+
+            setQuantidadeAmigos(responseListaAmigos.data.length);
 
             return responseListaAmigos.data;
         }
@@ -99,7 +106,7 @@ export const AmigosProvider = ({ children }) => {
         }
     }, []);
 
-    return <AmigosContext.Provider value={{ getListaAmigos, getAllUsersExceptLoggedUserAndFriends, getNotificacoesUsuario, refreshCredenciaisAmigos }}>{children}</AmigosContext.Provider>;
+    return <AmigosContext.Provider value={{ getListaAmigos, getQuantidadeAmigos, getAllUsersExceptLoggedUserAndFriends, getNotificacoesUsuario, refreshCredenciaisAmigos }}>{children}</AmigosContext.Provider>;
 };
 
 export const useAmigos = () => {

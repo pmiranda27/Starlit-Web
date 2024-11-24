@@ -58,7 +58,7 @@ function Chat() {
           {listaAmigosContatos}
         </section>
         <section className="contato-selecionado">
-          <img draggable={false} src={listaObjetosAmigos ? listaObjetosAmigos[amigoContatoIndex].avatar : ''} alt="Foto usuário" />
+          <img draggable={false} src={listaObjetosAmigos ? listaObjetosAmigos[amigoContatoIndex].avatar : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} alt="Foto usuário" />
           <h2>{listaObjetosAmigos ? listaObjetosAmigos[amigoContatoIndex].name : ''}</h2>
         </section>
         <section className="area-de-conversa-chat">

@@ -14,22 +14,22 @@ export const AuthProvider = ({ children }) => {
     setLoggedToken(token);
   }
 
-  async function setCredentials() {
-    console.log('APLUPLUUUU')
-    const cred = await verifyAuthentication();
-    if (cred) {
-      sessionStorage.setItem('userName', cred.name);
-      console.log('userName: ', sessionStorage.getItem('userName'));
-      sessionStorage.setItem('userEmail', cred.email);
-      console.log('userEmail: ', sessionStorage.getItem('userEmail'));
-      sessionStorage.setItem('userAvatar', cred.avatar);
-      console.log('userAvatar: ', sessionStorage.getItem('userAvatar'));
-      console.log("are tou ready: ", cred);
-      setUserCredentialsAuth(cred);
-    } else {
-      console.log('GIVE ME TOUGH LOVE');
-    }
-  }
+  // async function setCredentials() {
+  //   console.log('APLUPLUUUU')
+  //   const cred = await verifyAuthentication();
+  //   if (cred) {
+  //     sessionStorage.setItem('userName', cred.name);
+  //     console.log('userName: ', sessionStorage.getItem('userName'));
+  //     sessionStorage.setItem('userEmail', cred.email);
+  //     console.log('userEmail: ', sessionStorage.getItem('userEmail'));
+  //     sessionStorage.setItem('userAvatar', cred.avatar);
+  //     console.log('userAvatar: ', sessionStorage.getItem('userAvatar'));
+  //     console.log("are tou ready: ", cred);
+  //     setUserCredentialsAuth(cred);
+  //   } else {
+  //     console.log('GIVE ME TOUGH LOVE');
+  //   }
+  // }
 
   function getCredentials() {
     const credenciais = {
@@ -38,28 +38,6 @@ export const AuthProvider = ({ children }) => {
       avatar: sessionStorage.getItem('avatar')
     }
     return credenciais;
-  }
-
-  async function verifyAuthentication() {
-    // var verifyAuthenticationTries = 0;
-    // while (verifyAuthenticationTries < 5) {
-    //   try {
-    //     const isLoggedRequest = await axios.post(`${apiUrl}/user/verify-auth`, {
-    //       loggedToken: loggedToken,
-    //     });
-    //     if (isLoggedRequest.status === 200) {
-    //       return isLoggedRequest.data.decode;
-    //     } else {
-    //       return null;
-    //     }
-    //   } catch (error) {
-    //     console.log(`error: ${error}`);
-    //     verifyAuthenticationTries++;
-    //     if (verifyAuthenticationTries === 5) {
-    //       return null;
-    //     }
-    //   }
-    // }
   }
 
   function clearSessionAndLocalStorage() {
@@ -132,8 +110,12 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  async function getReviewsQuantity() {
+    
+  }
+
   return (
-    <AuthContext.Provider value={{ registerAccount, loginAccount, setCredentials, getCredentials }}>
+    <AuthContext.Provider value={{ registerAccount, loginAccount, getCredentials }}>
       {children}
     </AuthContext.Provider>
   );
