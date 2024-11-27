@@ -20,6 +20,7 @@ import { useAmigos } from "../../Components/Services/Amigos_Service";
 import { NewPostPanel } from "../../Components/Feed/New_Post";
 import { Loader } from "../../Components/Loaders/Loader_Welcome";
 import { FaSearch } from "react-icons/fa";
+import { MovieReview } from "../../Components/Feed/Review";
 
 function HomeScreen({ goToProfilePage }) {
   const { getCredentials } = useAuth();
@@ -28,6 +29,8 @@ function HomeScreen({ goToProfilePage }) {
   const [listaAmigos, setListaAmigos] = useState([]);
   const [listaUsuarios, setListaUsuarios] = useState([]);
   const [listaNotifications, setListaNotifications] = useState([]);
+
+  const [listaNomeAmigos, setListaNomeAmigos] = useState([]);
 
   const [isShowingFriendRequestPopUp, setIsShowingFriendRequestPopUp] =
     useState(false);
@@ -45,6 +48,8 @@ function HomeScreen({ goToProfilePage }) {
 
   const [isShowingNewPostPanel, setIsShowingNewPostPanel] = useState(false);
 
+  const [listaPostsAmigos, setListaPostsAmigos] = useState([]);
+
   var credentialsHomeScreen;
 
   function setCredentialsHomeScreen() {
@@ -53,6 +58,8 @@ function HomeScreen({ goToProfilePage }) {
 
   async function getFriendsItemsList() {
     const friendList = await getListaAmigos(sessionStorage.getItem('username'))
+
+    setListaNomeAmigos(friendList);
 
     const listaComponentesAmigos = friendList.map((friend, ind) => (
       <AmigoComponent
@@ -127,6 +134,39 @@ function HomeScreen({ goToProfilePage }) {
     setIsLoadingFriendSection(false);
   }
 
+  async function refreshPosts() {
+    const username = sessionStorage.getItem('username');
+    var postsAmigos;
+
+
+    for (var tentativa = 0; tentativa < 10; tentativa++) {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviews/`);
+      const listaPosts = response.data;
+
+      if (!listaNomeAmigos) {
+        continue
+      }
+
+      postsAmigos = listaPosts.filter(post =>
+        post.autorReview === username || listaNomeAmigos.includes(post.autorReview)
+      );
+
+      console.log('fkg', postsAmigos)
+      console.log('fodk', listaPosts)
+
+      break;
+    }
+
+    const listaComponentesReviews = postsAmigos.map((review, ind) => (
+      <MovieReview
+        key={review._id}
+        nomeReview={review.tituloFilme}
+      />
+    ));
+
+    setListaPostsAmigos(listaComponentesReviews);
+  }
+
   useEffect(() => {
     if (!credentialsHomeScreen) {
       setCredentialsHomeScreen();
@@ -135,8 +175,11 @@ function HomeScreen({ goToProfilePage }) {
 
     refreshEverythingUserHas();
 
+    refreshPosts();
+
     const refreshInterval = setInterval(() => {
       refreshEverythingUserHas();
+      refreshPosts();
     }, 6500);
 
     return () => clearInterval(refreshInterval);
@@ -245,6 +288,11 @@ function HomeScreen({ goToProfilePage }) {
           }}>
             Novo Post
           </div>
+
+          <div style={{ marginTop: 112 }} className="separador-home-categorias-reviews"><h3>Posts Amigos</h3></div>
+          <section className="categoria-posts-amigos">
+            {listaPostsAmigos}
+          </section>
         </section>
         <section className="main-friends-section">
           <div

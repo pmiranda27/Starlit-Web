@@ -53,7 +53,7 @@
 
 .search-bar input::placeholder {
   align-self: center;
-  
+
 
   font-size: .85rem;
   letter-spacing: .0005rem;
@@ -290,4 +290,46 @@
 
 .criar-novo-post:hover {
   background-color: #4c2d9b;
+}
+
+.separador-home-categorias-reviews {
+  user-select: none;
+
+  width: 85%;
+
+  color: white;
+
+  position: relative;
+}
+.separador-home-categorias-reviews > h3 {
+  width: 20%;
+
+  font-size: 1.25rem;
+}
+.separador-home-categorias-reviews::before {
+  content: '';
+
+  width: 80%;
+  height: 2px;
+
+  position: absolute;
+
+  background-color: rgb(255, 255, 255, .2);
+
+  border: transparent;
+  border-radius: 24px;
+  
+  right: 0;
+  top: 50%;
+
+  transform: translateY(-50%);
+}
+
+.categoria-posts-amigos {
+  width: 85%;
+  height: 32vh;
+
+  margin-top: 16px;
+
+  background-color: red;
 }
