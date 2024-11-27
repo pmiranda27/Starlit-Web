@@ -11,15 +11,15 @@ function AmigoComponent({
   userEmail,
   emailFriend,
   refreshFriend,
+  functionToGoToProfile
 }) {
   const [isOptionsPanelOpen, setIsOptionsPanelOpen] = useState(false);
 
   function OptionsPanel({ userEmail, emailFriend, refreshFriendList }) {
     return (
       <div
-        className={`options-panel ${
-          isOptionsPanelOpen ? "options-panel-opened" : ""
-        }`}
+        className={`options-panel ${isOptionsPanelOpen ? "options-panel-opened" : ""
+          }`}
       >
         <ul>
           <li
@@ -35,10 +35,9 @@ function AmigoComponent({
   }
 
   return (
-    <div
-      className={`amigo-component ${
-        isOptionsPanelOpen ? "amigo-component-distance" : ""
-      }`}
+    <div onClick={() => {functionToGoToProfile(name)}}
+      className={`amigo-component ${isOptionsPanelOpen ? "amigo-component-distance" : ""
+        }`}
     >
       <img src={imgUrl} alt="" />
       <div className="info-amigo">
@@ -75,7 +74,7 @@ function AmigoComponent({
 
 async function removeFriend(userEmail, emailFriend, refreshFriendList) {
   try {
-    const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/remove-friend`, {
+    await axios.post(`${process.env.REACT_APP_API_URL}/user/remove-friend`, {
       email: userEmail,
       emailFriend: emailFriend,
     });

@@ -15,6 +15,7 @@ function UserComponent({
   setIsShowingFriendRequestPopUp,
   refreshFriendsList, // Função para atualizar a lista de amigos
   isFriendRequested,
+  functionToGoToProfile
 }) {
   const [isRequested, setIsRequested] = useState(isFriendRequested);
   const [canChangeNotificationRequest, setCanChangeNotificationRequest] =
@@ -103,7 +104,7 @@ function UserComponent({
   }
 
   return (
-    <div className="user-component">
+    <div className="user-component" onClick={() => {functionToGoToProfile(name)}}>
       <img
         src={imgUrl}
         onError={(e) => {

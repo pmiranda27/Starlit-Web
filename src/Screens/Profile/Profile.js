@@ -1,11 +1,13 @@
 
+import axios from "axios";
 import { useAmigos } from "../../Components/Services/Amigos_Service";
 import { useAuth } from "../../Components/Services/Api_Service";
 import "./Profile.css";
 
 import { useEffect, useState } from "react";
+import { FiEdit } from "react-icons/fi";
 
-function Profile() {
+function Profile({ nicknameToSearch }){
   const [statusSelectorIndex, setStatusSelectorIndex] = useState(0);
   const [selectedStatusBarPosition, setSelectedStatusBarPosition] = useState('profile-selectors-wrapper-posts-selected');
 
@@ -37,10 +39,32 @@ function Profile() {
     }
   }
 
-  async function getQuantidadeAmigosNumber() {
-    await getListaAmigos();
+  const updateProfileInfo = async (nickname) => {
+    try {
+      const responseAvatar = await axios.get(`${process.env.REACT_APP_API_URL}/user/avatar-usuario`, {
+        params: { nickname },
+      });
+      const avatarRequest = responseAvatar.data.avatar;
 
-    setNumeroAmigos(getQuantidadeAmigos());
+      const friendsList = await getListaAmigos(nickname);
+      const reviewsCount = await getReviewsQuantity(nickname);
+      const descricaoText = await getDescricaoText(nickname);
+
+      // Atualizando os estados com os dados do API
+      setUserPicture(avatarRequest);
+      setUserName(nickname);
+      setNumeroAmigos(friendsList.length);
+      setNumeroReviews(reviewsCount);
+      setTextoDescricao(descricaoText);
+    } catch (error) {
+      console.error("Erro ao buscar informações do perfil:", error);
+    }
+  };
+
+  async function getQuantidadeAmigosNumber(nicknameRequest) {
+    const listaAmigos = await getListaAmigos(nicknameRequest);
+
+    setNumeroAmigos(listaAmigos.length);
   }
 
   async function getQuantidadeReviewsNumber() {
@@ -57,14 +81,35 @@ function Profile() {
     console.log('recebi: ', textoDescricao)
   }
 
+  async function getAvatarUser(nicknameRequest) {
+    var avatarRequest;
+
+    if (!nicknameToSearch) {
+      avatarRequest = sessionStorage.getItem('avatar');
+    } else {
+      const responseAvatar = await axios.get(`${process.env.REACT_APP_API_URL}/user/avatar-usuario`, {
+        params: {
+          nickname: nicknameRequest
+        }
+      })
+
+      avatarRequest = responseAvatar.data.avatar;
+    }
+
+    setUserPicture(avatarRequest);
+  }
+
   function refreshUserInformation() {
-    const avatarUrl = sessionStorage.getItem('avatar');
-    setUserPicture(avatarUrl);
+    var nicknameRequest = nicknameToSearch || sessionStorage.getItem('username');
 
-    const userName = sessionStorage.getItem('username');
-    setUserName(userName);
+    console.log('Usando nickname:', nicknameRequest);
 
-    getQuantidadeAmigosNumber();
+
+    getAvatarUser(nicknameRequest);
+
+    setUserName(nicknameRequest);
+
+    getQuantidadeAmigosNumber(nicknameRequest);
 
     getQuantidadeReviewsNumber();
 
@@ -72,17 +117,19 @@ function Profile() {
   }
 
   useEffect(() => {
-    refreshUserInformation();
+    const nickname = nicknameToSearch || sessionStorage.getItem("username");
+    updateProfileInfo(nickname);
 
     const refreshInterval = setInterval(() => {
-      refreshUserInformation();
+      updateProfileInfo(nickname);
     }, 6500);
 
     return () => clearInterval(refreshInterval)
-  }, [])
+  }, [nicknameToSearch])
 
   return <div className="profile-main">
     <div className="profile-info-box">
+      <FiEdit className={`edit-button-profile ${nicknameToSearch == sessionStorage.getItem('username') ? '' : 'edit-profile-button-invisible' }`} />
       <img src={userPicture ? userPicture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} alt="Foto do perfil" className="profile-picture-info" />
       <div className="text-info-profile">
         <div className="profile-text-info-first-line">

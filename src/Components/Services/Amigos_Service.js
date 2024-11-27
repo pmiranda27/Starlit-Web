@@ -11,26 +11,19 @@ export const AmigosProvider = ({ children }) => {
     const tentativasMaximasRequests = 5;
     var credenciaisAmigos = null;
 
-    const [quantidadeAmigos, setQuantidadeAmigos] = useState(0);
-
-    function getQuantidadeAmigos() {
-        return quantidadeAmigos;
-    }
 
     function refreshCredenciaisAmigos() {
         credenciaisAmigos = getCredentials();
     }
 
-    async function getListaAmigos() {
+    async function getListaAmigos(nickname) {
         if (!credenciaisAmigos) {
             refreshCredenciaisAmigos();
         }
 
-        const userEmail = credenciaisAmigos.email;
-
         for (var tentativa = 0; tentativa < tentativasMaximasRequests; tentativa++) {
             const responseListaAmigos = await axios.post(`${apiUrl}/user/amigos`, {
-                email: userEmail
+                username: nickname
             });
 
             if (!responseListaAmigos) {
@@ -39,8 +32,6 @@ export const AmigosProvider = ({ children }) => {
             if (responseListaAmigos.status < 200 || responseListaAmigos.status > 299) {
                 continue;
             }
-
-            setQuantidadeAmigos(responseListaAmigos.data.length);
 
             return responseListaAmigos.data;
         }
@@ -66,7 +57,7 @@ export const AmigosProvider = ({ children }) => {
                 (user) => user.email !== userEmail
             );
 
-            const listaAmigos = await getListaAmigos();
+            const listaAmigos = await getListaAmigos(sessionStorage.getItem('username'));
 
             const listaUsuariosFiltradaAmigosELoggedUser = listaUsuariosFiltradaLoggedUser.filter(
                 (user) =>
@@ -106,7 +97,7 @@ export const AmigosProvider = ({ children }) => {
         }
     }, []);
 
-    return <AmigosContext.Provider value={{ getListaAmigos, getQuantidadeAmigos, getAllUsersExceptLoggedUserAndFriends, getNotificacoesUsuario, refreshCredenciaisAmigos }}>{children}</AmigosContext.Provider>;
+    return <AmigosContext.Provider value={{ getListaAmigos, getAllUsersExceptLoggedUserAndFriends, getNotificacoesUsuario, refreshCredenciaisAmigos }}>{children}</AmigosContext.Provider>;
 };
 
 export const useAmigos = () => {

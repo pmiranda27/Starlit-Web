@@ -21,7 +21,7 @@ import { NewPostPanel } from "../../Components/Feed/New_Post";
 import { Loader } from "../../Components/Loaders/Loader_Welcome";
 import { FaSearch } from "react-icons/fa";
 
-function HomeScreen() {
+function HomeScreen({ goToProfilePage }) {
   const { getCredentials } = useAuth();
   const { getListaAmigos, refreshCredenciaisAmigos, getAllUsersExceptLoggedUserAndFriends, getNotificacoesUsuario } = useAmigos();
 
@@ -52,7 +52,7 @@ function HomeScreen() {
   }
 
   async function getFriendsItemsList() {
-    const friendList = await getListaAmigos()
+    const friendList = await getListaAmigos(sessionStorage.getItem('username'))
 
     const listaComponentesAmigos = friendList.map((friend, ind) => (
       <AmigoComponent
@@ -62,6 +62,7 @@ function HomeScreen() {
         userEmail={credentialsHomeScreen.email}
         emailFriend={friend.email}
         refreshFriend={getFriendsItemsList}
+        functionToGoToProfile={goToProfilePage}
       />
     ));
 
@@ -75,7 +76,8 @@ function HomeScreen() {
       (user, ind) => (
         <UserComponent
           key={user.email}
-          name={user.name}
+          name={user.username}
+          functionToGoToProfile={goToProfilePage}
           loggedUserName={credentialsHomeScreen.username}
           userEmail={user.email}
           loggedUserEmail={credentialsHomeScreen.email}

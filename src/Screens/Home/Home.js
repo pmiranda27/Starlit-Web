@@ -28,7 +28,9 @@ const HomePage = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [searchBarEnabled, setSearchBarEnabled] = useState(true);
 
-  const pages = [<HomeScreen />, <Chat />, <Profile />];
+  const [userNickname, setUserNickname] = useState();
+
+  const pages = [<HomeScreen goToProfilePage={goToProfile} />, <Chat />, <Profile nicknameToSearch={userNickname} />];
 
   const loggedToken = localStorage.getItem("token");
 
@@ -38,11 +40,18 @@ const HomePage = () => {
       const isLoggedRequest = await axios.post(`${apiUrl}/user/verify-auth`, {
         loggedToken,
       });
+
       console.log("está logado. StatusCode: ", isLoggedRequest.status);
     } catch (error) {
       localStorage.removeItem("token");
       navigate("/");
     }
+  }
+
+  function goToProfile(username) {
+    setUserNickname(username)
+
+    setTabIndex(2);
   }
 
   useEffect(() => {
@@ -52,7 +61,6 @@ const HomePage = () => {
   return (
     <>
       <div className="home-main">
-
         <section className="section-abas">
           <div className="navigation-left-bar">
             <div className={`logo ${searchBarEnabled ? "logo-search-bar" : ""}`}>
@@ -93,7 +101,7 @@ const HomePage = () => {
                 }
                 onClick={() => {
                   setSearchBarEnabled(false);
-                  setTabIndex(2);
+                  goToProfile()
                 }}
               >
                 <IoPerson style={iconStyle} />
