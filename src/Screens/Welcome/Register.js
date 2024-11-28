@@ -82,7 +82,7 @@ const Register = () => {
       setErrorMessagePopUp('Senhas discrepantes.');
       setIsShowingErrorMessage(true);
     }
-    
+
     if (formBody.senha === "" || formBody.senha.length < 8) {
       setSenhaInputError(true);
       setFormBody({ ...formBody, senha: "" });
@@ -99,7 +99,7 @@ const Register = () => {
       setErrorMessagePopUp('Email inválido. Não o deixe vazio e verifique se ele é um email válido.');
       setIsShowingErrorMessage(true);
     }
-    
+
     if (formBody.nome === "" || formBody.nome.replace(/\s/g, "") === "") {
       setNomeInputError(true);
       setFormBody({ ...formBody, nome: "" });
@@ -107,7 +107,7 @@ const Register = () => {
       setErrorMessagePopUp('Nome é obrigatório!');
       setIsShowingErrorMessage(true);
     }
-    
+
     if (formBody.username === "" || /\s/.test(formBody.username)) {
       setUsernameInputError(true);
       setFormBody({ ...formBody, username: "" });
@@ -135,7 +135,7 @@ const Register = () => {
       avatar: formBody.avatar,
     };
     setTimeout(async () => {
-      try {
+
         const response = await registerAccount(newUser);
         if (response.status === 201) {
           setIsGreen(true);
@@ -149,17 +149,24 @@ const Register = () => {
             navigate("/home");
           }, 3000);
         }
-        console.log("O status code da resposta é: ", response.status);
-      } catch (error) {
+
+
         setIsGreen(false);
         setIsShowingMessage(true);
         setTimeout(() => {
           setIsShowingProfilePicturePanel(false);
         }, 1500);
+        
         setIsSendingProfilePicture(false);
 
-        setIsShowingErrorMessage(true);
-        setErrorMessagePopUp(`${error.response.data.message}`);
+        if (response.status === 500) {
+          setIsShowingErrorMessage(true);
+          setErrorMessagePopUp(`Erro no servidor. Tente novamente mais tarde!`);
+        }
+        else {
+          setIsShowingErrorMessage(true);
+          setErrorMessagePopUp(`${response.data.message}`);
+        }
 
         setTimeout(() => {
           setIsGreen(false);
@@ -168,8 +175,6 @@ const Register = () => {
           setIsLoading(false);
           setCanChangeRegisterInputs(true);
         }, 3000);
-        console.log("error: ", error);
-      }
     }, 1500);
   }
 

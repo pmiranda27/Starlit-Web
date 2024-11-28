@@ -55,7 +55,9 @@ const Login = () => {
 
   function removeError(input) {
     setIsShowingErrorMessage(false);
-    setErrorMessagePopUp('');
+    setTimeout(() => {
+      setErrorMessagePopUp('');
+    }, 1000)
     switch (input) {
       case "email":
         setEmailInputError(false);
@@ -121,8 +123,14 @@ const Login = () => {
         setIsGreen(false);
         setIsShowingMessage(true);
 
-        setErrorMessagePopUp(loginTry.message);
-        setIsShowingErrorMessage(true);
+        if (loginTry.status === 500) {
+          setErrorMessagePopUp("Erro no servidor. Tente novamente mais tarde!");
+          setIsShowingErrorMessage(true);
+        } else {
+          setErrorMessagePopUp(loginTry.message);
+          setIsShowingErrorMessage(true);
+        }
+
 
         localStorage.removeItem('token');
 

@@ -128,14 +128,12 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
             const response = await axios.get(`${apiUrl}/movies/`);
             const movies = response.data;
 
-
             setListaFilmesResponse(movies);
             setListaFilmesFiltrada(movies);
 
             setIsLoadingListaFilmes(false);
         } catch (error) {
             console.error("Erro ao buscar lista de filmes:", error);
-
         } finally {
             setIsLoadingListaFilmes(false);
         }

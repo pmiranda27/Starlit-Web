@@ -54,18 +54,17 @@ export const AuthProvider = ({ children }) => {
   async function loginAccount(userForm) {
     try {
       const response = await axios.post(`${apiUrl}/user/login`, userForm);
-      console.log(response);
-  
+
       const tok = response.data.token;
       setLoggedToken(tok);
-  
+
       clearSessionAndLocalStorage();
-  
+
       localStorage.setItem('token', tok);
       sessionStorage.setItem('username', response.data.usuario);
       sessionStorage.setItem('email', userForm.email);
       sessionStorage.setItem('avatar', response.data.avatar);
-  
+
       return {
         status: response.status,
         message: response.data.message
@@ -80,9 +79,8 @@ export const AuthProvider = ({ children }) => {
   }
 
   async function registerAccount(userRegisterForm) {
-    const response = await axios.post(`${apiUrl}/user/register`, userRegisterForm);
-    console.log(response);
-    if (response.status >= 200 && response.status < 300) {
+    try {
+      const response = await axios.post(`${apiUrl}/user/register`, userRegisterForm);
       console.log('papibaquigrafo: ', response.data.token);
 
       const tok = response.data.token;
@@ -99,12 +97,12 @@ export const AuthProvider = ({ children }) => {
         status: response.status,
         message: 'Sucesso no registro'
       }
-    }
-    else {
-      console.log('ERRO: ', response);
+
+    } catch (error) {
+      console.log('ERRO: ', error);
       clearSessionAndLocalStorage();
       return {
-        status: response.status,
+        status: error.response ? error.response.status : 500,
         message: 'Falha no registro'
       }
     }
