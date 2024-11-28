@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ApiService } from "../../Components/Services/Api_Service";
 import { IoIosSettings } from "react-icons/io";
+import { PopUpError } from "../../Components/PopUpError";
 
 const HomePage = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -30,6 +31,9 @@ const HomePage = () => {
 
   const [userNickname, setUserNickname] = useState();
 
+  const [isShowingErrorMessage, setIsShowingErrorMessage] = useState(false);
+  const [errorMessagePopUp, setErrorMessagePopUp] = useState('');
+
   const pages = [<HomeScreen goToProfilePage={goToProfile} />, <Chat />, <Profile nicknameToSearch={userNickname} />];
 
   const loggedToken = localStorage.getItem("token");
@@ -42,9 +46,21 @@ const HomePage = () => {
       });
 
       console.log("está logado. StatusCode: ", isLoggedRequest.status);
+
     } catch (error) {
       localStorage.removeItem("token");
-      navigate("/");
+
+      if (sessionStorage.getItem('username')) {
+        setErrorMessagePopUp('Falha na Autenticação. Por favor logue novamente!')
+        setIsShowingErrorMessage(true);
+
+        setTimeout(() => {
+          setIsShowingErrorMessage(false);
+          navigate('/');
+        }, 2500)
+      } else {
+        navigate("/");
+      }
     }
   }
 
@@ -61,6 +77,9 @@ const HomePage = () => {
   return (
     <>
       <div className="home-main">
+        <PopUpError $isShowingMessage={isShowingErrorMessage}>
+          {errorMessagePopUp}
+        </PopUpError>
         <section className="section-abas">
           <div className="navigation-left-bar">
             <div className={`logo ${searchBarEnabled ? "logo-search-bar" : ""}`}>

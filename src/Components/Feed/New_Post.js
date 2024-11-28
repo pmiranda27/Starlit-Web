@@ -5,6 +5,7 @@ import { CiStar } from "react-icons/ci";
 import { RiCloseCircleLine } from "react-icons/ri";
 import axios from "axios";
 import { FriendSectionLoader } from "../Loaders/Friends_Section";
+import { PopUpError } from "../PopUpError";
 
 export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
     const apiUrl = process.env.REACT_APP_API_URL;
@@ -28,6 +29,9 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
     const [tituloNewPost, setTituloNewPost] = useState('');
     const [ratingNewPost, setRatingNewPost] = useState(3);
     const [descriptionNewPost, setDescriptionNewPost] = useState('');
+
+    const [errorMessagePopUp, setErrorMessagePopUp] = useState('');
+    const [isShowingErrorMessage, setIsShowingErrorMessage] = useState(false);
 
     function getStarRating() {
         switch (starRating) {
@@ -133,7 +137,9 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
 
             setIsLoadingListaFilmes(false);
         } catch (error) {
-            console.error("Erro ao buscar lista de filmes:", error);
+            setErrorMessagePopUp(error.response ? error.response.status : 'Falha no servidor. Volte novamente mais tarde!');
+            setIsShowingErrorMessage(true);
+            // console.error("Erro ao buscar lista de filmes:", error);
         } finally {
             setIsLoadingListaFilmes(false);
         }
@@ -171,6 +177,13 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
         setListaComponentesFilmes(listaFilmesResponse);
     }, [listaFilmesResponse]);
 
+    useEffect(() => {
+        if (isShowingErrorMessage) {
+            setTimeout(() => {
+                setIsShowingErrorMessage(false);
+            }, 3500);
+        }
+    }, [isShowingErrorMessage])
 
 
     async function handleSubmitNewPost() {
@@ -211,6 +224,9 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
     }
 
     return <div className={`background-new-post-panel ${isCreatingNewPost ? '' : 'is-not-showing-background-new-post'}`}>
+        <PopUpError $isShowingMessage={isShowingErrorMessage}>
+            {errorMessagePopUp}
+        </PopUpError>
         <div className="painel-criar-novo-post" onClick={() => { setCreatingNewPost(false) }}>
             <img src={`${hasSelectedMovie ? movieBannerSource : ''}`} className={`background-movie-selected-image ${!hasSelectedMovie ? 'background-movie-invisible' : ''}`} alt="Foto do filme selecionado" />
             <div className="black-background-fields-new-post-panel">

@@ -201,16 +201,13 @@ function HomeScreen({ goToProfilePage }) {
     let mapReviewsPorFilme = new Map();
   
     try {
-      // Primeiro request: obter todas as reviews
       const responseReviews = await axios.get(`${process.env.REACT_APP_API_URL}/reviews/`);
       const listaPosts = responseReviews.data;
   
       if (!listaPosts || listaPosts.length === 0) return;
   
-      // Coletar os IDs dos filmes a partir das reviews
       listaFilmes = [...new Set(listaPosts.map(post => post.tituloFilme))];
   
-      // Segundo request: para cada filme, obter reviews adicionais
       for (const tituloFilme of listaFilmes) {
         const responseFilme = await axios.get(`${process.env.REACT_APP_API_URL}/reviews/get-reviews-por-filme`, {
           params: { tituloFilme },
@@ -226,7 +223,6 @@ function HomeScreen({ goToProfilePage }) {
         }
       }
   
-      // Criar os componentes
       postsAmigos = listaPosts.map(review => {
         const usuariosQueFizeramReview = mapReviewsPorFilme.get(review.tituloFilme) || [];
   
@@ -244,7 +240,6 @@ function HomeScreen({ goToProfilePage }) {
         );
       });
   
-      // Atualizar o estado com os componentes gerados
       setListaPostsAmigos(postsAmigos);
     } catch (error) {
       console.error('Erro ao carregar as reviews:', error);

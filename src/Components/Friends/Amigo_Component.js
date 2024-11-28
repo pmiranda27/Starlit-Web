@@ -35,12 +35,12 @@ function AmigoComponent({
   }
 
   return (
-    <div onClick={() => {functionToGoToProfile(name)}}
+    <div
       className={`amigo-component ${isOptionsPanelOpen ? "amigo-component-distance" : ""
         }`}
     >
-      <img src={imgUrl} alt="" />
-      <div className="info-amigo">
+      <img src={imgUrl} onClick={() => { functionToGoToProfile(name) }} alt={`Imagem do usuário ${name}`} />
+      <div className="info-amigo" onClick={() => { functionToGoToProfile(name) }}>
         <h4>{name}</h4>
       </div>
       {isOptionsPanelOpen ? (

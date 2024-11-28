@@ -76,18 +76,24 @@ export const AmigosProvider = ({ children }) => {
         const userEmail = credenciaisAmigos.email;
 
         for (var tentativa = 0; tentativa < tentativasMaximasRequests; tentativa++) {
-            const responseListaNotificacoes = await axios.post(`${apiUrl}/user/lista-notificacoes`, {
-                email: userEmail
-            });
-
-            if (!responseListaNotificacoes) {
-                continue;
+            try {
+                const responseListaNotificacoes = await axios.post(`${apiUrl}/user/lista-notificacoes`, {
+                    email: userEmail
+                });
+                
+                if (!responseListaNotificacoes) {
+                    continue;
+                }
+                if (responseListaNotificacoes.status < 200 || responseListaNotificacoes.status > 299) {
+                    continue
+                }
+                
+                return responseListaNotificacoes.data;
             }
-            if (responseListaNotificacoes.status < 200 || responseListaNotificacoes.status > 299) {
-                continue
+            catch (error) {
+                console.log('error no get das notificações', error)
+                return [];
             }
-
-            return responseListaNotificacoes.data;
         }
     }
 
