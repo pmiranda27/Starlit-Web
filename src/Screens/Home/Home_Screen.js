@@ -134,37 +134,121 @@ function HomeScreen({ goToProfilePage }) {
     setIsLoadingFriendSection(false);
   }
 
+  // async function refreshPosts() {
+  //   const username = sessionStorage.getItem('username');
+  //   var postsAmigos;
+
+
+  //   for (var tentativa = 0; tentativa < 10; tentativa++) {
+  //     const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviews/`);
+  //     const listaPosts = response.data;
+
+  //     if (!listaNomeAmigos) {
+  //       continue
+  //     }
+
+  //     postsAmigos = listaPosts.filter(post =>
+  //       post.autorReview === username || listaNomeAmigos.includes(post.autorReview)
+  //     );
+
+  //     console.log('fkg', postsAmigos)
+  //     console.log('fodk', listaPosts)
+
+  //     break;
+  //   }
+
+
+  //   for (var tentativa = 0; tentativa < 10; tentativa++) {
+  //     const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviews/get-reviews-por-filme`, {
+  //       params: 
+  //     });
+  //     const listaPosts = response.data;
+
+  //     if (!listaNomeAmigos) {
+  //       continue
+  //     }
+
+  //     // postsAmigos = listaPosts.filter(post =>
+  //     //   post.autorReview === username || listaNomeAmigos.includes(post.autorReview)
+  //     // );
+
+  //     postsAmigos = listaPosts;
+
+  //     console.log('fodk', listaPosts)
+
+  //     break;
+  //   }
+
+  //   const listaComponentesReviews = postsAmigos.map((review, ind) => (
+  //     <MovieReview
+  //       key={review._id}
+  //       nomeReview={review.tituloFilme}
+  //       notaReview={review.nota}
+  //       bannerFilme={review.bannerFilme}
+  //       descricaoReview={review.descricao}
+  //       autorReview={review.autorReview}
+  //       avatarAutor={review.autorAvatar}
+  //     />
+  //   ));
+
+  //   setListaPostsAmigos(listaComponentesReviews);
+  // }
+  
   async function refreshPosts() {
     const username = sessionStorage.getItem('username');
-    var postsAmigos;
-
-
-    for (var tentativa = 0; tentativa < 10; tentativa++) {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviews/`);
-      const listaPosts = response.data;
-
-      if (!listaNomeAmigos) {
-        continue
+    let postsAmigos = [];
+    let listaFilmes = [];
+    let mapReviewsPorFilme = new Map();
+  
+    try {
+      // Primeiro request: obter todas as reviews
+      const responseReviews = await axios.get(`${process.env.REACT_APP_API_URL}/reviews/`);
+      const listaPosts = responseReviews.data;
+  
+      if (!listaPosts || listaPosts.length === 0) return;
+  
+      // Coletar os IDs dos filmes a partir das reviews
+      listaFilmes = [...new Set(listaPosts.map(post => post.tituloFilme))];
+  
+      // Segundo request: para cada filme, obter reviews adicionais
+      for (const tituloFilme of listaFilmes) {
+        const responseFilme = await axios.get(`${process.env.REACT_APP_API_URL}/reviews/get-reviews-por-filme`, {
+          params: { tituloFilme },
+        });
+  
+        const reviewsFilme = responseFilme.data;
+  
+        if (reviewsFilme && reviewsFilme.length > 0) {
+          mapReviewsPorFilme.set(
+            tituloFilme,
+            reviewsFilme.map(review => review.autorReview).filter(autor => autor !== username)
+          );
+        }
       }
-
-      postsAmigos = listaPosts.filter(post =>
-        post.autorReview === username || listaNomeAmigos.includes(post.autorReview)
-      );
-
-      console.log('fkg', postsAmigos)
-      console.log('fodk', listaPosts)
-
-      break;
+  
+      // Criar os componentes
+      postsAmigos = listaPosts.map(review => {
+        const usuariosQueFizeramReview = mapReviewsPorFilme.get(review.tituloFilme) || [];
+  
+        return (
+          <MovieReview
+            key={review._id}
+            nomeReview={review.tituloFilme}
+            notaReview={review.nota}
+            bannerFilme={review.bannerFilme}
+            descricaoReview={review.descricao}
+            autorReview={review.autorReview}
+            avatarAutor={review.autorAvatar}
+            usuariosQueFizeramReview={usuariosQueFizeramReview}
+          />
+        );
+      });
+  
+      // Atualizar o estado com os componentes gerados
+      setListaPostsAmigos(postsAmigos);
+    } catch (error) {
+      console.error('Erro ao carregar as reviews:', error);
     }
-
-    const listaComponentesReviews = postsAmigos.map((review, ind) => (
-      <MovieReview
-        key={review._id}
-        nomeReview={review.tituloFilme}
-      />
-    ));
-
-    setListaPostsAmigos(listaComponentesReviews);
   }
 
   useEffect(() => {
@@ -289,7 +373,7 @@ function HomeScreen({ goToProfilePage }) {
             Novo Post
           </div>
 
-          <div style={{ marginTop: 112 }} className="separador-home-categorias-reviews"><h3>Posts Amigos</h3></div>
+          <div style={{ marginTop: 64 }} className="separador-home-categorias-reviews"><h3>Reviews da Comunidade</h3></div>
           <section className="categoria-posts-amigos">
             {listaPostsAmigos}
           </section>

@@ -104,7 +104,9 @@ function UserComponent({
   }
 
   return (
-    <div className="user-component" onClick={() => {functionToGoToProfile(name)}}>
+    <div className="user-component" onClick={() => {
+      // functionToGoToProfile(name)
+    }}>
       <img
         src={imgUrl}
         onError={(e) => {

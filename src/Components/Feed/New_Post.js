@@ -193,7 +193,7 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
             titulo: tituloNewPost,
             email: emailUser,
             descricao: descriptionNewPost,
-            nota: ratingNewPost,
+            nota: starRating,
             privado: isPublic
         }
 
