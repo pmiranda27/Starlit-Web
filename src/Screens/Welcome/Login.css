@@ -24,7 +24,7 @@
   position: absolute;
   z-index: 1;
 
-  opacity: 15%;
+  opacity: 35%;
 
   background: url('../../Assets/Images/static.png');
 }
@@ -43,8 +43,8 @@
 
   position: relative;
 
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: saturate(180%) blur(2px);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: saturate(100%);
 
   box-shadow: 0 4px 9px 4px rgba(0, 0, 0, 0.35);
 
@@ -62,6 +62,7 @@
     width: 45%;
   }
 }
+
 @media (max-width: 600px) {
   .form-login {
     width: 60%;
@@ -117,6 +118,7 @@ input:-webkit-autofill:focus {
 .input-padrao-invalido {
   background-color: #6b0303;
 }
+
 .input-padrao-invalido::placeholder {
   color: #d11818;
 }
@@ -213,14 +215,14 @@ input:-webkit-autofill:focus {
   visibility: hidden;
 }
 
-.form-login > p {
+.form-login>p {
   color: white;
   font-weight: 700;
 
   text-align: center;
 }
 
-.form-login > p > span {
+.form-login>p>span {
   color: #5936B2;
 
   cursor: pointer;

@@ -1,5 +1,5 @@
 import "./Register.css";
-import React from "react";
+import React, { useState } from "react";
 
 import { Loader } from "../../Components/Loaders/Loader_Welcome";
 
@@ -10,6 +10,7 @@ import { PopUpConfirm } from "../../Components/PopUpConfirm";
 import { ImCross } from "react-icons/im";
 import { SendProfilePicturePanel } from "../../Components/Send_Profile_Picture_Panel";
 import { useAuth } from "../../Components/Services/Api_Service";
+import { PopUpError } from "../../Components/PopUpError";
 
 
 const Register = () => {
@@ -20,7 +21,7 @@ const Register = () => {
     navigate("/login");
   };
 
-  const [formBody, setFormBody] = React.useState({
+  const [formBody, setFormBody] = useState({
     username: "",
     nome: "",
     email: "",
@@ -30,9 +31,9 @@ const Register = () => {
   });
 
   const [CanChangeRegisterInputs, setCanChangeRegisterInputs] =
-    React.useState(true);
+    useState(true);
   const [isShowingProfilePicturePanel, setIsShowingProfilePicturePanel] =
-    React.useState(false);
+    useState(false);
 
   const formHandler = (e) => {
     let nome = e.target.name;
@@ -45,80 +46,81 @@ const Register = () => {
     setFormBody({ ...formBody, [nome]: valor });
   };
 
-  const [usernameInputError, setUsernameInputError] = React.useState(false);
-  const [nomeInputError, setNomeInputError] = React.useState(false);
-  const [emailInputError, setEmailInputError] = React.useState(false);
-  const [senhaInputError, setSenhaInputError] = React.useState(false);
-  const [confirmarInputError, setConfirmarInputError] = React.useState(false);
+  const [usernameInputError, setUsernameInputError] = useState(false);
+  const [nomeInputError, setNomeInputError] = useState(false);
+  const [emailInputError, setEmailInputError] = useState(false);
+  const [senhaInputError, setSenhaInputError] = useState(false);
+  const [confirmarInputError, setConfirmarInputError] = useState(false);
 
   const validateEmail = (email) => {
     return email.match(/^\S+@\S+\.\S+$/);
   };
 
-  const [isHoveringOverButtonRegister, setIsHoveringOverButtonRegister] = React.useState(false);
+  const [isHoveringOverButtonRegister, setIsHoveringOverButtonRegister] = useState(false);
 
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isSendingProfilePicture, setIsSendingProfilePicture] =
-    React.useState(false);
-  const [isGreen, setIsGreen] = React.useState(false);
-  const [isShowingMessage, setIsShowingMessage] = React.useState(false);
+    useState(false);
+  const [isGreen, setIsGreen] = useState(false);
+
+  const [isShowingMessage, setIsShowingMessage] = useState(false);
+
+  const [isShowingErrorMessage, setIsShowingErrorMessage] = useState(false);
+  const [errorMessagePopUp, setErrorMessagePopUp] = useState('');
 
   let validationFailed = false;
 
   async function validateForm(e) {
     e.preventDefault();
 
-    if (formBody.username === "" || formBody.username.replace(/\s/g, "") === "") {
-      setUsernameInputError(true);
-      formBody.username = "";
+    let validationFailed = false;
 
+    if (formBody.confirmarSenha === "" || formBody.confirmarSenha !== formBody.senha) {
+      setConfirmarInputError(true);
+      setFormBody({ ...formBody, confirmarSenha: "" });
       validationFailed = true;
-
-      console.log("Apelido inválido");
+      setErrorMessagePopUp('Senhas discrepantes.');
+      setIsShowingErrorMessage(true);
     }
-    if (formBody.nome === "" || formBody.nome.replace(/\s/g, "") === "") {
-      setNomeInputError(true);
-      formBody.nome = "";
-
-      validationFailed = true;
-
-      console.log("Nome inválido");
-    }
-    if (formBody.email === "" || !validateEmail(formBody.email)) {
-      setEmailInputError(true);
-      formBody.email = "";
-
-      validationFailed = true;
-
-      console.log("Email inválido");
-    }
+    
     if (formBody.senha === "" || formBody.senha.length < 8) {
       setSenhaInputError(true);
-      formBody.senha = "";
+      setFormBody({ ...formBody, senha: "" });
 
       validationFailed = true;
-
-      console.log("Senha inválida");
+      setErrorMessagePopUp('Senha deve ter no mínimo 8 caracteres.');
+      setIsShowingErrorMessage(true);
     }
-    if (
-      formBody.confirmarSenha === "" ||
-      formBody.confirmarSenha !== formBody.senha
-    ) {
-      setConfirmarInputError(true);
-      formBody.confirmarSenha = "";
 
+    if (formBody.email === "" || !validateEmail(formBody.email)) {
+      setEmailInputError(true);
+      setFormBody({ ...formBody, email: "" });
       validationFailed = true;
-
-      console.log("Confirmação de Senha inválida");
+      setErrorMessagePopUp('Email inválido. Não o deixe vazio e verifique se ele é um email válido.');
+      setIsShowingErrorMessage(true);
+    }
+    
+    if (formBody.nome === "" || formBody.nome.replace(/\s/g, "") === "") {
+      setNomeInputError(true);
+      setFormBody({ ...formBody, nome: "" });
+      validationFailed = true;
+      setErrorMessagePopUp('Nome é obrigatório!');
+      setIsShowingErrorMessage(true);
+    }
+    
+    if (formBody.username === "" || /\s/.test(formBody.username)) {
+      setUsernameInputError(true);
+      setFormBody({ ...formBody, username: "" });
+      validationFailed = true;
+      setErrorMessagePopUp('Apelido inválido. Não utilize espaços e nem o deixe vazio.');
+      setIsShowingErrorMessage(true);
     }
 
     if (validationFailed) {
-      validationFailed = false;
       return;
     }
 
     setIsLoading(true);
-
     setCanChangeRegisterInputs(false);
     setIsShowingProfilePicturePanel(true);
   }
@@ -156,16 +158,12 @@ const Register = () => {
         }, 1500);
         setIsSendingProfilePicture(false);
 
+        setIsShowingErrorMessage(true);
+        setErrorMessagePopUp(`${error.response.data.message}`);
+
         setTimeout(() => {
           setIsGreen(false);
           setIsShowingMessage(false);
-
-          formBody.nome = "";
-          formBody.username = "";
-          formBody.email = "";
-          formBody.senha = "";
-          formBody.confirmarSenha = "";
-          formBody.avatar = "";
 
           setIsLoading(false);
           setCanChangeRegisterInputs(true);
@@ -176,6 +174,10 @@ const Register = () => {
   }
 
   function removeError(input) {
+    setIsShowingErrorMessage(false);
+    setTimeout(() => {
+      setErrorMessagePopUp('');
+    }, 1000)
     switch (input) {
       case "username":
         setUsernameInputError(false);
@@ -262,6 +264,7 @@ const Register = () => {
             ? `Registro realizado com sucesso. Redirecionando...`
             : `Falha no registro.`}
         </PopUpConfirm>
+        <PopUpError $isShowingMessage={isShowingErrorMessage}>{errorMessagePopUp}</PopUpError>
         <p className="frase-inicial-register">
           Junte-se a nós e comece a compartilhar as suas experiências!
         </p>

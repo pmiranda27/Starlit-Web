@@ -10,6 +10,7 @@ import { PopUpConfirm } from "../../Components/PopUpConfirm";
 import axios from "axios";
 
 import { useAuth } from "../../Components/Services/Api_Service";
+import { PopUpError } from "../../Components/PopUpError";
 
 const Login = () => {
   const { loginAccount } = useAuth();
@@ -44,12 +45,17 @@ const Login = () => {
   const [isGreen, setIsGreen] = React.useState(false);
   const [isShowingMessage, setIsShowingMessage] = React.useState(false);
 
+  const [isShowingErrorMessage, setIsShowingErrorMessage] = React.useState(false);
+  const [errorMessagePopUp, setErrorMessagePopUp] = React.useState('');
+
 
   const [isHoveringOverLogin, setIsHoveringOverLogin] = React.useState(false);
 
   let validationFailed = false;
 
   function removeError(input) {
+    setIsShowingErrorMessage(false);
+    setErrorMessagePopUp('');
     switch (input) {
       case "email":
         setEmailInputError(false);
@@ -65,14 +71,6 @@ const Login = () => {
   function validateForm(e) {
     e.preventDefault();
 
-    if (formBody.email === "" || !validateEmail(formBody.email)) {
-      setEmailInputError(true);
-      formBody.email = "";
-
-      validationFailed = true;
-
-      console.log("Email inválido");
-    }
     if (formBody.senha === "" || formBody.senha.length < 8) {
       setSenhaInputError(true);
       formBody.senha = "";
@@ -80,6 +78,18 @@ const Login = () => {
       validationFailed = true;
 
       console.log("Senha inválida");
+      setErrorMessagePopUp('Senha deve ter no mínimo 8 caracteres.');
+      setIsShowingErrorMessage(true);  // Exibe o erro
+    }
+    if (formBody.email === "" || !validateEmail(formBody.email)) {
+      setEmailInputError(true);
+      formBody.email = "";
+
+      validationFailed = true;
+
+      console.log("Email inválido");
+      setErrorMessagePopUp('Email inválido.');
+      setIsShowingErrorMessage(true);  // Exibe o erro
     }
 
     if (validationFailed) {
@@ -111,8 +121,10 @@ const Login = () => {
         setIsGreen(false);
         setIsShowingMessage(true);
 
+        setErrorMessagePopUp(loginTry.message);
+        setIsShowingErrorMessage(true);
+
         localStorage.removeItem('token');
-        console.log("CHORAAAR: ", loginTry)
 
         setTimeout(() => {
           setIsGreen(false);
@@ -132,6 +144,10 @@ const Login = () => {
             ? `Logado com sucesso. Redirecionando...`
             : `Falha no Login.`}
         </PopUpConfirm>
+
+        <PopUpError $isShowingMessage={isShowingErrorMessage}>
+          {errorMessagePopUp}
+        </PopUpError>
         <form
           className="form-login"
           id="form-register"

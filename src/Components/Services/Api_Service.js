@@ -52,33 +52,30 @@ export const AuthProvider = ({ children }) => {
   }
 
   async function loginAccount(userForm) {
-    const response = await axios.post(`${apiUrl}/user/login`, userForm);
-    console.log(response);
-    if (response.status >= 200 && response.status < 300) {
-      console.log('papibaquigrafo: ', response.data.token);
-
+    try {
+      const response = await axios.post(`${apiUrl}/user/login`, userForm);
+      console.log(response);
+  
       const tok = response.data.token;
       setLoggedToken(tok);
-
+  
       clearSessionAndLocalStorage();
-
+  
       localStorage.setItem('token', tok);
       sessionStorage.setItem('username', response.data.usuario);
       sessionStorage.setItem('email', userForm.email);
       sessionStorage.setItem('avatar', response.data.avatar);
-
+  
       return {
         status: response.status,
-        message: 'Sucesso no login'
-      }
-    }
-    else {
-      console.log('ERRO: ', response);
-      clearSessionAndLocalStorage();
+        message: response.data.message
+      };
+    } catch (error) {
+      // Em caso de erro, só retorna a mensagem de erro
       return {
-        status: response.status,
-        message: 'Falha no login'
-      }
+        status: error.response ? error.response.status : 500,
+        message: error.response ? error.response.data.message : "Erro desconhecido"
+      };
     }
   }
 
