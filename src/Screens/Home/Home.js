@@ -29,12 +29,14 @@ const HomePage = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [searchBarEnabled, setSearchBarEnabled] = useState(true);
 
+  const [needToLoadProfile, setNeedToLoadProfile] = useState(false);
+
   const [userNickname, setUserNickname] = useState();
 
   const [isShowingErrorMessage, setIsShowingErrorMessage] = useState(false);
   const [errorMessagePopUp, setErrorMessagePopUp] = useState('');
 
-  const pages = [<HomeScreen goToProfilePage={goToProfile} />, <Chat />, <Profile nicknameToSearch={userNickname} />];
+  const pages = [<HomeScreen goToProfilePage={goToProfile} />, <Chat />, <Profile needToLoad={needToLoadProfile} nicknameToSearch={userNickname} />];
 
   const loggedToken = localStorage.getItem("token");
 
@@ -65,7 +67,9 @@ const HomePage = () => {
   }
 
   function goToProfile(username) {
+
     setUserNickname(username)
+    setNeedToLoadProfile(true);
 
     setTabIndex(2);
   }

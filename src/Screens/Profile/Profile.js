@@ -7,7 +7,7 @@ import "./Profile.css";
 import { useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 
-function Profile({ nicknameToSearch }){
+function Profile({ nicknameToSearch, needToLoad }) {
   const [statusSelectorIndex, setStatusSelectorIndex] = useState(0);
   const [selectedStatusBarPosition, setSelectedStatusBarPosition] = useState('profile-selectors-wrapper-posts-selected');
 
@@ -20,6 +20,8 @@ function Profile({ nicknameToSearch }){
   const [numeroAmigos, setNumeroAmigos] = useState(0);
   const [numeroReviews, setNumeroReviews] = useState(0);
   const [textoDescricao, setTextoDescricao] = useState('');
+
+  const [isLoadingInfo, setIsLoadingInfo] = useState(true);
 
   function changeSelectedStatusSelector(index) {
     setStatusSelectorIndex(index);
@@ -56,6 +58,8 @@ function Profile({ nicknameToSearch }){
       setNumeroAmigos(friendsList.length);
       setNumeroReviews(reviewsCount);
       setTextoDescricao(descricaoText);
+
+      setIsLoadingInfo(false);
     } catch (error) {
       console.error("Erro ao buscar informações do perfil:", error);
     }
@@ -117,7 +121,7 @@ function Profile({ nicknameToSearch }){
   }
 
   useEffect(() => {
-    const nickname = nicknameToSearch || sessionStorage.getItem("username");
+    const nickname = nicknameToSearch || sessionStorage.getItem('username');
     updateProfileInfo(nickname);
 
     const refreshInterval = setInterval(() => {
@@ -127,19 +131,32 @@ function Profile({ nicknameToSearch }){
     return () => clearInterval(refreshInterval)
   }, [nicknameToSearch])
 
+  useEffect(() => {
+    setIsLoadingInfo(true)
+  }, [needToLoad])
+
   return <div className="profile-main">
     <div className="profile-info-box">
-      <FiEdit className={`edit-button-profile ${nicknameToSearch == sessionStorage.getItem('username') ? '' : 'edit-profile-button-invisible' }`} />
-      <img src={userPicture ? userPicture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} alt="Foto do perfil" className="profile-picture-info" />
+      <FiEdit className={`edit-button-profile ${userName == sessionStorage.getItem('username') ? '' : 'edit-profile-button-invisible'}`} />
+      <div className="profile-picture-info">
+        {
+          isLoadingInfo ? (<div className="loading-profile-image"></div>)
+            :
+            (<img src={userPicture ? userPicture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} alt="Foto do perfil" />)
+        }
+      </div>
+
       <div className="text-info-profile">
         <div className="profile-text-info-first-line">
-          <div className="profile-text-info-identifiers">
-            <h3>{userName}</h3>
+          <div className={`${isLoadingInfo ? 'profile-text-info-identifiers-is-loading' : 'profile-text-info-identifiers'}`}>
+            <h3>{isLoadingInfo ? '' : `${userName}`}</h3>
             <h4></h4>
           </div>
-          <div className="profile-text-info-numbers">
-            <h3><span>{numeroAmigos}</span> {numeroAmigos === 1 ? 'amigo(a)' : 'amigos'}</h3>
-            <h3><span>{numeroReviews}</span> {numeroReviews === 1 ? 'review' : 'reviews'} </h3>
+          <div className={`profile-text-info-numbers`}>
+            <div className={`profile-text-info-numbers-inside ${isLoadingInfo ? 'profile-text-info-numbers-is-loading' : ''}`}>
+              <h3 className={`${isLoadingInfo ? 'profile-numero-amigos-invisible' : ''}`}><span>{numeroAmigos}</span> {numeroAmigos === 1 ? 'amigo(a)' : 'amigos'}</h3>
+              <h3 className={`${isLoadingInfo ? 'profile-numero-reviews-invisible' : ''}`}><span>{numeroReviews}</span> {numeroReviews === 1 ? 'review' : 'reviews'} </h3>
+            </div>
           </div>
         </div>
         <div className="profile-text-info-second-line">
