@@ -35,7 +35,7 @@ function ConfigPage({ avatarUsuario, emailUsuario }) {
 
     const { getDescricaoText, clearSessionAndLocalStorage } = useAuth();
 
-    const [isConfirmingExit, setIsConfirmingExit] = useState(true);
+    const [isConfirmingExit, setIsConfirmingExit] = useState(false);
 
     const navigate = useNavigate();
 

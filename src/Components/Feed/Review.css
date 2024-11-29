@@ -21,6 +21,8 @@
 .movie-review-parent > * {
     position: relative;
     z-index: 1;
+
+    overflow: hidden;
 }
 
 .review-banner-filme {
@@ -54,6 +56,8 @@
     color: white;
 
     user-select: none;
+
+    font-size: 100%;
 }
 
 .star-rating-review {
@@ -64,7 +68,7 @@
 }
 
 .estrela-novo-post-review {
-    scale: 1.25;
+    scale: 1.2;
 
     color: white;
 

@@ -113,7 +113,6 @@ export const MovieReview = ({ nomeReview, notaReview, bannerFilme, descricaoRevi
         <div className='second-line-movie-review'>
             <p>{descricaoReview}</p>
             <div className="autor-review-avatar">
-                <h3>Autor:</h3>
                 <h4>{autorReview}</h4>
                 <img src={avatarAutor} />
             </div>
