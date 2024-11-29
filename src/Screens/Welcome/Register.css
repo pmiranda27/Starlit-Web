@@ -67,7 +67,7 @@
   gap: 24px;
 }
 
-.form-register > * {
+.form-register>* {
   user-select: none;
 }
 
@@ -91,7 +91,7 @@
   margin: 0;
   padding: 8px 12px;
 
-  
+
 
   background: transparent;
 
@@ -349,14 +349,14 @@ input:-webkit-autofill:focus {
 .input-padrao-register-profile-picture {
   width: 90%;
 
-  color: #8c3061;
+  color: #5936B2;
 
   margin: 0;
   padding: 8px 12px;
 
   background: transparent;
 
-  border: 2px solid rgba(140, 48, 97, 0.5);
+  border: 2px solid rgb(67, 35, 144, .65);
   border-radius: 25px;
 
   font-size: 1rem;
@@ -375,7 +375,8 @@ input:-webkit-autofill:focus {
   font-weight: bold;
   font-size: 0.85rem;
 
-  color: rgba(207, 74, 145, 0.6);
+  /* color: rgb(89, 54, 178, .6); */
+  color: rgb(255, 255, 255, .6);
 }
 
 .profile-picture-buttons {

@@ -49,6 +49,8 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.removeItem('username');
     sessionStorage.removeItem('email');
     sessionStorage.removeItem('avatar');
+
+    console.log('sessão limpa!');
   }
 
   async function loginAccount(userForm) {
@@ -145,7 +147,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ registerAccount, loginAccount, getCredentials, getReviewsQuantity, getDescricaoText }}>
+    <AuthContext.Provider value={{ registerAccount, loginAccount, getCredentials, getReviewsQuantity, getDescricaoText, clearSessionAndLocalStorage }}>
       {children}
     </AuthContext.Provider>
   );
