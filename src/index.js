@@ -11,6 +11,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./Components/Services/Api_Service";
 import { ChatProvider } from "./Components/Services/Chat_Service";
 import { AmigosProvider } from "./Components/Services/Amigos_Service";
+import ReviewPage from "./Screens/Review/ReviewPage";
 
 const route = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const route = createBrowserRouter([
   {
     path: "/home",
     element: <HomePage />,
+  },
+  {
+    path: "/review",
+    element: <ReviewPage />,
   },
 ]);
 
