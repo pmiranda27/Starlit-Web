@@ -7,7 +7,7 @@ import "./Profile.css";
 import { useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 
-function Profile({ nicknameToSearch, needToLoad }) {
+function Profile({ nicknameToSearch, needToLoad, goToConfigPage }) {
   const [statusSelectorIndex, setStatusSelectorIndex] = useState(0);
   const [selectedStatusBarPosition, setSelectedStatusBarPosition] = useState('profile-selectors-wrapper-posts-selected');
 
@@ -137,7 +137,11 @@ function Profile({ nicknameToSearch, needToLoad }) {
 
   return <div className="profile-main">
     <div className="profile-info-box">
-      <FiEdit className={`edit-button-profile ${userName == sessionStorage.getItem('username') ? '' : 'edit-profile-button-invisible'}`} />
+      <FiEdit className={`edit-button-profile ${userName == sessionStorage.getItem('username') ? '' : 'edit-profile-button-invisible'}`} onClick={() => {
+        if (userName == sessionStorage.getItem('username')) {
+          goToConfigPage();
+        }
+      }} />
       <div className="profile-picture-info">
         {
           isLoadingInfo ? (<div className="loading-profile-image"></div>)

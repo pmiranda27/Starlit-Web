@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { ApiService } from "../../Components/Services/Api_Service";
 import { IoIosSettings } from "react-icons/io";
 import { PopUpError } from "../../Components/PopUpError";
+import ConfigPage from "../ConfigProfile/ConfigPage";
 
 const HomePage = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -36,7 +37,7 @@ const HomePage = () => {
   const [isShowingErrorMessage, setIsShowingErrorMessage] = useState(false);
   const [errorMessagePopUp, setErrorMessagePopUp] = useState('');
 
-  const pages = [<HomeScreen goToProfilePage={goToProfile} />, <Chat />, <Profile needToLoad={needToLoadProfile} nicknameToSearch={userNickname} />];
+  const pages = [<HomeScreen goToProfilePage={goToProfile} />, <Chat />, <Profile goToConfigPage={goToConfig} needToLoad={needToLoadProfile} nicknameToSearch={userNickname} />, <ConfigPage emailUsuario={sessionStorage.getItem('email')} avatarUsuario={sessionStorage.getItem('avatar')} />];
 
   const loggedToken = localStorage.getItem("token");
 
@@ -67,11 +68,14 @@ const HomePage = () => {
   }
 
   function goToProfile(username) {
-
     setUserNickname(username)
     setNeedToLoadProfile(true);
 
     setTabIndex(2);
+  }
+
+  function goToConfig() {
+    setTabIndex(3);
   }
 
   useEffect(() => {

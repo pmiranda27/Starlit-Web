@@ -7,8 +7,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { PopUpConfirm } from "../../Components/PopUpConfirm";
 
-import axios from "axios";
-
 import { useAuth } from "../../Components/Services/Api_Service";
 import { PopUpError } from "../../Components/PopUpError";
 

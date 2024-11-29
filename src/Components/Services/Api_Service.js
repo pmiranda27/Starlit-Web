@@ -127,8 +127,10 @@ export const AuthProvider = ({ children }) => {
 
   async function getDescricaoText(username) {
     for (var tentativa = 0; tentativa < tentativasMaximasRequests; tentativa++) {
-      const responseDescricaoUsuario = await axios.post(`${apiUrl}/user/descricao-usuario`, {
-        username
+      const responseDescricaoUsuario = await axios.get(`${apiUrl}/user/descricao-usuario`, {
+        params: {
+          username: username
+        }
       });
 
       if (!responseDescricaoUsuario) {
