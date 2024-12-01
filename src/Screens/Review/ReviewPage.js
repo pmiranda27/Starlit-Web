@@ -28,6 +28,7 @@ function ReviewPage() {
     const [isShowingError, setIsShowingError] = useState(false);
     const [mensagemErrorPopUp, setMensagemErrorPopUp] = useState('')
 
+    const [isLoadingReviewPage, setIsLoadingReviewPage] = useState(true)
 
     const [tituloFilme, setTituloFilme] = useState('');
     const [bannerFilme, setBannerFilme] = useState('');
@@ -157,6 +158,8 @@ function ReviewPage() {
         setAutorReview(reviewData.autorReview);
         setAvatarAutor(reviewData.autorAvatar);
         setNotaReview(reviewData.nota);
+
+        setIsLoadingReviewPage(false);
     }, [reviewData])
 
     useEffect(() => {
@@ -228,22 +231,33 @@ function ReviewPage() {
                     Review
                 </div>
                 <div className="main-conteudo-review-page">
-                    <div className="informacoes-review-page">
-                        <img src={bannerFilme} alt="Foto do filme" className="informacoes-filme-banner-review-page" />
-                        <div className="items-review-page">
-                            <div className="autor-review-page">
-                                Review de <span>{autorReview}</span>
-                                <img src={avatarAutor} alt="Avatar do autor da review" />
+                    {isLoadingReviewPage ?
+                        <div class="skeleton-loading-main-conteudo-review-page">
+                            <div class="skeleton-cube" />
+                            <div class="skeleton-lines">
+                                <div class="skeleton-line" />
+                                <div class="skeleton-line" />
+                                <div class="skeleton-line" />
                             </div>
-                            <h3>{tituloFilme}</h3>
-                            <div className="nota-review">
-                                {componentesNota}
-                            </div>
-                            <p className="descricao-review-page">
-                                {descricaoFilme}
-                            </p>
                         </div>
-                    </div>
+                        :
+                        <div className="informacoes-review-page">
+                            <img src={bannerFilme} alt="Foto do filme" className="informacoes-filme-banner-review-page" />
+                            <div className="items-review-page">
+                                <div className="autor-review-page">
+                                    Review de <span>{autorReview}</span>
+                                    <img src={avatarAutor} alt="Avatar do autor da review" />
+                                </div>
+                                <h3>{tituloFilme}</h3>
+                                <div className="nota-review">
+                                    {componentesNota}
+                                </div>
+                                <p className="descricao-review-page">
+                                    {descricaoFilme}
+                                </p>
+                            </div>
+                        </div>}
+
                 </div>
 
                 <div className="comentarios-section-review-page">
@@ -271,7 +285,7 @@ function ReviewPage() {
                         </div>
                     </div>
 
-                    {comentariosComponents}
+                    {isLoadingReviewPage ? '' : comentariosComponents}
                 </div>
             </div>
         </section>

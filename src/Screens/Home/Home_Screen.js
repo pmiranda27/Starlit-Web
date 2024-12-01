@@ -1,9 +1,6 @@
 import "./Home_Screen.css";
 import axios from "axios";
-import axiosRetry from "axios-retry";
 import { useState, useEffect } from "react";
-
-import lupa from "../../Assets/Images/lupa.png";
 
 import AmigoComponent from "../../Components/Friends/Amigo_Component";
 import UserComponent from "../../Components/Friends/User_Component";
@@ -18,9 +15,11 @@ import { NotificacaoTab } from "../../Components/Notifications/Notificacao_Tab";
 import { useAuth } from "../../Components/Services/Api_Service";
 import { useAmigos } from "../../Components/Services/Amigos_Service";
 import { NewPostPanel } from "../../Components/Feed/New_Post";
-import { Loader } from "../../Components/Loaders/Loader_Welcome";
 import { FaSearch } from "react-icons/fa";
 import { MovieReview } from "../../Components/Feed/Review";
+
+import { SkeletonPostLoader } from "../../Components/Loaders/SkeletonLoadPosts";
+
 
 function HomeScreen({ goToProfilePage }) {
   const { getCredentials } = useAuth();
@@ -29,6 +28,8 @@ function HomeScreen({ goToProfilePage }) {
   const [listaAmigos, setListaAmigos] = useState([]);
   const [listaUsuarios, setListaUsuarios] = useState([]);
   const [listaNotifications, setListaNotifications] = useState([]);
+
+  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
 
   const [listaNomeAmigos, setListaNomeAmigos] = useState([]);
 
@@ -134,87 +135,28 @@ function HomeScreen({ goToProfilePage }) {
     setIsLoadingFriendSection(false);
   }
 
-  // async function refreshPosts() {
-  //   const username = sessionStorage.getItem('username');
-  //   var postsAmigos;
-
-
-  //   for (var tentativa = 0; tentativa < 10; tentativa++) {
-  //     const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviews/`);
-  //     const listaPosts = response.data;
-
-  //     if (!listaNomeAmigos) {
-  //       continue
-  //     }
-
-  //     postsAmigos = listaPosts.filter(post =>
-  //       post.autorReview === username || listaNomeAmigos.includes(post.autorReview)
-  //     );
-
-  //     console.log('fkg', postsAmigos)
-  //     console.log('fodk', listaPosts)
-
-  //     break;
-  //   }
-
-
-  //   for (var tentativa = 0; tentativa < 10; tentativa++) {
-  //     const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviews/get-reviews-por-filme`, {
-  //       params: 
-  //     });
-  //     const listaPosts = response.data;
-
-  //     if (!listaNomeAmigos) {
-  //       continue
-  //     }
-
-  //     // postsAmigos = listaPosts.filter(post =>
-  //     //   post.autorReview === username || listaNomeAmigos.includes(post.autorReview)
-  //     // );
-
-  //     postsAmigos = listaPosts;
-
-  //     console.log('fodk', listaPosts)
-
-  //     break;
-  //   }
-
-  //   const listaComponentesReviews = postsAmigos.map((review, ind) => (
-  //     <MovieReview
-  //       key={review._id}
-  //       nomeReview={review.tituloFilme}
-  //       notaReview={review.nota}
-  //       bannerFilme={review.bannerFilme}
-  //       descricaoReview={review.descricao}
-  //       autorReview={review.autorReview}
-  //       avatarAutor={review.autorAvatar}
-  //     />
-  //   ));
-
-  //   setListaPostsAmigos(listaComponentesReviews);
-  // }
-  
   async function refreshPosts() {
     const username = sessionStorage.getItem('username');
+
     let postsAmigos = [];
     let listaFilmes = [];
     let mapReviewsPorFilme = new Map();
-  
+
     try {
       const responseReviews = await axios.get(`${process.env.REACT_APP_API_URL}/reviews/`);
       const listaPosts = responseReviews.data;
 
       if (!listaPosts || listaPosts.length === 0) return;
-  
+
       listaFilmes = [...new Set(listaPosts.map(post => post.tituloFilme))];
-  
+
       for (const tituloFilme of listaFilmes) {
         const responseFilme = await axios.get(`${process.env.REACT_APP_API_URL}/reviews/get-reviews-por-filme`, {
           params: { tituloFilme },
         });
-  
+
         const reviewsFilme = responseFilme.data;
-  
+
         if (reviewsFilme && reviewsFilme.length > 0) {
           mapReviewsPorFilme.set(
             tituloFilme,
@@ -222,10 +164,23 @@ function HomeScreen({ goToProfilePage }) {
           );
         }
       }
-  
+
+      const loadImages = (bannerUrl) => {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.src = bannerUrl;
+          img.onload = resolve;
+          img.onerror = reject;
+        });
+      };
+
+      await Promise.all(
+        listaPosts.map(post => loadImages(post.bannerFilme))
+      );
+
       postsAmigos = listaPosts.map(review => {
         const usuariosQueFizeramReview = mapReviewsPorFilme.get(review.tituloFilme) || [];
-  
+
         return (
           <MovieReview
             key={review._id}
@@ -240,10 +195,12 @@ function HomeScreen({ goToProfilePage }) {
           />
         );
       });
-  
+
       setListaPostsAmigos(postsAmigos);
     } catch (error) {
       console.error('Erro ao carregar as reviews:', error);
+    } finally {
+      setIsLoadingPosts(false);
     }
   }
 
@@ -371,7 +328,11 @@ function HomeScreen({ goToProfilePage }) {
 
           <div style={{ marginTop: 64 }} className="separador-home-categorias-reviews"><h3>Reviews da Comunidade</h3></div>
           <section className="categoria-posts-amigos">
-            {listaPostsAmigos}
+            {isLoadingPosts
+              ? Array.from({ length: 5 }).map((_, index) => (
+                <SkeletonPostLoader key={index} />
+              )) // Mostra os skeletons enquanto carrega
+              : listaPostsAmigos}
           </section>
         </section>
         <section className="main-friends-section">
