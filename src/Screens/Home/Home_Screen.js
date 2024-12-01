@@ -203,7 +203,7 @@ function HomeScreen({ goToProfilePage }) {
     try {
       const responseReviews = await axios.get(`${process.env.REACT_APP_API_URL}/reviews/`);
       const listaPosts = responseReviews.data;
-  
+
       if (!listaPosts || listaPosts.length === 0) return;
   
       listaFilmes = [...new Set(listaPosts.map(post => post.tituloFilme))];
@@ -229,6 +229,7 @@ function HomeScreen({ goToProfilePage }) {
         return (
           <MovieReview
             key={review._id}
+            reviewId={review._id}
             nomeReview={review.tituloFilme}
             notaReview={review.nota}
             bannerFilme={review.bannerFilme}

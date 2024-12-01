@@ -16,9 +16,11 @@
     position: relative;
 
     box-sizing: border-box;
+
+    cursor: pointer;
 }
 
-.movie-review-parent > * {
+.movie-review-parent>* {
     position: relative;
     z-index: 1;
 
@@ -41,7 +43,7 @@
 .first-line-movie-review {
     width: 100%;
     height: 20%;
-    
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -52,7 +54,7 @@
     background-color: rgb(0, 0, 0, .5);
 }
 
-.first-line-movie-review > h3 {
+.first-line-movie-review>h3 {
     color: white;
 
     user-select: none;
@@ -89,7 +91,8 @@
 
     background-color: rgb(0, 0, 0, .5);
 }
-.second-line-movie-review > p {
+
+.second-line-movie-review>p {
     width: 100%;
     height: 70%;
 
@@ -99,13 +102,14 @@
 
     font-size: .85rem;
 }
+
 .autor-review-avatar {
     width: 100%;
     height: 30%;
 
     user-select: none;
 
-    color:white;
+    color: white;
 
     display: flex;
     align-items: center;
@@ -113,16 +117,19 @@
 
     gap: 4px;
 }
-.autor-review-avatar > h3 {
+
+.autor-review-avatar>h3 {
     font-size: .85rem;
 
     padding-right: 4px;
 }
-.autor-review-avatar > h4 {
+
+.autor-review-avatar>h4 {
     font-size: .8rem;
     font-weight: 500;
 }
-.autor-review-avatar > img {
+
+.autor-review-avatar>img {
     height: 100%;
 
     aspect-ratio: 1;
@@ -145,7 +152,8 @@
 
     background-color: rgb(0, 0, 0, .5);
 }
-.third-line-movie-review > h3 {
+
+.third-line-movie-review>h3 {
     color: white;
     font-size: .85rem;
 
@@ -153,7 +161,8 @@
 
     margin-right: 8px;
 }
-.third-line-movie-review > img {
+
+.third-line-movie-review>img {
     height: 100%;
 
     aspect-ratio: 1;

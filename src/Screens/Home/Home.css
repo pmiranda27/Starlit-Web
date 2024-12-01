@@ -118,7 +118,7 @@
   transition: 500ms;
 }
 
-.link-card-home-page > svg{
+.link-card-home-page>svg {
   scale: 2;
 }
 

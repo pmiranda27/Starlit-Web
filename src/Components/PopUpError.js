@@ -8,6 +8,7 @@ export const PopUpError = styled.div`
   z-index: 4;
 
   top: ${(props) => (props.$isShowingMessage ? `3vh` : `-25vh`)};
+  ${(props) => (props.$isCentral ? 'left: 50%;' : '')}
 
   border-radius: 15px;
   box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.4);
@@ -26,6 +27,8 @@ export const PopUpError = styled.div`
   }
 
   background-color: red;
+
+  ${(props) => (props.$isCentral ? 'transform: translateX(-50%);' : '')}
 
   transition: 0.8s;
 `;
