@@ -23,10 +23,23 @@ function Profile({ nicknameToSearch, needToLoad, goToConfigPage }) {
 
   const [isLoadingInfo, setIsLoadingInfo] = useState(true);
 
+  const [userReviews, setUserReviews] = useState([]);
+  const [userComments, setUserComments] = useState([]);
+  const [isLoadingContent, setIsLoadingContent] = useState(false);
+
   function changeSelectedStatusSelector(index) {
     setStatusSelectorIndex(index);
-    moveSelectedStatusBar(index)
+    moveSelectedStatusBar(index);
+  
+    const nickname = nicknameToSearch || sessionStorage.getItem('username');
+    
+    if (index === 0) {
+      getUserReviews(nickname); // Busca reviews do usuário.
+    } else if (index === 1) {
+      getUserComments(nickname); // Busca comentários do usuário.
+    }
   }
+
   function moveSelectedStatusBar(index) {
     switch (index) {
       case 0:
@@ -40,7 +53,7 @@ function Profile({ nicknameToSearch, needToLoad, goToConfigPage }) {
         break;
     }
   }
-
+  
   const updateProfileInfo = async (nickname) => {
     try {
       const responseAvatar = await axios.get(`${process.env.REACT_APP_API_URL}/user/avatar-usuario`, {
@@ -103,6 +116,40 @@ function Profile({ nicknameToSearch, needToLoad, goToConfigPage }) {
     setUserPicture(avatarRequest);
   }
 
+  const getUserReviews = async (nickname) => {
+    setIsLoadingContent(true);
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviews/get-reviews-por-usuario`, {
+        params: { nickname },
+      });
+
+      setUserReviews(response.data.reviews);
+
+    } catch (error) {
+      console.error("Erro ao buscar reviews do usuário:", error);
+
+    } finally {
+      setIsLoadingContent(false);
+    }
+  };
+
+  const getUserComments = async (nickname) => {
+    setIsLoadingContent(true);
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/reviews/get-comentarios-por-username`, {
+        params: { nickname },
+      });
+      setUserComments(response.data.comentarios);
+
+    } catch (error) {
+      console.error("Erro ao buscar comentários do usuário:", error);
+    } finally {
+      setIsLoadingContent(false);
+    }
+  };
+  
+  
+
   function refreshUserInformation() {
     var nicknameRequest = nicknameToSearch || sessionStorage.getItem('username');
 
@@ -123,6 +170,8 @@ function Profile({ nicknameToSearch, needToLoad, goToConfigPage }) {
   useEffect(() => {
     const nickname = nicknameToSearch || sessionStorage.getItem('username');
     updateProfileInfo(nickname);
+
+    getUserReviews(nickname);
 
     const refreshInterval = setInterval(() => {
       updateProfileInfo(nickname);
@@ -169,20 +218,63 @@ function Profile({ nicknameToSearch, needToLoad, goToConfigPage }) {
       </div>
     </div>
     <section className="profile-status">
-      <div className="profile-status-selectors">
-        <div className={`profile-selectors-wrapper ${selectedStatusBarPosition}`}>
-          <div onClick={() => {
-            changeSelectedStatusSelector(0)
-          }} className={`profile-selector-option ${statusSelectorIndex === 0 ? `profile-selector-selected` : ''}`}>Posts</div>
-          <div onClick={() => {
-            changeSelectedStatusSelector(1)
-          }} className={`profile-selector-option ${statusSelectorIndex === 1 ? `profile-selector-selected` : ''}`}>Comentários</div>
-          <div onClick={() => {
-            changeSelectedStatusSelector(2)
-          }} className={`profile-selector-option ${statusSelectorIndex === 2 ? `profile-selector-selected` : ''}`}>Curtidas</div>
-        </div>
+  <div className="profile-status-selectors">
+    <div className={`profile-selectors-wrapper ${selectedStatusBarPosition}`}>
+      <div
+        onClick={() => changeSelectedStatusSelector(0)}
+        className={`profile-selector-option ${statusSelectorIndex === 0 ? `profile-selector-selected` : ''}`}>
+        Posts
       </div>
-    </section>
+      <div
+        onClick={() => changeSelectedStatusSelector(1)}
+        className={`profile-selector-option ${statusSelectorIndex === 1 ? `profile-selector-selected` : ''}`}>
+        Comentários
+      </div>
+      <div
+        onClick={() => changeSelectedStatusSelector(2)}
+        className={`profile-selector-option ${statusSelectorIndex === 2 ? `profile-selector-selected` : ''}`}>
+        Curtidas
+      </div>
+    </div>
+  </div>
+  
+  <div className="profile-status-content">
+    {isLoadingContent ? (
+      <div>Carregando...</div>
+    ) : statusSelectorIndex === 0 ? (
+      <div className="user-posts">
+        {userReviews.length > 0 ? (
+          userReviews.map((review) => (
+            <div key={review._id} className="post-item">
+              <h3>{review.tituloFilme}</h3>
+              <p>{review.descricao}</p>
+            </div>
+          ))
+        ) : (
+          <p>Nenhuma review encontrada.</p>
+        )}
+      </div>
+    ) : statusSelectorIndex === 1 ? (
+      <div className="user-comments">
+        {userComments.length > 0 ? (
+          userComments.map((comment) => (
+            <div key={comment._id} className="comment-item">
+              <p>{comment.texto}</p>
+              <small>Em: {comment.reviewTitulo}</small>
+            </div>
+          ))
+        ) : (
+          <p>Nenhum comentário encontrado.</p>
+        )}
+      </div>
+    ) : (
+      <div className="likes-content">
+        <p>Conteúdo de Curtidas em desenvolvimento...</p>
+      </div>
+    )}
+  </div>
+</section>
+
   </div>
 }
 

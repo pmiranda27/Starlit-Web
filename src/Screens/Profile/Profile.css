@@ -43,6 +43,7 @@
 
   transition: 350ms ease-in-out;
 }
+
 .edit-profile-button-invisible {
   display: none;
 }
@@ -138,7 +139,7 @@
 
   display: flex;
   align-items: center;
-  
+
   color: white;
 
   background: rgba(130, 130, 130, 0.2);
@@ -226,16 +227,18 @@
   justify-content: space-around;
 }
 
-.profile-text-info-numbers-inside > h3 {
+.profile-text-info-numbers-inside>h3 {
   font-weight: 400;
 }
-.profile-text-info-numbers-inside > h3 > span {
+
+.profile-text-info-numbers-inside>h3>span {
   font-weight: 700;
 }
 
 .profile-numero-amigos-invisible {
   display: none;
 }
+
 .profile-numero-reviews-invisible {
   display: none;
 }
