@@ -16,26 +16,10 @@ export const AuthProvider = ({ children }) => {
     setLoggedToken(token);
   }
 
-  // async function setCredentials() {
-  //   console.log('APLUPLUUUU')
-  //   const cred = await verifyAuthentication();
-  //   if (cred) {
-  //     sessionStorage.setItem('userName', cred.name);
-  //     console.log('userName: ', sessionStorage.getItem('userName'));
-  //     sessionStorage.setItem('userEmail', cred.email);
-  //     console.log('userEmail: ', sessionStorage.getItem('userEmail'));
-  //     sessionStorage.setItem('userAvatar', cred.avatar);
-  //     console.log('userAvatar: ', sessionStorage.getItem('userAvatar'));
-  //     console.log("are tou ready: ", cred);
-  //     setUserCredentialsAuth(cred);
-  //   } else {
-  //     console.log('GIVE ME TOUGH LOVE');
-  //   }
-  // }
 
   function getCredentials() {
     const credenciais = {
-      name: sessionStorage.getItem('name'),
+      name: sessionStorage.getItem('username'),
       email: sessionStorage.getItem('email'),
       avatar: sessionStorage.getItem('avatar')
     }

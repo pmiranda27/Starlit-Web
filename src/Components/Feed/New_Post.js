@@ -91,7 +91,6 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
     function filtrarListaFilmes(searchTerm) {
         if (!searchTerm) {
             setListaFilmesFiltrada(listaFilmesResponse);
-            console.log('bunny')
             return;
         }
 
@@ -114,7 +113,6 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
 
         setListaFilmesFiltrada(filteredMovies);
         setListaComponentesFilmes(listaFilmesFiltrada);
-        console.log('senpai')
     }
 
     function setListaComponentesFilmes(lista) {
@@ -172,7 +170,6 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
     }, [hasSelectedMovie])
 
     useEffect(() => {
-        console.log('Lista de filmes atualizada:', listaFilmesResponse);
         setListaFilmesFiltrada(listaFilmesResponse);
         setListaComponentesFilmes(listaFilmesResponse);
     }, [listaFilmesResponse]);
@@ -211,7 +208,6 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
         const responseNewPost = await axios.post(`${process.env.REACT_APP_API_URL}/reviews/`, newPost);
 
         if (responseNewPost.status >= 200 && responseNewPost.status < 300) {
-            console.log('post criado com sucesso');
 
             setTimeout(() => {
                 setTituloNewPost('');

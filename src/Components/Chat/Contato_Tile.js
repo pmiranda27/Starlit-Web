@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const ContatoTileChat = styled.div`
-    width: 90%;
-    height: 8vh;
+    width: 85%;
+    height: 7vh;
 
     position: relative;
     z-index: 1;

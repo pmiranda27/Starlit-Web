@@ -4,23 +4,32 @@
 
   display: flex;
 
+  backdrop-filter: blur(2px);
+
   z-index: 1;
 
   position: relative;
 }
 
 .lista-de-contatos-chat {
-  width: 27dvw;
+  width: 19vw;
   height: 100%;
 
   position: relative;
 
-  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  box-sizing: border-box;
+
+  padding: 16px;
 }
+
 .lista-de-contatos-chat::before {
   content: '';
 
-  width: 100%;
+  width: 99.8%;
   height: calc(100% + 9vh);
   
   position: absolute;
@@ -28,11 +37,11 @@
   top: -9vh;
   left: 0;
 
-  background-color: rgba(0, 0, 0, .2);
+  background-color: rgba(0, 0, 0, .1);
 }
 
 .contato-selecionado {
-  width: calc(100% - 28vw);
+  width: 70vw;
   height: 17%;
 
   box-sizing: border-box;
@@ -51,7 +60,7 @@
 
   gap: 24px;
 
-  background-color: rgba(0, 0, 0, .2);
+  background-color: rgba(0, 0, 0, .1);
 }
 
 .contato-selecionado > img {
@@ -70,7 +79,7 @@
 }
 
 .area-de-conversa-chat {
-  width: calc(100% - 28vw);
+  width: 70vw;
   height: 93%;
 
   position: absolute;
@@ -86,7 +95,7 @@
   width: 100%;
   height: 18%;
 
-  background-color: rgba(0, 0, 0, .45);
+  background-color: rgba(0, 0, 0, .15);
 
   display: flex;
 
@@ -143,4 +152,20 @@
   background-color: rgb(0, 0, 0, .75);
 
   justify-self: start;
+}
+
+.chat-lista {
+  width: 70vw;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+
+  overflow: auto;
+
+  padding: 24px;
+
+  gap: 24px;
 }

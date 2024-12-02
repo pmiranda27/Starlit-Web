@@ -1,0 +1,30 @@
+.mensagem-tile {
+    max-width: 40%;
+    height: fit-content;
+
+    position: relative;
+    
+    padding: 12px;
+}
+.mensagem-tile > h2 {
+    color: white;
+
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.mensagem-color-sender {
+    background-color: #7E56E4;
+
+    border-radius: 15px 15px 0 15px;
+
+    align-self: flex-end;
+}
+
+.mensagem-color-receiver {
+    background-color: #432390;
+
+    border-radius: 15px 15px 15px 0;
+
+    align-self: flex-start;
+}

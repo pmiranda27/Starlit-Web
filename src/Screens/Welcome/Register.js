@@ -165,7 +165,7 @@ const Register = () => {
         }
         else {
           setIsShowingErrorMessage(true);
-          setErrorMessagePopUp(`${response.data.message}`);
+          setErrorMessagePopUp(`${response.data}`);
         }
 
         setTimeout(() => {

@@ -19,11 +19,6 @@ export const MovieReview = ({ nomeReview, reviewId, notaReview, bannerFilme, des
             getListOfAlreadyWatched();
         }
 
-        console.log("Lista de usuários já assistiram atualizada:", listaUsuariosJaAssistiram);
-
-        console.log("Usuários que fizeram review:", usuariosQueFizeramReview);
-
-
     }, [usuariosQueFizeramReview])
 
     async function getListOfAlreadyWatched() {

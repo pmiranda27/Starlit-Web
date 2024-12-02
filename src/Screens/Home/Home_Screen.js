@@ -82,7 +82,6 @@ function HomeScreen({ goToProfilePage }) {
 
     const listaComponentesUsuarios = listaUsuarios.map(
       (user, ind) => {
-        console.log('eu vou matar todos vocês', user)
         return <UserComponent
           key={user.email}
           name={user.username}
@@ -210,7 +209,6 @@ function HomeScreen({ goToProfilePage }) {
     if (!credentialsHomeScreen) {
       setCredentialsHomeScreen();
     }
-    console.log("Credenciais atuais: ", credentialsHomeScreen);
 
     refreshEverythingUserHas();
 
