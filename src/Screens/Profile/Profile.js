@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import { useAmigos } from "../../Components/Services/Amigos_Service";
 import { useAuth } from "../../Components/Services/Api_Service";
@@ -6,6 +5,9 @@ import "./Profile.css";
 
 import { useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
+import ReviewProfile from "../../Components/Feed/ReviewProfile";
+import CommentProfile from "../../Components/CommentProfile";
+import { SkeletonPostLoader } from "../../Components/Loaders/SkeletonLoadPosts";
 
 function Profile({ nicknameToSearch, needToLoad, goToConfigPage }) {
   const [statusSelectorIndex, setStatusSelectorIndex] = useState(0);
@@ -30,9 +32,9 @@ function Profile({ nicknameToSearch, needToLoad, goToConfigPage }) {
   function changeSelectedStatusSelector(index) {
     setStatusSelectorIndex(index);
     moveSelectedStatusBar(index);
-  
+
     const nickname = nicknameToSearch || sessionStorage.getItem('username');
-    
+
     if (index === 0) {
       getUserReviews(nickname); // Busca reviews do usuário.
     } else if (index === 1) {
@@ -48,12 +50,9 @@ function Profile({ nicknameToSearch, needToLoad, goToConfigPage }) {
       case 1:
         setSelectedStatusBarPosition('profile-selectors-wrapper-comments-selected');
         break;
-      case 2:
-        setSelectedStatusBarPosition('profile-selectors-wrapper-likes-selected');
-        break;
     }
   }
-  
+
   const updateProfileInfo = async (nickname) => {
     try {
       const responseAvatar = await axios.get(`${process.env.REACT_APP_API_URL}/user/avatar-usuario`, {
@@ -77,44 +76,6 @@ function Profile({ nicknameToSearch, needToLoad, goToConfigPage }) {
       console.error("Erro ao buscar informações do perfil:", error);
     }
   };
-
-  async function getQuantidadeAmigosNumber(nicknameRequest) {
-    const listaAmigos = await getListaAmigos(nicknameRequest);
-
-    setNumeroAmigos(listaAmigos.length);
-  }
-
-  async function getQuantidadeReviewsNumber() {
-    const usernameToSearch = sessionStorage.getItem('username');
-
-    setNumeroReviews(await getReviewsQuantity(usernameToSearch))
-  }
-
-  async function getTextoDescricao() {
-    const usernameToSearch = sessionStorage.getItem('username');
-
-    setTextoDescricao(await getDescricaoText(usernameToSearch))
-
-    console.log('recebi: ', textoDescricao)
-  }
-
-  async function getAvatarUser(nicknameRequest) {
-    var avatarRequest;
-
-    if (!nicknameToSearch) {
-      avatarRequest = sessionStorage.getItem('avatar');
-    } else {
-      const responseAvatar = await axios.get(`${process.env.REACT_APP_API_URL}/user/avatar-usuario`, {
-        params: {
-          nickname: nicknameRequest
-        }
-      })
-
-      avatarRequest = responseAvatar.data.avatar;
-    }
-
-    setUserPicture(avatarRequest);
-  }
 
   const getUserReviews = async (nickname) => {
     setIsLoadingContent(true);
@@ -147,25 +108,22 @@ function Profile({ nicknameToSearch, needToLoad, goToConfigPage }) {
       setIsLoadingContent(false);
     }
   };
-  
-  
 
-  function refreshUserInformation() {
-    var nicknameRequest = nicknameToSearch || sessionStorage.getItem('username');
+  // function refreshUserInformation() {
+  //   var nicknameRequest = nicknameToSearch || sessionStorage.getItem('username');
 
-    console.log('Usando nickname:', nicknameRequest);
+  //   console.log('Usando nickname:', nicknameRequest);
 
+  //   getAvatarUser(nicknameRequest);
 
-    getAvatarUser(nicknameRequest);
+  //   setUserName(nicknameRequest);
 
-    setUserName(nicknameRequest);
+  //   getQuantidadeAmigosNumber(nicknameRequest);
 
-    getQuantidadeAmigosNumber(nicknameRequest);
+  //   getQuantidadeReviewsNumber();
 
-    getQuantidadeReviewsNumber();
-
-    getTextoDescricao();
-  }
+  //   getTextoDescricao();
+  // }
 
   useEffect(() => {
     const nickname = nicknameToSearch || sessionStorage.getItem('username');
@@ -178,11 +136,11 @@ function Profile({ nicknameToSearch, needToLoad, goToConfigPage }) {
     }, 6500);
 
     return () => clearInterval(refreshInterval)
-  }, [nicknameToSearch])
+  }, [nicknameToSearch]);
 
   useEffect(() => {
     setIsLoadingInfo(true)
-  }, [needToLoad])
+  }, [needToLoad]);
 
   return <div className="profile-main">
     <div className="profile-info-box">
@@ -218,63 +176,50 @@ function Profile({ nicknameToSearch, needToLoad, goToConfigPage }) {
       </div>
     </div>
     <section className="profile-status">
-  <div className="profile-status-selectors">
-    <div className={`profile-selectors-wrapper ${selectedStatusBarPosition}`}>
-      <div
-        onClick={() => changeSelectedStatusSelector(0)}
-        className={`profile-selector-option ${statusSelectorIndex === 0 ? `profile-selector-selected` : ''}`}>
-        Posts
+      <div className="profile-status-selectors">
+        <div className={`profile-selectors-wrapper ${selectedStatusBarPosition}`}>
+          <div
+            onClick={() => changeSelectedStatusSelector(0)}
+            className={`profile-selector-option ${statusSelectorIndex === 0 ? `profile-selector-selected` : ''}`}>
+            Posts
+          </div>
+          <div
+            onClick={() => changeSelectedStatusSelector(1)}
+            className={`profile-selector-option ${statusSelectorIndex === 1 ? `profile-selector-selected` : ''}`}>
+            Comentários
+          </div>
+        </div>
       </div>
-      <div
-        onClick={() => changeSelectedStatusSelector(1)}
-        className={`profile-selector-option ${statusSelectorIndex === 1 ? `profile-selector-selected` : ''}`}>
-        Comentários
-      </div>
-      <div
-        onClick={() => changeSelectedStatusSelector(2)}
-        className={`profile-selector-option ${statusSelectorIndex === 2 ? `profile-selector-selected` : ''}`}>
-        Curtidas
-      </div>
-    </div>
-  </div>
-  
-  <div className="profile-status-content">
-    {isLoadingContent ? (
-      <div>Carregando...</div>
-    ) : statusSelectorIndex === 0 ? (
-      <div className="user-posts">
-        {userReviews.length > 0 ? (
-          userReviews.map((review) => (
-            <div key={review._id} className="post-item">
-              <h3>{review.tituloFilme}</h3>
-              <p>{review.descricao}</p>
-            </div>
-          ))
-        ) : (
-          <p>Nenhuma review encontrada.</p>
-        )}
-      </div>
-    ) : statusSelectorIndex === 1 ? (
-      <div className="user-comments">
-        {userComments.length > 0 ? (
-          userComments.map((comment) => (
-            <div key={comment._id} className="comment-item">
-              <p>{comment.texto}</p>
-              <small>Em: {comment.reviewTitulo}</small>
-            </div>
-          ))
-        ) : (
-          <p>Nenhum comentário encontrado.</p>
-        )}
-      </div>
-    ) : (
-      <div className="likes-content">
-        <p>Conteúdo de Curtidas em desenvolvimento...</p>
-      </div>
-    )}
-  </div>
-</section>
 
+      <div className="profile-status-content">
+        {isLoadingContent ? (
+          Array.from({ length: 2 }).map((_, index) => (
+            <SkeletonPostLoader key={index} />
+          ))
+        ) : statusSelectorIndex === 0 ? (
+          <div className="user-posts">
+            {userReviews.length > 0 ? (
+              userReviews.map((review) => {
+                return <ReviewProfile reviewId={review._id} bannerFilme={review.bannerFilme} nomeReview={review.tituloFilme} starRating={review.nota} descricaoReview={review.descricao} autorReview={review.autorReview} avatarAutor={review.autorAvatar} />
+              })
+            ) : (
+              <p>Nenhuma review encontrada.</p>
+            )}
+          </div>
+        ) : (
+          <div className="user-comments">
+            {userComments.length > 0 ? (
+              userComments.map((comment) => {
+                console.log('kaique: ', comment)
+                return <CommentProfile avatar={comment.avatar} username={comment.username} content={comment.conteudo} nomeFilme={comment.tituloFilme} reviewId={comment._id} />
+              })
+            ) : (
+              <p>Nenhum comentário encontrado.</p>
+            )}
+          </div>
+        )}
+      </div>
+    </section>
   </div>
 }
 

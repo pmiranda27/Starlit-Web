@@ -81,12 +81,13 @@ function HomeScreen({ goToProfilePage }) {
     const listaUsuarios = await getAllUsersExceptLoggedUserAndFriends();
 
     const listaComponentesUsuarios = listaUsuarios.map(
-      (user, ind) => (
-        <UserComponent
+      (user, ind) => {
+        console.log('eu vou matar todos vocês', user)
+        return <UserComponent
           key={user.email}
           name={user.username}
           functionToGoToProfile={goToProfilePage}
-          loggedUserName={credentialsHomeScreen.username}
+          loggedUserName={sessionStorage.getItem('username')}
           userEmail={user.email}
           loggedUserEmail={credentialsHomeScreen.email}
           imgUrl={user.avatar}
@@ -97,7 +98,7 @@ function HomeScreen({ goToProfilePage }) {
               friendRequestUser.sender === credentialsHomeScreen.email
           )}
         />
-      )
+      }
     );
 
     setListaUsuarios(listaComponentesUsuarios);
@@ -107,8 +108,9 @@ function HomeScreen({ goToProfilePage }) {
     const listaNotificacoes = await getNotificacoesUsuario();
 
     const listaComponentesNotificacoes = listaNotificacoes.map(
-      (notification, ind) => (
-        <NotificacaoComponent
+      (notification, ind) => {
+        console.log('bleubeu', notification)
+        return <NotificacaoComponent
           key={ind}
           notificationId={notification._id}
           name={notification.name}
@@ -116,7 +118,7 @@ function HomeScreen({ goToProfilePage }) {
           userEmail={credentialsHomeScreen["email"]}
           onNotificationAnswered={refreshEverythingUserHas}
         />
-      )
+      }
     );
 
     setListaNotifications(listaComponentesNotificacoes);
@@ -320,7 +322,6 @@ function HomeScreen({ goToProfilePage }) {
             </div>
           </div>
           <div className="criar-novo-post" onClick={() => {
-            console.log(isShowingNewPostPanel)
             openNewPostScreen()
           }}>
             Novo Post

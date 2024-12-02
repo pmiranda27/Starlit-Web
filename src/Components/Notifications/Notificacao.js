@@ -31,26 +31,26 @@ function NotificacaoComponent({
       receiver: userEmail,
     };
 
-    while (responseTries < 4){
+    while (responseTries < 4) {
       const response = await axios.post(
         `${apiUrl}/user/responder-notificacao`,
         notificationAnswer
       );
-      
+
       console.log('response answer notification: ', response)
-      
+
       if (200 < response.status < 300) {
         onNotificationAnswered();
         return response.data;
       }
       onNotificationAnswered();
-      
+
       if (responseTries < 4) {
         responseTries++;
         continue;
       }
     }
-      
+
   }
 
   const handleAnswerNotification = async (

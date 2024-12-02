@@ -1,0 +1,77 @@
+.comment-container {
+    min-width: 20vw;
+    max-width: 30vw;
+
+    display: flex;
+    align-items: flex-start;
+
+    margin: 10px 0;
+    padding: 10px;
+
+    background-color: #f4f4f4;
+
+    border-radius: 8px;
+    box-sizing: border-box;
+
+    cursor: pointer;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.comment-container>* {
+    user-select: none;
+}
+
+.comment-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.comment-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.primeira-linha-content-comment {
+    width: 100%;
+
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    gap: 24px;
+    align-items: center;
+}
+
+.comment-username {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.comment-nome-filme {
+    font-size: .8rem;
+
+    font-weight: 550;
+
+    text-wrap: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    padding-right: 8px;
+}
+
+.comment-text {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 5px;
+}

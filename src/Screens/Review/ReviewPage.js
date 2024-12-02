@@ -60,6 +60,7 @@ function ReviewPage() {
             }
         });
 
+        console.log('fdls: ', response.data.review)
         setReviewData(response.data.review);
     }
 
@@ -92,12 +93,13 @@ function ReviewPage() {
         mapComentariosData();
     }, [comentariosData]);
 
-    function mapComentariosData() {
-        const comentariosComp = comentariosData.map(comment => {
-            return <div className='comment-review-parent'>
-                <img src={comment.avatar} alt={`Avatar de ${comment.author}`} />
+    async function mapComentariosData() {   
+        const comentariosComp = comentariosData.map((comment, index) => {
+            console.log(comment)
+            return <div key={index} className='comment-review-parent'>
+                <img src={comment.avatar} alt={`Avatar de ${comment.username}`} />
                 <div className="conteudo-comentario-review">
-                    <h3>{comment.author}</h3>
+                    <h3>{comment.username}</h3>
                     <p>{comment.conteudo}</p>
                 </div>
             </div>
@@ -158,13 +160,44 @@ function ReviewPage() {
         setAutorReview(reviewData.autorReview);
         setAvatarAutor(reviewData.autorAvatar);
         setNotaReview(reviewData.nota);
-
-        setIsLoadingReviewPage(false);
     }, [reviewData])
+
 
     useEffect(() => {
         setComponentesNota(getStarRating(notaReview));
     }, [notaReview])
+
+    useEffect(() => {
+        async function preLoadImages() {
+            const loadImage = (url) => {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.src = url;
+                    img.onload = resolve;
+                    img.onerror = reject;
+                });
+            };
+    
+            // URLs das imagens a serem carregadas
+            const urls = [
+                bannerFilme,
+                avatarAutor,
+                ...comentariosData.map((comment) => comment.avatarAuthor),
+            ].filter(Boolean); // Remove valores undefined ou null
+    
+            try {
+                await Promise.all(urls.map(loadImage));
+                console.log("Imagens carregadas com sucesso!");
+            } catch (error) {
+                console.error("Erro ao carregar imagens:", error);
+            }
+    
+            setIsLoadingReviewPage(false);
+        }
+    
+        if (bannerFilme && avatarAutor) preLoadImages();
+    }, [bannerFilme, avatarAutor, comentariosData]);
+        
 
 
     useEffect(() => {
