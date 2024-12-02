@@ -211,7 +211,7 @@ function Profile({ nicknameToSearch, needToLoad, goToConfigPage }) {
             {userComments.length > 0 ? (
               userComments.map((comment) => {
                 console.log('kaique: ', comment)
-                return <CommentProfile avatar={comment.avatar} username={comment.username} content={comment.conteudo} nomeFilme={comment.tituloFilme} reviewId={comment._id} />
+                return <CommentProfile avatar={comment.avatar} username={comment.username} content={comment.conteudo} nomeFilme={comment.tituloFilme} reviewId={comment.filmeId} />
               })
             ) : (
               <p>Nenhum comentário encontrado.</p>
