@@ -2,6 +2,7 @@ import "./Login.css";
 
 import { Loader } from "../../Components/Loaders/Loader_Welcome";
 
+import waveBackground from "../../Assets/Svg/Welcome/wave1.svg"
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -145,6 +146,7 @@ const Login = () => {
   return (
     <>
       <div className="login-main">
+        <img src={waveBackground} className="wave-background-login" alt="Onda Background" />
         <PopUpConfirm $isGreen={isGreen} $isShowingMessage={isShowingMessage}>
           {isGreen
             ? `Logado com sucesso. Redirecionando...`

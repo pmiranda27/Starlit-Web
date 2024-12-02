@@ -263,9 +263,6 @@ export const NewPostPanel = ({ isCreatingNewPost, closeNewPostScreen }) => {
                     <div className="close-novo-post" onClick={closeNewPostScreen}>
                         <RiCloseCircleLine className="close-novo-post-icon" />
                     </div>
-                    {/* <div className="add-banner-novo-post">
-                    <FaImages className="add-banner-novo-post-icon" color="#7E56E4" />
-                </div> */}
                     <div className="publicar-botao-novo-post" onClick={handleSubmitNewPost}>Publicar</div>
                 </div>
             </div>

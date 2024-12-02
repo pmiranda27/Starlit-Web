@@ -12,6 +12,7 @@ import { SendProfilePicturePanel } from "../../Components/Send_Profile_Picture_P
 import { useAuth } from "../../Components/Services/Api_Service";
 import { PopUpError } from "../../Components/PopUpError";
 
+import WaveSvg from "../../Assets/Svg/Welcome/wave2.svg"
 
 const Register = () => {
   const { registerAccount } = useAuth();
@@ -136,45 +137,45 @@ const Register = () => {
     };
     setTimeout(async () => {
 
-        const response = await registerAccount(newUser);
-        if (response.status === 201) {
-          setIsGreen(true);
-          setIsShowingMessage(true);
-          setTimeout(() => {
-            setIsShowingProfilePicturePanel(false);
-          }, 1500);
-          setIsSendingProfilePicture(false);
-
-          setTimeout(() => {
-            navigate("/home");
-          }, 3000);
-        }
-
-
-        setIsGreen(false);
+      const response = await registerAccount(newUser);
+      if (response.status === 201) {
+        setIsGreen(true);
         setIsShowingMessage(true);
         setTimeout(() => {
           setIsShowingProfilePicturePanel(false);
         }, 1500);
-        
         setIsSendingProfilePicture(false);
 
-        if (response.status === 500) {
-          setIsShowingErrorMessage(true);
-          setErrorMessagePopUp(`Erro no servidor. Tente novamente mais tarde!`);
-        }
-        else {
-          setIsShowingErrorMessage(true);
-          setErrorMessagePopUp(`${response.data}`);
-        }
-
         setTimeout(() => {
-          setIsGreen(false);
-          setIsShowingMessage(false);
-
-          setIsLoading(false);
-          setCanChangeRegisterInputs(true);
+          navigate("/home");
         }, 3000);
+      }
+
+
+      setIsGreen(false);
+      setIsShowingMessage(true);
+      setTimeout(() => {
+        setIsShowingProfilePicturePanel(false);
+      }, 1500);
+
+      setIsSendingProfilePicture(false);
+
+      if (response.status === 500) {
+        setIsShowingErrorMessage(true);
+        setErrorMessagePopUp(`Erro no servidor. Tente novamente mais tarde!`);
+      }
+      else {
+        setIsShowingErrorMessage(true);
+        setErrorMessagePopUp(`${response.data}`);
+      }
+
+      setTimeout(() => {
+        setIsGreen(false);
+        setIsShowingMessage(false);
+
+        setIsLoading(false);
+        setCanChangeRegisterInputs(true);
+      }, 3000);
     }, 1500);
   }
 
@@ -264,6 +265,7 @@ const Register = () => {
       </SendProfilePicturePanel>
 
       <div className="register-main">
+        <img src={WaveSvg} className="wave-register-main" alt="Onda Background" />
         <PopUpConfirm $isGreen={isGreen} $isShowingMessage={isShowingMessage}>
           {isGreen
             ? `Registro realizado com sucesso. Redirecionando...`
