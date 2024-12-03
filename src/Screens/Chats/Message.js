@@ -6,6 +6,7 @@ import "./Message.css";
 import { useEffect, useRef, useState } from "react";
 import { connect } from "socket.io-client";
 import { MensagemTile } from "../../Components/Chat/MensagemTile";
+import { Loader } from "../../Components/Loaders/Loader_Welcome";
 
 function Chat() {
   const iconStyle = { color: "white" };
@@ -91,7 +92,7 @@ function Chat() {
             sender: message.sender,
             content: message.content,
           }];
-          
+
           // Retorna o amigo atualizado com as novas mensagens
           return { ...amigo, messages: updatedMessages };
         }
@@ -153,7 +154,7 @@ function Chat() {
               <h2>{listaObjetosAmigos[amigoContatoIndex]?.name || ""}</h2>
             </>
           ) : (
-            <p>Nenhum contato selecionado</p>
+            <Loader />
           )}
         </section>
 

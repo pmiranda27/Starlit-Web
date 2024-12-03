@@ -70,7 +70,6 @@ export const AuthProvider = ({ children }) => {
       console.log('papibaquigrafo: ', response.data.token);
 
       const tok = response.data.token;
-      setLoggedToken(tok);
 
       clearSessionAndLocalStorage();
 
@@ -79,11 +78,7 @@ export const AuthProvider = ({ children }) => {
       sessionStorage.setItem('email', userRegisterForm.email);
       sessionStorage.setItem('avatar', userRegisterForm.avatar);
 
-      return {
-        status: response.status,
-        message: 'Sucesso no registro'
-      }
-
+      return 201
     } catch (error) {
       console.log('ERRO: ', error);
       clearSessionAndLocalStorage();

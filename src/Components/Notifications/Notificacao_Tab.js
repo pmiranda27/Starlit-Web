@@ -35,6 +35,13 @@ export const NotificacaoTab = styled.div`
     width: 100%;
     height: 85%;
 
+    box-sizing: border-box;
+
+    padding: 8px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
     position: relative;
   }
 `;

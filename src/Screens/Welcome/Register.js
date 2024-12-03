@@ -138,7 +138,8 @@ const Register = () => {
     setTimeout(async () => {
 
       const response = await registerAccount(newUser);
-      if (response.status === 201) {
+
+      if (response === 201) {
         setIsGreen(true);
         setIsShowingMessage(true);
         setTimeout(() => {
@@ -151,8 +152,6 @@ const Register = () => {
         }, 3000);
       }
 
-
-      setIsGreen(false);
       setIsShowingMessage(true);
       setTimeout(() => {
         setIsShowingProfilePicturePanel(false);
@@ -163,10 +162,6 @@ const Register = () => {
       if (response.status === 500) {
         setIsShowingErrorMessage(true);
         setErrorMessagePopUp(`Erro no servidor. Tente novamente mais tarde!`);
-      }
-      else {
-        setIsShowingErrorMessage(true);
-        setErrorMessagePopUp(`${response.data}`);
       }
 
       setTimeout(() => {

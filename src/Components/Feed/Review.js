@@ -117,8 +117,7 @@ export const MovieReview = ({ nomeReview, reviewId, notaReview, bannerFilme, des
             </div>
         </div>
         <div className="third-line-movie-review">
-            <h3>Assistiram também:</h3>
-            {listaUsuariosJaAssistiram}
+            
         </div>
     </div>
 }

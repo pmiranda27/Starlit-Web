@@ -31,7 +31,7 @@
 
   width: 99.8%;
   height: calc(100% + 9vh);
-  
+
   position: absolute;
 
   top: -9vh;
@@ -45,7 +45,7 @@
   height: 17%;
 
   box-sizing: border-box;
-  
+
   position: absolute;
 
   padding: 8px 16px 8px 16px;
@@ -63,7 +63,7 @@
   background-color: rgba(0, 0, 0, .1);
 }
 
-.contato-selecionado > img {
+.contato-selecionado>img {
   height: 90%;
 
   border: transparent;
@@ -72,7 +72,7 @@
   aspect-ratio: 1;
 }
 
-.contato-selecionado > h2 {
+.contato-selecionado>h2 {
   color: white;
 
   font-size: 1.75rem;
@@ -117,14 +117,16 @@
 
   cursor: pointer;
 }
-.send-message-button-conversa-chat:hover{
+
+.send-message-button-conversa-chat:hover {
   background-color: rgb(102, 70, 184);
 }
-.send-message-button-conversa-chat:active{
+
+.send-message-button-conversa-chat:active {
   cursor: default;
 }
 
-.send-message-button-conversa-chat > * {
+.send-message-button-conversa-chat>* {
   scale: 2.5;
 
   color: white;
